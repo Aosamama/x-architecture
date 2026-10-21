@@ -185,14 +185,10 @@ section{padding:clamp(46px,6vw,96px) 0}
 #bt{animation:grow 1.6s cubic-bezier(.16,.84,.3,1) .18s both,bB 6.5s ease-in-out 2.1s infinite}
 @keyframes bT{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
 @keyframes bB{0%,100%{transform:translateY(0)}50%{transform:translateY(18px)}}
-.orb{fill:none;stroke:#AD9154;stroke-width:1.4;stroke-linecap:round;transform-box:fill-box;transform-origin:50% 50%;opacity:0;animation:orbin 2.4s ease 1.8s forwards,spin 70s linear infinite}
-.orb.o2{stroke-dasharray:1 14;stroke-width:2.4;animation:orbin 2.4s ease 2.1s forwards,spinr 110s linear infinite}
-@keyframes orbin{to{opacity:.34}}
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes spinr{to{transform:rotate(-360deg)}}
 .js .c .im svg path{stroke-dasharray:700;stroke-dashoffset:700}
 .js .c.drawn .im svg path{stroke-dashoffset:0;transition:stroke-dashoffset 1.9s cubic-bezier(.4,.1,.2,1) .35s}
-@media(prefers-reduced-motion:reduce){#tp,#bt,.hero::before,.orb{animation:none!important}.orb{opacity:.3}}
+@media(prefers-reduced-motion:reduce){#tp,#bt,.hero::before{animation:none!important}}
 .hd{position:relative}
 .hd .nct{margin-inline-start:auto;display:flex;align-items:center;gap:14px;font-size:.78rem;color:var(--soft);flex-wrap:wrap;justify-content:flex-end}
 .hd .nct button.lk{padding:7px 16px}
@@ -227,6 +223,35 @@ section{padding:clamp(46px,6vw,96px) 0}
 .npg{height:2px;background:var(--line);margin-top:2px;overflow:hidden}
 .npg i{display:block;height:100%;width:0;background:var(--gold);transition:width .25s}
 @media(max-width:700px){.nbtn{display:none}.hd .nct{margin-inline-start:0;width:100%;justify-content:space-between}.hd{flex-wrap:wrap}}
+
+/* ===== clean look: no frames, one alignment edge ===== */
+.b,.lk,.lgb,.tabs button,.ct,.pr,.n,.nc,.sm,.nbtn,.lbb,.ni .ns,.slot,.g4,.gal,.c,.fg{border:0}
+.im,.ni,.fg figcaption{border-bottom:0;border-top:0}
+.b:not(.s),.lk,.sm{background:rgba(173,145,84,.13)}
+.b:not(.s):hover,.lk:hover{background:var(--gold);color:var(--bg)}
+button.lk{color:var(--gold2)}
+.lgb{background:none;padding:6px 4px}
+.lgb:hover{background:none;color:var(--gold2)}
+.tabs button{background:rgba(255,255,255,.05)}
+.tabs button:hover{background:rgba(173,145,84,.16)}
+.tabs button.on{background:var(--gold)}
+.ct{background:linear-gradient(100deg,rgba(173,145,84,.16),rgba(173,145,84,.04))}
+.g4,.gal{gap:14px;background:none}
+.c,.fg{background:var(--bg2)}
+.c:hover,.fg:hover{background:#12100c}
+.nbtn,.lbb{background:rgba(5,5,5,.72)}
+.nbtn:hover,.lbb:hover{background:var(--gold);color:var(--bg)}
+.ni .ns{background:rgba(5,5,5,.78)}
+.lg.lgo svg{width:26px;height:34px}
+.hd{display:grid;grid-template-columns:1fr auto;column-gap:16px;row-gap:8px;align-items:end}
+.hd>small{grid-column:1/-1;display:block;text-align:right}
+.hd>h2{grid-column:1}
+.hd .nct{grid-column:2;grid-row:2;margin:0}
+[dir=ltr] .hd>small{text-align:left}
+h1,h2,h3{text-wrap:balance}
+p,.bk small{text-wrap:pretty}
+.nb h3,.nb p{text-align:start}
+@media(max-width:700px){.hd .nct{grid-column:1/-1;grid-row:3;width:100%;justify-content:flex-start;margin-top:6px}.hd .nct #nrf{order:-1}}
 </style>
 </head>
 <body>
@@ -236,7 +261,7 @@ section{padding:clamp(46px,6vw,96px) 0}
 <pattern id="ht" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#AD9154" stroke-width="1"/></pattern><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#050505"/><stop offset="1" stop-color="#7a6638"/></linearGradient><radialGradient id="sun"><stop offset="0" stop-color="#AD9154" stop-opacity=".55"/><stop offset="1" stop-color="#AD9154" stop-opacity="0"/></radialGradient><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#AD9154" stop-opacity=".3"/><stop offset="1" stop-color="#AD9154" stop-opacity="0"/></linearGradient><symbol id="mark" viewBox="0 0 547 703"><polygon points="0,0 547,0 274,352" fill="url(#ga)"/><polygon points="274,352 0,703 547,703" fill="url(#gb)"/></symbol></defs></svg>
 
 <header><div class="w">
-<a href="#" class="lg" aria-label="X Architecture"><svg viewBox="0 0 547 703"><use href="#mark"/></svg><b>X</b><i>.ARCH</i></a>
+<a href="#" class="lg lgo" aria-label="X Architecture"><svg viewBox="0 0 547 703"><use href="#mark"/></svg></a>
 <nav><a href="#services" data-n="services">الخدمات</a><a href="#works" data-n="works">أعمال الطلاب</a><a href="#news" data-n="news">الأخبار والكتب</a><a href="#contact" data-n="contact">تواصل</a></nav>
 <button id="lgb" class="lgb" type="button">EN</button>
 </div></header>
@@ -250,7 +275,7 @@ section{padding:clamp(46px,6vw,96px) 0}
 <p class="lede">نصمّم، نُظهر، ونتابع مشروعك خطوة بخطوة — من الفكرة الأولى حتى اللوحة النهائية.</p>
 <div class="bt"><a class="b s" href="#services">خدماتنا</a><a class="b" href="#news">أخبار وكتب معمارية</a></div>
 </div>
-<div class="mk"><svg viewBox="0 0 547 703" aria-hidden="true"><circle class="orb" cx="273.5" cy="351.5" r="338" stroke-dasharray="3 11"/><circle class="orb o2" cx="273.5" cy="351.5" r="392"/><polygon id="tp" points="0,0 547,0 274,352" fill="url(#ga)"/><polygon id="bt" points="274,352 0,703 547,703" fill="url(#gb)"/></svg><div class="wm" aria-hidden="true"><b>X</b><i>.ARCH</i></div></div>
+<div class="mk"><svg viewBox="0 0 547 703" aria-hidden="true"><polygon id="tp" points="0,0 547,0 274,352" fill="url(#ga)"/><polygon id="bt" points="274,352 0,703 547,703" fill="url(#gb)"/></svg><div class="wm" aria-hidden="true"><b>X</b><i>.ARCH</i></div></div>
 </div></div>
 
 <section id="services"><div class="w">
@@ -442,7 +467,7 @@ function rn(){
   var L2=(NEWS.length?NEWS:nfb()).slice(),e=en();if(!e)L2=L2.filter(function(n){return n.c||n.ta}).concat(L2.filter(function(n){return!(n.c||n.ta)}));
   ncar.innerHTML=L2.map(function(n){
     var t=e?(n.t||n.ta):(n.ta||n.t),x=e?(n.x||n.xa||''):(n.xa||n.x||'');
-    return '<a class="nc" href="'+esc(n.u)+'" target="_blank" rel="noopener"><div class="ni'+(n.i?'':' nf')+'">'+(n.i?'<img src="'+esc(n.i)+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" draggable="false">':'')+'<span class="ns">'+esc(n.s||'')+(n.c?' · X.ARCH':'')+'</span></div><div class="nb"><small>'+nd(n.d)+'</small><h3 dir="auto">'+esc(t)+'</h3>'+(x?'<p dir="auto">'+esc(x)+'</p>':'')+'<span class="lk">'+TX.r[e]+'</span></div></a>'}).join('');
+    return '<a class="nc" href="'+esc(n.u)+'" target="_blank" rel="noopener"><div class="ni'+(n.i?'':' nf')+'">'+(n.i?'<img src="'+esc(n.i)+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" draggable="false">':'')+'<span class="ns">'+esc(n.s||'')+(n.c?' · X.ARCH':'')+'</span></div><div class="nb"><small>'+nd(n.d)+'</small><h3>'+esc(t)+'</h3>'+(x?'<p>'+esc(x)+'</p>':'')+'<span class="lk">'+TX.r[e]+'</span></div></a>'}).join('');
   Array.prototype.forEach.call(ncar.querySelectorAll('img'),function(im){im.addEventListener('error',function(){im.parentNode.classList.add('nf');im.remove()},{once:true})});
   nstat();npg()}
 function npg(){var m=ncar.scrollWidth-ncar.clientWidth,i=document.getElementById('npi');if(i)i.style.width=(m>4?Math.min(100,Math.abs(ncar.scrollLeft)/m*100):100)+'%'}
