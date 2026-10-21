@@ -16,7 +16,7 @@
 <link rel="canonical" href="https://xarch.site/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#050505">
-<script>try{if(!matchMedia("(prefers-reduced-motion:reduce)").matches)document.documentElement.classList.add("js")}catch(e){}</script>
+<script>try{var D=document.documentElement;if(!matchMedia("(prefers-reduced-motion:reduce)").matches){D.classList.add("js");if(!location.hash.slice(1)){D.classList.add("intro");setTimeout(function(){D.classList.add("introd")},5200)}}}catch(e){}</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Questrial&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -252,9 +252,42 @@ h1,h2,h3{text-wrap:balance}
 p,.bk small{text-wrap:pretty}
 .nb h3,.nb p{text-align:start}
 @media(max-width:700px){.hd .nct{grid-column:1/-1;grid-row:3;width:100%;justify-content:flex-start;margin-top:6px}.hd .nct #nrf{order:-1}}
+
+/* ===== intro: black screen, lines from the corners form the logo ===== */
+#intro{display:none;position:fixed;inset:0;z-index:300;background:#050505;cursor:pointer;transition:opacity .9s ease,visibility 0s linear .9s}
+html.intro #intro{display:block}
+html.intro:not(.introd){overflow:hidden}
+#intro.out{opacity:0;visibility:hidden;pointer-events:none}
+#intro svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+#intro .il,#intro .ip{fill:none;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+#intro .il{stroke:#AD9154;stroke-width:1.2;stroke-opacity:.8;animation:idraw .95s cubic-bezier(.5,0,.2,1) .2s forwards,ifd .5s ease 1.7s forwards}
+#intro .ip{stroke:#D4BA7C;stroke-width:1.6;animation:idraw 1.15s cubic-bezier(.45,0,.2,1) .85s forwards,ifd .7s ease 2.1s forwards}
+#intro .if{opacity:0;animation:ifi .8s ease 1.75s forwards}
+@keyframes idraw{to{stroke-dashoffset:0}}
+@keyframes ifd{to{opacity:0}}
+@keyframes ifi{to{opacity:1}}
+html.intro:not(.introd) .hero .eb,html.intro:not(.introd) .hero h1,html.intro:not(.introd) .hero .lede,html.intro:not(.introd) .hero .bt{animation-play-state:paused}
+html.intro #tp{animation:bT 6.5s ease-in-out infinite}
+html.intro #bt{animation:bB 6.5s ease-in-out infinite}
+.js.intro .mk{opacity:0}
+.js.intro.introd .mk{opacity:1;transition:opacity 1.2s ease .25s}
+.hero .eb{font-size:clamp(.95rem,1.7vw,1.4rem);letter-spacing:.3em;margin-bottom:22px;font-weight:500}
+@media(prefers-reduced-motion:reduce){#intro{display:none!important}}
 </style>
 </head>
 <body>
+<div id="intro" aria-hidden="true"></div>
+<script>(function(){var d=document.documentElement;if(!d.classList.contains("intro"))return;
+var o=document.getElementById("intro"),W=innerWidth,H=innerHeight,lh=Math.min(H*.4,W*.62,420),k=lh/703,lw=547*k,x0=(W-lw)/2,y0=(H-lh)/2,x1=x0+lw,y1=y0+lh,cx=x0+274*k,cy=y0+352*k,f=0;
+function L(a,b,c,e){return '<path class="il" pathLength="1" d="M'+a+' '+b+'L'+c+' '+e+'"/>'}
+var top='M'+x0+' '+y0+'L'+x1+' '+y0+'L'+cx+' '+cy+'Z',bot='M'+cx+' '+cy+'L'+x0+' '+y1+'L'+x1+' '+y1+'Z';
+o.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><defs><linearGradient id="ig1" gradientUnits="userSpaceOnUse" x1="'+x0+'" x2="'+x1+'"><stop offset="0" stop-color="#AD9154"/><stop offset="1" stop-color="#0a0907"/></linearGradient><linearGradient id="ig2" gradientUnits="userSpaceOnUse" x1="'+x0+'" x2="'+x1+'"><stop offset="0" stop-color="#0a0907"/><stop offset="1" stop-color="#AD9154"/></linearGradient></defs>'
+ +L(0,0,x0,y0)+L(W,0,x1,y0)+L(0,H,x0,y1)+L(W,H,x1,y1)
+ +'<path class="if" fill="url(#ig1)" d="'+top+'"/><path class="if" fill="url(#ig2)" d="'+bot+'"/>'
+ +'<path class="ip" pathLength="1" d="'+top+'"/><path class="ip" pathLength="1" d="'+bot+'"/></svg>';
+function done(){if(f)return;f=1;d.classList.add("introd");o.classList.add("out");setTimeout(function(){if(o.parentNode)o.parentNode.removeChild(o)},1200)}
+setTimeout(done,2700);o.addEventListener("click",done);o.addEventListener("touchstart",done,{passive:true});addEventListener("keydown",done);
+})();</script>
 <svg class="hid" aria-hidden="true"><defs>
 <linearGradient id="ga" x1="0" x2="547" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#AD9154"/><stop offset="1" stop-color="#0a0907"/></linearGradient>
 <linearGradient id="gb" x1="0" x2="547" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0a0907"/><stop offset="1" stop-color="#AD9154"/></linearGradient>
@@ -275,7 +308,7 @@ p,.bk small{text-wrap:pretty}
 <p class="lede">نصمّم، نُظهر، ونتابع مشروعك خطوة بخطوة — من الفكرة الأولى حتى اللوحة النهائية.</p>
 <div class="bt"><a class="b s" href="#services">خدماتنا</a><a class="b" href="#news">أخبار وكتب معمارية</a></div>
 </div>
-<div class="mk"><svg viewBox="0 0 547 703" aria-hidden="true"><polygon id="tp" points="0,0 547,0 274,352" fill="url(#ga)"/><polygon id="bt" points="274,352 0,703 547,703" fill="url(#gb)"/></svg><div class="wm" aria-hidden="true"><b>X</b><i>.ARCH</i></div></div>
+<div class="mk"><svg viewBox="0 0 547 703" aria-hidden="true"><polygon id="tp" points="0,0 547,0 274,352" fill="url(#ga)"/><polygon id="bt" points="274,352 0,703 547,703" fill="url(#gb)"/></svg></div>
 </div></div>
 
 <section id="services"><div class="w">
