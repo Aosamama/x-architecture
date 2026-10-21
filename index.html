@@ -16,6 +16,7 @@
 <link rel="canonical" href="https://xarch.site/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#050505">
+<script>try{if(!matchMedia("(prefers-reduced-motion:reduce)").matches)document.documentElement.classList.add("js")}catch(e){}</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Questrial&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -167,6 +168,65 @@ section{padding:clamp(46px,6vw,96px) 0}
 .lbn{right:16px;top:50%;margin-top:-23px}
 .libs{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:26px;font-size:.85rem;color:var(--soft)}
 .libs .lk{padding:6px 14px}
+
+/* ===== motion + news carousel ===== */
+.js .rv{opacity:0;transform:translateY(42px);transition:opacity .95s cubic-bezier(.2,.7,.2,1) var(--d,0s),transform .95s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+.js .rv.in{opacity:1;transform:none}
+.js .rv[id]{transform:none}
+.js .hero .eb,.js .hero h1,.js .hero .lede,.js .hero .bt{animation:rise 1.05s cubic-bezier(.2,.7,.2,1) both}
+.js .hero .eb{animation-delay:.1s}.js .hero h1{animation-delay:.3s}.js .hero .lede{animation-delay:.55s}.js .hero .bt{animation-delay:.8s}
+@keyframes rise{from{opacity:0;transform:translateY(44px)}to{opacity:1;transform:none}}
+.hero{position:relative;overflow:hidden}
+.hero .w{position:relative;z-index:1}
+.mk svg{overflow:visible}
+.hero::before{content:"";position:absolute;width:62vmax;height:62vmax;background:radial-gradient(closest-side,rgba(173,145,84,.16),rgba(173,145,84,.05) 55%,transparent);top:-24vmax;inset-inline-end:-14vmax;pointer-events:none;animation:drift 20s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(-9vmax,7vmax) scale(1.18)}}
+#tp{animation:grow 1.6s cubic-bezier(.16,.84,.3,1) both,bT 6.5s ease-in-out 1.9s infinite}
+#bt{animation:grow 1.6s cubic-bezier(.16,.84,.3,1) .18s both,bB 6.5s ease-in-out 2.1s infinite}
+@keyframes bT{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+@keyframes bB{0%,100%{transform:translateY(0)}50%{transform:translateY(18px)}}
+.orb{fill:none;stroke:#AD9154;stroke-width:1.4;stroke-linecap:round;transform-box:fill-box;transform-origin:50% 50%;opacity:0;animation:orbin 2.4s ease 1.8s forwards,spin 70s linear infinite}
+.orb.o2{stroke-dasharray:1 14;stroke-width:2.4;animation:orbin 2.4s ease 2.1s forwards,spinr 110s linear infinite}
+@keyframes orbin{to{opacity:.34}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spinr{to{transform:rotate(-360deg)}}
+.js .c .im svg path{stroke-dasharray:700;stroke-dashoffset:700}
+.js .c.drawn .im svg path{stroke-dashoffset:0;transition:stroke-dashoffset 1.9s cubic-bezier(.4,.1,.2,1) .35s}
+@media(prefers-reduced-motion:reduce){#tp,#bt,.hero::before,.orb{animation:none!important}.orb{opacity:.3}}
+.hd{position:relative}
+.hd .nct{margin-inline-start:auto;display:flex;align-items:center;gap:14px;font-size:.78rem;color:var(--soft);flex-wrap:wrap;justify-content:flex-end}
+.hd .nct button.lk{padding:7px 16px}
+.hd .nct button.lk[disabled]{opacity:.6;cursor:wait}
+.nrot{display:inline-block;transition:transform .6s}
+.nbusy .nrot{animation:spin .9s linear infinite}
+.nwrap{position:relative}
+.ncar{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:6px 2px 20px;cursor:grab;overscroll-behavior-x:contain}
+.ncar::-webkit-scrollbar{display:none}
+.ncar.drag{cursor:grabbing;scroll-snap-type:none;scroll-behavior:auto}
+.nc{flex:0 0 min(400px,82vw);scroll-snap-align:start;border:1px solid var(--line);background:var(--bg2);display:flex;flex-direction:column;transition:border-color .3s,transform .5s cubic-bezier(.2,.7,.2,1)}
+.nc:hover,.nc:focus-visible{border-color:var(--gold);transform:translateY(-5px)}
+.nc:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.ni{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg);border-bottom:1px solid var(--line)}
+.ni img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.08) brightness(.88);transition:filter .8s ease,transform 1.3s cubic-bezier(.2,.7,.2,1);user-select:none;-webkit-user-drag:none}
+.nc:hover .ni img,.nc:focus-visible .ni img,.nc:active .ni img{filter:none;transform:scale(1.07)}
+.ni .ns{position:absolute;inset-block-start:12px;inset-inline-start:12px;background:rgba(5,5,5,.74);border:1px solid var(--line);color:var(--gold2);font-size:.64rem;letter-spacing:.18em;padding:2px 10px;direction:ltr}
+.ni.nf{background:radial-gradient(ellipse at 50% 120%,rgba(173,145,84,.3),transparent 70%),var(--bg2)}
+.ni.nf::after{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 547 703'%3E%3Cpolygon points='0,0 547,0 274,352' fill='%23AD9154' fill-opacity='.55'/%3E%3Cpolygon points='274,352 0,703 547,703' fill='%23AD9154' fill-opacity='.2'/%3E%3C/svg%3E") center/auto 46% no-repeat}
+.nb{padding:18px 20px 22px;display:flex;flex-direction:column;gap:8px;flex:1}
+.nb small{color:var(--gold);font-size:.7rem;letter-spacing:.16em;direction:ltr;text-align:start}
+[dir=rtl] .nb small{text-align:right}
+.nb h3{font-size:1.04rem;font-weight:500;line-height:1.6}
+.nb p{color:var(--soft);font-size:.84rem;font-weight:300}
+.nb .lk{margin-top:auto;align-self:flex-start}
+.nbtn{position:absolute;top:calc(6px + min(400px,82vw)*.3125 - 23px);z-index:3;width:46px;height:46px;background:rgba(5,5,5,.8);border:1px solid var(--gold);color:var(--gold);font:inherit;font-size:1.7rem;line-height:1;cursor:pointer;transition:.2s}
+.nbtn:hover{background:var(--gold);color:var(--bg)}
+.nbtn:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+.nprev{inset-inline-start:-8px}.nnext{inset-inline-end:-8px}
+.nprev::before{content:"‹"}.nnext::before{content:"›"}
+[dir=rtl] .nprev::before{content:"›"}[dir=rtl] .nnext::before{content:"‹"}
+.npg{height:2px;background:var(--line);margin-top:2px;overflow:hidden}
+.npg i{display:block;height:100%;width:0;background:var(--gold);transition:width .25s}
+@media(max-width:700px){.nbtn{display:none}.hd .nct{margin-inline-start:0;width:100%;justify-content:space-between}.hd{flex-wrap:wrap}}
 </style>
 </head>
 <body>
@@ -190,7 +250,7 @@ section{padding:clamp(46px,6vw,96px) 0}
 <p class="lede">نصمّم، نُظهر، ونتابع مشروعك خطوة بخطوة — من الفكرة الأولى حتى اللوحة النهائية.</p>
 <div class="bt"><a class="b s" href="#services">خدماتنا</a><a class="b" href="#news">أخبار وكتب معمارية</a></div>
 </div>
-<div class="mk"><svg viewBox="0 0 547 703" aria-hidden="true"><polygon id="tp" points="0,0 547,0 274,352" fill="url(#ga)"/><polygon id="bt" points="274,352 0,703 547,703" fill="url(#gb)"/></svg><div class="wm" aria-hidden="true"><b>X</b><i>.ARCH</i></div></div>
+<div class="mk"><svg viewBox="0 0 547 703" aria-hidden="true"><circle class="orb" cx="273.5" cy="351.5" r="338" stroke-dasharray="3 11"/><circle class="orb o2" cx="273.5" cy="351.5" r="392"/><polygon id="tp" points="0,0 547,0 274,352" fill="url(#ga)"/><polygon id="bt" points="274,352 0,703 547,703" fill="url(#gb)"/></svg><div class="wm" aria-hidden="true"><b>X</b><i>.ARCH</i></div></div>
 </div></div>
 
 <section id="services"><div class="w">
@@ -210,9 +270,9 @@ section{padding:clamp(46px,6vw,96px) 0}
 
 <div id="vn">
 <section><div class="w">
-<div class="hd" id="news"><small>NEWS</small><h2>أخبار معمارية</h2></div>
-<p class="note">أحدث الأخبار المعمارية من مصادر عالمية — اضغط على الخبر لقراءته في مصدره.</p>
-<div class="g2" id="nl"></div></div></section>
+<div class="hd" id="news"><small>NEWS</small><h2>أخبار معمارية</h2><div class="nct"><span id="nup" aria-live="polite"></span><button id="nrf" class="lk" type="button"></button></div></div>
+<p class="note">أخبار معمارية من مصادر عالمية تتحدّث تلقائياً كل يوم — الصور من مصادرها الأصلية، واضغط على الخبر لقراءته هناك.</p>
+<div class="nwrap"><button class="nbtn nprev" id="npv" type="button" aria-label="السابق"></button><div class="ncar" id="nl"></div><button class="nbtn nnext" id="nnx" type="button" aria-label="التالي"></button><div class="npg"><i id="npi"></i></div></div></div></section>
 <section><div class="w">
 <div class="hd" id="books"><small>BOOKS</small><h2>كتب معمارية حسب المرحلة</h2></div>
 <p class="note">اختر مرحلتك الدراسية. الكتب المنهجية الحديثة محمية بحقوق النشر، لذلك يفتح زرها صفحة الاستعارة المجانية في Open Library لقراءة الكتاب كاملاً في المتصفح بحساب مجاني. أما قسم «ملفات مجانية» فروابطه للقراءة أو التحميل المباشر بدون حساب.</p>
@@ -233,6 +293,7 @@ function route(){
   document.querySelectorAll('nav a').forEach(function(a){a.classList.toggle('on',a.dataset.n===(n?'news':w?'works':h))});
   var t=h&&document.getElementById(h);
   if(t)t.scrollIntoView();else window.scrollTo(0,0);
+  setTimeout(rvScan,30)
 }
 addEventListener('hashchange',route);route();
 var NW=[["سنوهيتا تفتتح دار الأوبرا الكبرى في شنغهاي", "افتتاح الدار بسقف منحنٍ واسع وإطلالات بانورامية على النهر.", "ArchDaily · 19/10", "https://www.archdaily.com/1187067/snohettas-shanghai-grand-opera-house-opens-with-a-sweeping-roof-and-panoramic-river-views"], ["مصنع Green Field في بنغلاديش يفوز بجائزة RIBA الدولية 2026", "فاز مشروع Nakshabid Architects بنموذجه البديل للمصانع.", "ArchDaily · 19/10", "https://www.archdaily.com/1187060/nakshabid-architects-alternative-factory-model-in-bangladesh-receives-the-riba-international-prize-2026"], ["Lion Green Road يفوز بجائزة RIBA ستيرلنغ 2026", "المشروع من تصميم Mary Duggan Architects وruffarchitects.", "ArchDaily · 16/10", "https://www.archdaily.com/1186944/lion-green-road-by-mary-duggan-architects-and-ruffarchitects-wins-riba-stirling-prize-2026"], ["ترشيحات World Monuments Watch 2027 تشير إلى أبرز تهديدات التراث", "تتصدرها التقشف الحكومي وتأثير المناخ ونقص المهارات.", "ArchDaily · 16/10", "https://www.archdaily.com/1186995/world-monuments-watch-2027-nominations-point-to-government-austerity-climate-impact-and-skills-shortages-as-main-threats-to-heritage"], ["OMA وJason Long يحوّلان مصنع Folger Coffee التاريخي في هيوستن إلى مدرسة للموسيقى والفنون", "إعادة استخدام مبنى صناعي تاريخي لوظيفة تعليمية جديدة.", "ArchDaily · 13/10", "https://www.archdaily.com/1186703/oma-jason-long-is-transforming-houstons-historic-folger-coffee-plant-into-a-music-and-arts-school"], ["Utopian Hours 2026 تعود إلى تورينو", "بحضور السير Peter Cook وبرنامج عن صناعة المدن.", "ArchDaily · 12/10", "https://www.archdaily.com/1186668/cities-are-mental-weapons-utopian-hours-2026-returns-to-turin-with-sir-peter-cook-and-a-program-on-city-making"]];
@@ -269,7 +330,7 @@ var EN={"الخدمات":"Services","الأخبار والكتب":"News & Books"
 "لوحات وتقديم المشاريع":"Boards & project presentation","تنسيق اللوحات والعروض التقديمية بإخراج احترافي يليق بالمشروع.":"Layout of boards and presentations with a professional finish worthy of the project.",
 "ابدأ مشروعك معنا":"Start your project with us","أخبرنا بما تحتاجه وسنرتب معك الخطوات التالية.":"Tell us what you need and we will plan the next steps with you.",
 "إنستغرام x.architects":"Instagram x.architects","تيليجرام x_architecture":"Telegram x_architecture","كل الروابط":"All links",
-"أخبار معمارية":"Architecture news","أحدث الأخبار المعمارية من مصادر عالمية — اضغط على الخبر لقراءته في مصدره.":"The latest architecture news from global sources — click a story to read it at the source.",
+"أخبار معمارية":"Architecture news","أخبار معمارية من مصادر عالمية تتحدّث تلقائياً كل يوم — الصور من مصادرها الأصلية، واضغط على الخبر لقراءته هناك.":"Architecture news from global sources, refreshed automatically every day — images come from their original sources; click a story to read it there.",
 "كتب معمارية حسب المرحلة":"Architecture books by year","اختر مرحلتك الدراسية. الكتب المنهجية الحديثة محمية بحقوق النشر، لذلك يفتح زرها صفحة الاستعارة المجانية في Open Library لقراءة الكتاب كاملاً في المتصفح بحساب مجاني. أما قسم «ملفات مجانية» فروابطه للقراءة أو التحميل المباشر بدون حساب.":"Choose your study year. Recent textbooks are under copyright, so their button opens the free lending page on Open Library, where you can read the full book in your browser with a free account. The “Free files” section links to books you can read or download directly, no account needed.",
 "© 2026 X Architecture — جميع الحقوق محفوظة":"© 2026 X Architecture — All rights reserved","مكتبات مجانية:":"Free libraries:","أعمال الطلاب":"Student work"};
 var NWE=[["Snøhetta’s Shanghai Grand Opera House opens", "The opera house opens with a sweeping roof and panoramic river views."], ["Green Field Factory in Bangladesh wins the RIBA International Prize 2026", "Nakshabid Architects’ project wins with its alternative factory model."], ["Lion Green Road wins the RIBA Stirling Prize 2026", "The project is designed by Mary Duggan Architects and ruffarchitects."], ["World Monuments Watch 2027 nominations point to the main threats to heritage", "Led by government austerity, climate impact and skills shortages."], ["OMA and Jason Long transform Houston’s historic Folger Coffee Plant into a music and arts school", "Reusing a historic industrial building for a new educational purpose."], ["Utopian Hours 2026 returns to Turin", "With Sir Peter Cook and a program on city-making."]];
@@ -324,6 +385,7 @@ function rw(){
   h+='<div class="hd" id="ai" style="margin-top:56px"><small>AI</small><h2>'+(e?'AI for architecture':'الذكاء الاصطناعي في العمارة')+'</h2></div><p class="note">'+(e?'Ready-made prompts (in English, as AI tools respond best to it). Copy one, adjust it to your project, and attach your image if the tool supports it.':'برومبتات جاهزة (بالإنجليزية لأن الأدوات تفهمها بدقة أكبر). انسخ البرومبت وعدّله حسب مشروعك وأرفق صورتك إن كانت الأداة تدعم ذلك.')+'</p>'+PR.map(function(c){return '<div class="pr"><h3>'+c[e]+'</h3><code>'+c[2]+'</code><button class="lk" type="button" data-c="1">'+(e?'Copy':'نسخ')+'</button></div>'}).join('');
   h+='<div class="ct" style="margin-top:56px"><div><h2>'+(e?'Want to learn visualization or join us?':'تريد تتعلم الإظهار أو تشترك معنا؟')+'</h2><p>'+(e?'Message us on Instagram or Telegram.':'راسلنا على إنستغرام أو تيليجرام.')+'</p></div><div class="bt"><a class="b s" href="https://instagram.com/x.architects" target="_blank" rel="noopener">Instagram</a><a class="b" href="https://t.me/x_architecture" target="_blank" rel="noopener">Telegram</a></div></div>';
   document.getElementById('wk').innerHTML=h;
+  setTimeout(rvScan,30)
 }
 document.getElementById('wk').addEventListener('click',function(ev){
   var o=ev.target.closest('[data-o]');if(o){lbo(+o.dataset.o);return}var b=ev.target.closest('[data-c]');if(!b)return;
@@ -345,7 +407,79 @@ var FB=[[["Introduction to Architecture", "Kelsey Ferreira — Open Oregon", "ك
 var TX={r:['اقرأ الخبر ←','Read story →'],d:['قراءة / تحميل مجاني','Read / download free'],b:['استعارة مجانية للقراءة','Free to borrow & read']};
 var tb=document.getElementById('tb'),bl=document.getElementById('bl'),orig=new WeakMap();
 function en(){return L==='en'?1:0}
-function rn(){document.getElementById('nl').innerHTML=NW.map(function(n,i){return '<a class="n" href="'+n[3]+'" target="_blank" rel="noopener"><small>'+n[2]+'</small><h3>'+(en()?NWE[i][0]:n[0])+'</h3><p>'+(en()?NWE[i][1]:n[1])+'</p><span class="lk">'+TX.r[en()]+'</span></a>'}).join('')}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+var NWI=['https://images.adsttc.com/media/images/6ad5/cc5b/c720/ac01/8896/2b20/large_jpg/snohettas-shanghai-grand-opera-house-opens-with-a-sweeping-roof-and-panoramic-river-views_1.jpg?1792396424','https://images.adsttc.com/media/images/6ad4/eb96/c720/ac01/8896/2a7c/large_jpg/riba-international-prize-2026_1.jpg?1792338866','https://images.adsttc.com/media/images/6ad0/e7bb/51c8/2d01/89ac/0a59/large_jpg/lion-green-road-by-mary-duggan-architects-and-ruffarchitects-wins-riba-stirling-prize-2026_1.jpg?1792075740','https://images.adsttc.com/media/images/6ad1/d656/c720/ac01/8896/2672/large_jpg/world-monuments-watch-2027-nominations-point-to-government-austerity-climate-impact-and-skills-shortages-as-main-threats-to-heritage_10.jpg?1792136798','https://images.adsttc.com/media/images/6acd/582c/7887/fb01/8910/6a65/large_jpg/the-frank-liu-jr-academy-for-music-and-arts-flama_3.jpg?1791842390','https://images.adsttc.com/media/images/6acc/35ee/7887/fb01/8910/6745/large_jpg/utopian-hours-2026_6.jpg?1791768073'];
+var NEWS=[],NUPD=0,NBUSY=false,NMSG='',NHOLD=0,NHOV=false,ncar=document.getElementById('nl'),nrf=document.getElementById('nrf');
+function nfb(){return NW.map(function(n,i){var m=n[2].match(/(\d+)\/(\d+)/);return{t:NWE[i][0],ta:n[0],x:NWE[i][1],xa:n[1],s:'ArchDaily',u:n[3],i:NWI[i]||'',d:m?'2026-'+('0'+m[2]).slice(-2)+'-'+('0'+m[1]).slice(-2)+'T09:00:00Z':''}})}
+function arn(n,one,two,few,many){return n===1?'قبل '+one:n===2?'قبل '+two:n<11?'قبل '+n+' '+few:'قبل '+n+' '+many}
+function ago(t){var e=en(),m=Math.max(0,(Date.now()-t)/6e4),n;if(m<2)return e?'just now':'الآن';if(m<60){n=Math.floor(m);return e?n+' min ago':arn(n,'دقيقة','دقيقتين','دقائق','دقيقة')}var h=m/60;if(h<24){n=Math.floor(h);return e?n+' h ago':arn(n,'ساعة','ساعتين','ساعات','ساعة')}var d=Math.floor(h/24);if(d<2)return e?'yesterday':'أمس';if(d<8)return e?d+' days ago':arn(d,'يوم','يومين','أيام','يوماً');try{return new Date(t).toLocaleDateString(e?'en-GB':'ar-u-nu-latn',{day:'numeric',month:'short'})}catch(x){return''}}
+function nd(d){var t=Date.parse(d);return t?ago(t):''}
+function nstat(){var u=document.getElementById('nup');if(!u||!nrf)return;
+  nrf.disabled=NBUSY;nrf.innerHTML='<span class="nrot">↻</span> '+(NBUSY?(en()?'Updating…':'جارٍ التحديث…'):(en()?'Refresh news':'تحديث الأخبار'));
+  document.getElementById('news').classList.toggle('nbusy',NBUSY);
+  u.textContent=NMSG||(NUPD?(en()?'Last updated ':'آخر تحديث ')+ago(NUPD):'')}
+function mergeNews(a,b){var seen={},out=[];(a||[]).concat(b||[]).forEach(function(n){if(!n||!n.u||!(n.t||n.ta))return;var k=String(n.u).replace(/[?#].*$/,'').replace(/\/$/,'');if(seen[k])return;seen[k]=1;out.push(n)});
+  out.sort(function(x,y){return (Date.parse(y.d)||0)-(Date.parse(x.d)||0)});return out.slice(0,30)}
+function jget(u){return fetch(u+'?v='+Date.now(),{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
+function loadNews(manual){
+  if(NBUSY||!window.fetch)return;NBUSY=true;NMSG='';nstat();var t0=Date.now();
+  Promise.all([jget('curated.json').catch(function(){return null}),jget('news.json').catch(function(){return null})]).then(function(r){
+    return new Promise(function(ok){setTimeout(function(){ok(r)},Math.max(0,(manual?800:0)-(Date.now()-t0)))})
+  }).then(function(r){
+    NBUSY=false;
+    if(!r[0]&&!r[1]){NMSG=manual?(en()?'Could not update — try again later':'تعذّر التحديث — حاول لاحقاً'):'';nstat();return}
+    var cur=((r[0]&&r[0].items)||[]).map(function(n){n.c=1;return n}),auto=(r[1]&&r[1].items)||[],merged=mergeNews(cur,auto),old={};
+    NEWS.forEach(function(n){old[n.u]=1});
+    var added=NEWS.length?merged.filter(function(n){return!old[n.u]}).length:0;
+    NUPD=Math.max(Date.parse(r[0]&&r[0].updated)||0,Date.parse(r[1]&&r[1].updated)||0)||NUPD;
+    NEWS=merged;
+    NMSG=manual?(added?(en()?added+(added>1?' new stories added':' new story added'):(added===1?'تمت إضافة خبر جديد':added===2?'تمت إضافة خبرين جديدين':added<11?'تمت إضافة '+added+' أخبار جديدة':'تمت إضافة '+added+' خبراً جديداً')):(en()?'No new stories right now':'لا توجد أخبار جديدة الآن')):'';
+    rn();if(added&&manual)ncar.scrollTo({left:0,behavior:'smooth'});
+    if(NMSG)setTimeout(function(){NMSG='';nstat()},6500)
+  })
+}
+function rn(){
+  var L2=NEWS.length?NEWS:nfb(),e=en();
+  ncar.innerHTML=L2.map(function(n){
+    var t=e?(n.t||n.ta):(n.ta||n.t),x=e?(n.x||n.xa||''):(n.xa||n.x||'');
+    return '<a class="nc" href="'+esc(n.u)+'" target="_blank" rel="noopener"><div class="ni'+(n.i?'':' nf')+'">'+(n.i?'<img src="'+esc(n.i)+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" draggable="false">':'')+'<span class="ns">'+esc(n.s||'')+(n.c?' · X.ARCH':'')+'</span></div><div class="nb"><small>'+nd(n.d)+'</small><h3 dir="auto">'+esc(t)+'</h3>'+(x?'<p dir="auto">'+esc(x)+'</p>':'')+'<span class="lk">'+TX.r[e]+'</span></div></a>'}).join('');
+  Array.prototype.forEach.call(ncar.querySelectorAll('img'),function(im){im.addEventListener('error',function(){im.parentNode.classList.add('nf');im.remove()},{once:true})});
+  nstat();npg()}
+function npg(){var m=ncar.scrollWidth-ncar.clientWidth,i=document.getElementById('npi');if(i)i.style.width=(m>4?Math.min(100,Math.abs(ncar.scrollLeft)/m*100):100)+'%'}
+function nstep(d){var c=ncar,k=c.querySelector('.nc');if(!k)return;var w=k.getBoundingClientRect().width+18,s=document.documentElement.dir==='rtl'?-1:1,max=c.scrollWidth-c.clientWidth;
+  if(d>0&&Math.abs(c.scrollLeft)>=max-6){c.scrollTo({left:0,behavior:'smooth'});return}
+  if(d<0&&Math.abs(c.scrollLeft)<=6){c.scrollTo({left:s*max,behavior:'smooth'});return}
+  c.scrollBy({left:s*d*w,behavior:'smooth'})}
+(function(){
+  var dn=false,sx=0,sl=0,mv=0;
+  ncar.addEventListener('scroll',npg,{passive:true});
+  ncar.addEventListener('pointerdown',function(e){NHOLD=Date.now()+12000;if(e.pointerType!=='mouse'||e.button!==0)return;dn=true;mv=0;sx=e.clientX;sl=ncar.scrollLeft});
+  addEventListener('pointermove',function(e){if(!dn)return;var dx=e.clientX-sx;if(Math.abs(dx)>6){mv=1;ncar.classList.add('drag')}if(mv)ncar.scrollLeft=sl-dx});
+  addEventListener('pointerup',function(){if(!dn)return;dn=false;ncar.classList.remove('drag');setTimeout(function(){mv=0},0)});
+  ncar.addEventListener('click',function(e){if(mv){e.preventDefault();e.stopPropagation()}},true);
+  ncar.addEventListener('mouseenter',function(){NHOV=true});ncar.addEventListener('mouseleave',function(){NHOV=false});
+  ncar.addEventListener('focusin',function(){NHOLD=Date.now()+12000});ncar.addEventListener('touchstart',function(){NHOLD=Date.now()+12000},{passive:true});ncar.addEventListener('wheel',function(){NHOLD=Date.now()+12000},{passive:true});
+  document.getElementById('npv').addEventListener('click',function(){NHOLD=Date.now()+12000;nstep(-1)});
+  document.getElementById('nnx').addEventListener('click',function(){NHOLD=Date.now()+12000;nstep(1)});
+  nrf.addEventListener('click',function(){loadNews(true)});
+  setInterval(function(){if(NHOV||document.hidden||Date.now()<NHOLD||!ncar.offsetParent)return;nstep(1)},5200);
+  setInterval(nstat,60000);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden&&Date.now()-NLAST>18e5)loadNews(false)});
+})();
+var NLAST=Date.now();
+var RVSEL='.hd,.note,.libs,.tabs,.c,.ct,.bk,.pr,.ex figure,.fg,.nwrap,footer .w',rvio=null;
+function rvShow(el){var d=(parseFloat(el.style.getPropertyValue('--d'))||0)*1000;el.classList.add('in','drawn');setTimeout(function(){el.classList.remove('rv','in');el.style.removeProperty('--d')},1500+d)}
+function rvScan(){
+  if(!document.documentElement.classList.contains('js'))return;
+  if(!rvio&&window.IntersectionObserver)rvio=new IntersectionObserver(function(es){es.forEach(function(en2){if(en2.isIntersecting){rvio.unobserve(en2.target);rvShow(en2.target)}})},{threshold:.1,rootMargin:'0px 0px -6% 0px'});
+  var idx=new Map();
+  Array.prototype.forEach.call(document.querySelectorAll(RVSEL),function(el){
+    if(el.dataset.rv)return;el.dataset.rv='1';
+    var p=el.parentNode,k=idx.get(p)||0;idx.set(p,k+1);
+    el.style.setProperty('--d',Math.min(k,7)*.09+'s');el.classList.add('rv');
+    if(rvio)rvio.observe(el);else rvShow(el)
+  })
+}
 function rb(i){
   CS=i;
   tb.innerHTML=(en()?SNE:SN).map(function(t,k){return '<button data-i="'+k+'"'+(k===i?' class="on"':'')+'>'+t+'</button>'}).join('');
@@ -354,6 +488,7 @@ function rb(i){
     return '<div class="bk"><em>'+(k+1)+'</em><div><h3>'+b[0]+'</h3><small>'+b[1]+'</small><p>'+(en()?BKE[i][k]:b[2])+'</p></div><div class="a"><a class="lk" href="'+u+'" target="_blank" rel="noopener">'+(b[3]?TX.d[en()]:TX.b[en()])+'</a></div></div>'}).join('');
   var F=FB[i];if(F)bl.innerHTML+='<div class="hd" style="margin:40px 0 6px"><small>FREE FILES</small><h2 style="font-size:1.25rem">'+(en()?'Free files to read & download':'ملفات مجانية للقراءة والتحميل')+'</h2></div>'+F.map(function(c){return '<div class="bk"><em>↓</em><div><h3>'+c[0]+'</h3><small>'+c[1]+'</small><p>'+c[2+en()]+'</p></div><div class="a"><a class="lk" href="'+c[4]+'" target="_blank" rel="noopener">'+(c[5]==='pdf'?(en()?'Download PDF':'تحميل PDF'):(en()?'Read free':'اقرأ مجاناً'))+'</a></div></div>'}).join('');
   var R=RS[i];if(R)bl.innerHTML+='<div class="hd" style="margin:40px 0 6px"><small>RESOURCES</small><h2 style="font-size:1.25rem">'+R.h[en()]+'</h2></div>'+(R.t?'<p class="note" style="margin:12px 0 4px">'+R.t[en()]+'</p>':'')+R.i.map(function(c){return '<div class="bk"><em>↗</em><div><h3>'+c[0]+'</h3><p>'+c[1+en()]+'</p></div><div class="a"><a class="lk" href="'+c[3]+'" target="_blank" rel="noopener">'+(en()?'Open ↗':'فتح ↗')+'</a></div></div>'}).join('');
+  setTimeout(rvScan,30)
 }
 function tr(e){
   var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT),n,t;
@@ -375,6 +510,8 @@ lgb.addEventListener('click',function(){setL(L==='en'?'ar':'en')});
 var sv=null;try{sv=localStorage.getItem('xl')}catch(e){}
 if(sv==='en')setL('en');else{rn();rb(0);rw()}
 route();
+loadNews(false);
+setTimeout(rvScan,80);
 
 </script>
 </body>
