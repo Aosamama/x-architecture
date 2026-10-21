@@ -4,7 +4,7 @@
 
 - الموقع: https://xarch.site/
 - تليجرام: https://t.me/x_architecture
-- انستغرام: @x.architects
+- انستغرام: @x.archiitecture
 
 ## الأخبار (تتحدّث تلقائياً)
 
