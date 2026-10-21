@@ -253,40 +253,48 @@ p,.bk small{text-wrap:pretty}
 .nb h3,.nb p{text-align:start}
 @media(max-width:700px){.hd .nct{grid-column:1/-1;grid-row:3;width:100%;justify-content:flex-start;margin-top:6px}.hd .nct #nrf{order:-1}}
 
-/* ===== intro: black screen, lines from the corners form the logo ===== */
-#intro{display:none;position:fixed;inset:0;z-index:300;background:#050505;cursor:pointer;transition:opacity .9s ease,visibility 0s linear .9s}
+/* ===== intro: black screen, the X lines draw the logo, it flies to its place ===== */
+#intro{display:none;position:fixed;inset:0;z-index:300;background-color:#050505;cursor:pointer;transition:background-color .8s ease .05s}
 html.intro #intro{display:block}
 html.intro:not(.introd){overflow:hidden}
-#intro.out{opacity:0;visibility:hidden;pointer-events:none}
+#intro.out{background-color:rgba(5,5,5,0);pointer-events:none}
+html.introd #intro{animation:iout .5s ease 1.2s forwards}
+@keyframes iout{to{opacity:0;visibility:hidden}}
 #intro svg{position:absolute;inset:0;width:100%;height:100%;display:block}
-#intro .il,#intro .ip{fill:none;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
-#intro .il{stroke:#AD9154;stroke-width:1.2;stroke-opacity:.8;animation:idraw .95s cubic-bezier(.5,0,.2,1) .2s forwards,ifd .5s ease 1.7s forwards}
-#intro .ip{stroke:#D4BA7C;stroke-width:1.6;animation:idraw 1.15s cubic-bezier(.45,0,.2,1) .85s forwards,ifd .7s ease 2.1s forwards}
-#intro .if{opacity:0;animation:ifi .8s ease 1.75s forwards}
+#intro .ip{fill:none;stroke:#D4BA7C;stroke-width:1.8;stroke-linecap:butt;stroke-dasharray:1;stroke-dashoffset:1}
+#intro .dg{animation:idraw 1s cubic-bezier(.4,0,.2,1) .25s forwards,ifd .6s ease 2s forwards}
+#intro .ed{animation:idraw .75s cubic-bezier(.4,0,.2,1) 1s forwards,ifd .6s ease 2s forwards}
+#intro .if{opacity:0;animation:ifi .8s ease 1.5s forwards}
+#intro #ilg{will-change:transform}
+#intro #ilg.fly{transition:transform 1.1s cubic-bezier(.65,0,.25,1)}
 @keyframes idraw{to{stroke-dashoffset:0}}
 @keyframes ifd{to{opacity:0}}
 @keyframes ifi{to{opacity:1}}
-html.intro:not(.introd) .hero .eb,html.intro:not(.introd) .hero h1,html.intro:not(.introd) .hero .lede,html.intro:not(.introd) .hero .bt{animation-play-state:paused}
+html.intro:not(.introd) .hero .eb,html.intro:not(.introd) .hero h1,html.intro:not(.introd) .hero .lede,html.intro:not(.introd) .hero .bt,html.intro:not(.introd) #tp,html.intro:not(.introd) #bt,html.intro:not(.introd) .mk svg{animation-play-state:paused}
 html.intro #tp{animation:bT 6.5s ease-in-out infinite}
 html.intro #bt{animation:bB 6.5s ease-in-out infinite}
 .js.intro .mk{opacity:0}
-.js.intro.introd .mk{opacity:1;transition:opacity 1.2s ease .25s}
-.hero .eb{font-size:clamp(.95rem,1.7vw,1.4rem);letter-spacing:.3em;margin-bottom:22px;font-weight:500}
+.js.intro.introd .mk{opacity:1}
+.hero .eb{font-size:clamp(1.1rem,2.1vw,1.8rem);letter-spacing:.28em;margin-bottom:22px;font-weight:500}
+/* logo as tall as the text block, text aligned with it */
+@media(min-width:901px){.hero .w{align-items:stretch}.hero .mk{align-self:stretch;position:relative}.hero .mk svg{position:absolute;top:0;bottom:0;left:50%;height:100%;width:auto;max-width:100%;transform:translateX(-50%)}}
 @media(prefers-reduced-motion:reduce){#intro{display:none!important}}
 </style>
 </head>
 <body>
 <div id="intro" aria-hidden="true"></div>
 <script>(function(){var d=document.documentElement;if(!d.classList.contains("intro"))return;
-var o=document.getElementById("intro"),W=innerWidth,H=innerHeight,lh=Math.min(H*.4,W*.62,420),k=lh/703,lw=547*k,x0=(W-lw)/2,y0=(H-lh)/2,x1=x0+lw,y1=y0+lh,cx=x0+274*k,cy=y0+352*k,f=0;
-function L(a,b,c,e){return '<path class="il" pathLength="1" d="M'+a+' '+b+'L'+c+' '+e+'"/>'}
+var o=document.getElementById("intro"),W=innerWidth,H=innerHeight,lh=Math.min(H*.42,W*.7,440),k=lh/703,lw=547*k,x0=(W-lw)/2,y0=(H-lh)/2,x1=x0+lw,y1=y0+lh,cx=x0+274*k,cy=y0+352*k,f=0,T=[];
+function P(a,b,c,e,m){return '<path class="ip '+m+'" pathLength="1" d="M'+a+' '+b+'L'+c+' '+e+'"/>'}
 var top='M'+x0+' '+y0+'L'+x1+' '+y0+'L'+cx+' '+cy+'Z',bot='M'+cx+' '+cy+'L'+x0+' '+y1+'L'+x1+' '+y1+'Z';
-o.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><defs><linearGradient id="ig1" gradientUnits="userSpaceOnUse" x1="'+x0+'" x2="'+x1+'"><stop offset="0" stop-color="#AD9154"/><stop offset="1" stop-color="#0a0907"/></linearGradient><linearGradient id="ig2" gradientUnits="userSpaceOnUse" x1="'+x0+'" x2="'+x1+'"><stop offset="0" stop-color="#0a0907"/><stop offset="1" stop-color="#AD9154"/></linearGradient></defs>'
- +L(0,0,x0,y0)+L(W,0,x1,y0)+L(0,H,x0,y1)+L(W,H,x1,y1)
- +'<path class="if" fill="url(#ig1)" d="'+top+'"/><path class="if" fill="url(#ig2)" d="'+bot+'"/>'
- +'<path class="ip" pathLength="1" d="'+top+'"/><path class="ip" pathLength="1" d="'+bot+'"/></svg>';
-function done(){if(f)return;f=1;d.classList.add("introd");o.classList.add("out");setTimeout(function(){if(o.parentNode)o.parentNode.removeChild(o)},1200)}
-setTimeout(done,2700);o.addEventListener("click",done);o.addEventListener("touchstart",done,{passive:true});addEventListener("keydown",done);
+o.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><defs><linearGradient id="ig1" gradientUnits="userSpaceOnUse" x1="'+x0+'" x2="'+x1+'"><stop offset="0" stop-color="#AD9154"/><stop offset="1" stop-color="#0a0907"/></linearGradient><linearGradient id="ig2" gradientUnits="userSpaceOnUse" x1="'+x0+'" x2="'+x1+'"><stop offset="0" stop-color="#0a0907"/><stop offset="1" stop-color="#AD9154"/></linearGradient></defs><g id="ilg"><path class="if" fill="url(#ig1)" d="'+top+'"/><path class="if" fill="url(#ig2)" d="'+bot+'"/>'
+ +P(cx,cy,x0,y0,'dg')+P(cx,cy,x1,y0,'dg')+P(cx,cy,x0,y1,'dg')+P(cx,cy,x1,y1,'dg')+P(x0,y0,x1,y0,'ed')+P(x0,y1,x1,y1,'ed')+'</g></svg>';
+function land(){if(f)return;f=1;T.forEach(clearTimeout);d.classList.add("introd");o.classList.add("out");var g=o.firstChild;if(g&&g.parentNode)g.parentNode.removeChild(g);setTimeout(function(){if(o.parentNode)o.parentNode.removeChild(o)},1100)}
+function fly(){if(f)return;try{scrollTo(0,0);var s=document.querySelector(".mk svg"),r=s&&s.getBoundingClientRect();
+ if(!r||r.width<24||r.height<24){land();return}
+ var q=Math.min(r.width/547,r.height/703),tw=547*q,th=703*q,tx=r.left+(r.width-tw)/2,ty=r.top+(r.height-th)/2,c=tw/lw,g=document.getElementById("ilg");
+ g.style.transform='translate('+(tx-c*x0)+'px,'+(ty-c*y0)+'px) scale('+c+')';g.classList.add("fly");T.push(setTimeout(land,1150))}catch(e){land()}}
+T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener("touchstart",land,{passive:true});addEventListener("keydown",land);
 })();</script>
 <svg class="hid" aria-hidden="true"><defs>
 <linearGradient id="ga" x1="0" x2="547" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#AD9154"/><stop offset="1" stop-color="#0a0907"/></linearGradient>
