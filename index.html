@@ -439,7 +439,7 @@ function loadNews(manual){
   })
 }
 function rn(){
-  var L2=NEWS.length?NEWS:nfb(),e=en();
+  var L2=(NEWS.length?NEWS:nfb()).slice(),e=en();if(!e)L2=L2.filter(function(n){return n.c||n.ta}).concat(L2.filter(function(n){return!(n.c||n.ta)}));
   ncar.innerHTML=L2.map(function(n){
     var t=e?(n.t||n.ta):(n.ta||n.t),x=e?(n.x||n.xa||''):(n.xa||n.x||'');
     return '<a class="nc" href="'+esc(n.u)+'" target="_blank" rel="noopener"><div class="ni'+(n.i?'':' nf')+'">'+(n.i?'<img src="'+esc(n.i)+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" draggable="false">':'')+'<span class="ns">'+esc(n.s||'')+(n.c?' · X.ARCH':'')+'</span></div><div class="nb"><small>'+nd(n.d)+'</small><h3 dir="auto">'+esc(t)+'</h3>'+(x?'<p dir="auto">'+esc(x)+'</p>':'')+'<span class="lk">'+TX.r[e]+'</span></div></a>'}).join('');
