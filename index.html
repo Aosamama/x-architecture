@@ -16,11 +16,12 @@
 <link rel="canonical" href="https://xarch.site/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#050505">
+<script>try{if(localStorage.getItem("xt")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 <script>try{var D=document.documentElement;if(!matchMedia("(prefers-reduced-motion:reduce)").matches){D.classList.add("js");if(!location.hash.slice(1)){D.classList.add("intro");setTimeout(function(){D.classList.add("introd")},5200)}}}catch(e){}</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Questrial&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#050505;--bg2:#0e0d0b;--gold:#AD9154;--gold2:#d6bd7e;--ink:#f2efe8;--soft:#a39c8c;--line:rgba(173,145,84,.24);
+:root{--bgr:5,5,5;--inkr:255,255,255;--bg3:#12100c;--ong:#0a0a0a;--bg:#050505;--bg2:#0e0d0b;--gold:#AD9154;--gold2:#d6bd7e;--ink:#f2efe8;--soft:#a39c8c;--line:rgba(173,145,84,.24);
 --f:'Century Gothic',CenturyGothic,'Questrial','Tajawal',sans-serif;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -31,7 +32,7 @@ a{color:inherit;text-decoration:none}
 a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .w{max-width:1180px;margin:0 auto;padding:0 28px}
 .hid{position:absolute;width:0;height:0}
-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(5,5,5,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(var(--bgr),.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 header .w{display:flex;align-items:center;justify-content:space-between;height:68px}
 .lg{display:flex;align-items:center;gap:12px;direction:ltr;font-size:1.05rem;letter-spacing:.32em}
 .lg svg{width:20px;height:26px}
@@ -47,7 +48,7 @@ h1 em{font-style:normal;color:var(--gold)}
 .lede{color:var(--soft);max-width:44ch;font-weight:300;margin-bottom:28px}
 .bt{display:flex;gap:14px;flex-wrap:wrap}
 .b{padding:13px 26px;font-size:.86rem;border:1px solid var(--gold);transition:.25s}
-.b.s{background:var(--gold);color:var(--bg)}
+.b.s{background:var(--gold);color:var(--ong)}
 .b.s:hover{background:var(--gold2)}
 .b:not(.s):hover{background:rgba(173,145,84,.12)}
 .mk{display:flex;justify-content:center}
@@ -59,7 +60,7 @@ h2{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:500}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
 .c{background:var(--bg);padding:0 0 28px;transition:background .3s}
 .c:hover{background:var(--bg2)}
-.im{height:170px;background:radial-gradient(ellipse at 50% 120%,rgba(173,145,84,.28),transparent 70%),linear-gradient(#0b0a08,#050505);display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);margin-bottom:22px}
+.im{height:170px;background:radial-gradient(ellipse at 50% 120%,rgba(173,145,84,.28),transparent 70%),linear-gradient(var(--bg2),var(--bg));display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);margin-bottom:22px}
 .im svg{width:96px;height:96px;fill:none;stroke:var(--gold);stroke-width:1.2}
 .c span{display:block;padding:0 22px;color:var(--gold);font-size:.72rem;letter-spacing:.3em;direction:ltr;text-align:right}
 .c h3{padding:0 22px;font-size:1.12rem;font-weight:500;margin:6px 0 8px}
@@ -91,14 +92,14 @@ footer .w{display:flex;justify-content:space-between;align-items:center;flex-wra
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
 .tabs button{background:none;border:1px solid var(--line);color:var(--soft);padding:10px 18px;font:inherit;font-size:.85rem;cursor:pointer;transition:.2s}
 .tabs button:hover{border-color:var(--gold);color:var(--gold2)}
-.tabs button.on{background:var(--gold);border-color:var(--gold);color:var(--bg)}
+.tabs button.on{background:var(--gold);border-color:var(--gold);color:var(--ong)}
 .tabs button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .bk{grid-template-columns:50px 1fr auto;align-items:center}
 .lk{display:inline-block;border:1px solid var(--gold);padding:8px 16px;font-size:.78rem;white-space:nowrap;transition:.2s}
-.lk:hover{background:var(--gold);color:var(--bg)}
+.lk:hover{background:var(--gold);color:var(--ong)}
 @media(max-width:700px){.g2{grid-template-columns:1fr}.bk{grid-template-columns:36px 1fr}.bk .a{grid-column:2}}
 .lgb{background:none;border:1px solid var(--gold);color:var(--gold);padding:6px 14px;font:inherit;font-size:.78rem;letter-spacing:.1em;cursor:pointer;transition:.2s}
-.lgb:hover{background:var(--gold);color:var(--bg)}
+.lgb:hover{background:var(--gold);color:var(--ong)}
 .lgb:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 nav a{white-space:nowrap}
 [dir=ltr] .eb,[dir=ltr] .c span,[dir=ltr] .bk h3,[dir=ltr] .bk small{text-align:left}
@@ -109,7 +110,7 @@ nav a{white-space:nowrap}
 .pr h3{font-size:1rem;font-weight:500;margin-bottom:8px}
 .pr code{display:block;direction:ltr;text-align:left;color:var(--gold2);font:inherit;font-size:.82rem;line-height:1.7;margin-bottom:14px}
 button.lk{background:none;color:var(--ink);font:inherit;font-size:.78rem;cursor:pointer}
-button.lk:hover{color:var(--bg)}
+button.lk:hover{color:var(--ong)}
 @media(max-width:520px){header .w{height:auto;flex-wrap:wrap;row-gap:6px;padding:10px 16px}nav{order:3;width:100%;justify-content:space-between}html{scroll-padding-top:120px}}
 html{font-size:clamp(16px,.5vw + 12px,19px);-webkit-text-size-adjust:100%}
 .w{max-width:1680px;padding:0 clamp(18px,4.5vw,76px)}
@@ -122,7 +123,7 @@ h1{font-size:clamp(2.1rem,5.4vw,4.8rem);line-height:1.25}
 section{padding:clamp(46px,6vw,96px) 0}
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
 .fg{background:var(--bg);margin:0}
-.fg svg{display:block;width:100%;height:auto;background:#0b0b0a}
+.fg svg{display:block;width:100%;height:auto;background:var(--bg2)}
 .fg figcaption{padding:14px 18px;font-size:.85rem;color:var(--soft);border-top:1px solid var(--line);display:flex;gap:12px;align-items:baseline}
 .fg b{color:var(--gold);font-weight:400;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}
 @media(max-width:520px){.g4,.g3,.g2{gap:12px;background:none;border:0}.c{border:1px solid var(--line)}.btn,.b{width:100%;text-align:center}.bt{flex-direction:column}}
@@ -137,7 +138,7 @@ section{padding:clamp(46px,6vw,96px) 0}
 .wm b{font-weight:400;color:var(--gold)}.wm i{font-style:normal;color:var(--ink)}
 @keyframes wmi{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .gal{grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))}
-.ph{aspect-ratio:4/3;overflow:hidden;background:#0b0b0a}
+.ph{aspect-ratio:4/3;overflow:hidden;background:var(--bg2)}
 .ph svg,.ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s ease}
 .fg:hover .ph svg,.fg:hover .ph img{transform:scale(1.045)}
 .fg figcaption{display:block;padding:16px 18px 18px}
@@ -148,7 +149,7 @@ section{padding:clamp(46px,6vw,96px) 0}
 @media(max-width:900px){.mk svg{width:min(150px,42vw)}.mk{gap:12px}.wm{font-size:1rem}}
 @media(prefers-reduced-motion:reduce){#tp,#bt,.mk svg,.wm{animation:none!important}}
 .ex{display:grid;grid-template-columns:1fr 1fr;gap:clamp(6px,1vw,14px)}
-.ex figure{margin:0;position:relative;overflow:hidden;background:#0b0b0a;cursor:zoom-in;aspect-ratio:16/9}
+.ex figure{margin:0;position:relative;overflow:hidden;background:var(--bg2);cursor:zoom-in;aspect-ratio:16/9}
 .ex figure.w{grid-column:1/-1;aspect-ratio:21/9}
 .ex figure.p{grid-column:1/-1;aspect-ratio:3/1}
 .ex figure:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
@@ -161,7 +162,7 @@ section{padding:clamp(46px,6vw,96px) 0}
 .lb[hidden]{display:none}
 .lb img{max-width:92vw;max-height:86vh;object-fit:contain;display:block}
 .lbb{position:absolute;background:rgba(5,5,5,.6);border:1px solid var(--gold);color:var(--gold);font:inherit;font-size:1.7rem;line-height:1;width:46px;height:46px;cursor:pointer;transition:.2s}
-.lbb:hover{background:var(--gold);color:var(--bg)}
+.lbb:hover{background:var(--gold);color:var(--ong)}
 .lbb:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 .lbx{top:max(16px,env(safe-area-inset-top));right:16px}
 .lbp{left:16px;top:50%;margin-top:-23px}
@@ -215,7 +216,7 @@ section{padding:clamp(46px,6vw,96px) 0}
 .nb p{color:var(--soft);font-size:.84rem;font-weight:300}
 .nb .lk{margin-top:auto;align-self:flex-start}
 .nbtn{position:absolute;top:calc(6px + min(400px,82vw)*.3125 - 23px);z-index:3;width:46px;height:46px;background:rgba(5,5,5,.8);border:1px solid var(--gold);color:var(--gold);font:inherit;font-size:1.7rem;line-height:1;cursor:pointer;transition:.2s}
-.nbtn:hover{background:var(--gold);color:var(--bg)}
+.nbtn:hover{background:var(--gold);color:var(--ong)}
 .nbtn:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 .nprev{inset-inline-start:-8px}.nnext{inset-inline-end:-8px}
 .nprev::before{content:"‹"}.nnext::before{content:"›"}
@@ -228,19 +229,19 @@ section{padding:clamp(46px,6vw,96px) 0}
 .b,.lk,.lgb,.tabs button,.ct,.pr,.n,.nc,.sm,.nbtn,.lbb,.ni .ns,.slot,.g4,.gal,.c,.fg{border:0}
 .im,.ni,.fg figcaption{border-bottom:0;border-top:0}
 .b:not(.s),.lk,.sm{background:rgba(173,145,84,.13)}
-.b:not(.s):hover,.lk:hover{background:var(--gold);color:var(--bg)}
+.b:not(.s):hover,.lk:hover{background:var(--gold);color:var(--ong)}
 button.lk{color:var(--gold2)}
 .lgb{background:none;padding:6px 4px}
 .lgb:hover{background:none;color:var(--gold2)}
-.tabs button{background:rgba(255,255,255,.05)}
+.tabs button{background:rgba(var(--inkr),.05)}
 .tabs button:hover{background:rgba(173,145,84,.16)}
 .tabs button.on{background:var(--gold)}
 .ct{background:linear-gradient(100deg,rgba(173,145,84,.16),rgba(173,145,84,.04))}
 .g4,.gal{gap:14px;background:none}
 .c,.fg{background:var(--bg2)}
-.c:hover,.fg:hover{background:#12100c}
+.c:hover,.fg:hover{background:var(--bg3)}
 .nbtn,.lbb{background:rgba(5,5,5,.72)}
-.nbtn:hover,.lbb:hover{background:var(--gold);color:var(--bg)}
+.nbtn:hover,.lbb:hover{background:var(--gold);color:var(--ong)}
 .ni .ns{background:rgba(5,5,5,.78)}
 .lg.lgo svg{width:26px;height:34px}
 .hd{display:grid;grid-template-columns:1fr auto;column-gap:16px;row-gap:8px;align-items:end}
@@ -254,10 +255,10 @@ p,.bk small{text-wrap:pretty}
 @media(max-width:700px){.hd .nct{grid-column:1/-1;grid-row:3;width:100%;justify-content:flex-start;margin-top:6px}.hd .nct #nrf{order:-1}}
 
 /* ===== intro: black screen, the X lines draw the logo, it flies to its place ===== */
-#intro{display:none;position:fixed;inset:0;z-index:300;background-color:#050505;cursor:pointer;transition:background-color .8s ease .05s}
+#intro{display:none;position:fixed;inset:0;z-index:300;background-color:var(--bg);cursor:pointer;transition:background-color .8s ease .05s}
 html.intro #intro{display:block}
 html.intro:not(.introd){overflow:hidden}
-#intro.out{background-color:rgba(5,5,5,0);pointer-events:none}
+#intro.out{background-color:transparent;pointer-events:none}
 html.introd #intro{animation:iout .5s ease 1.2s forwards}
 @keyframes iout{to{opacity:0;visibility:hidden}}
 #intro svg{position:absolute;inset:0;width:100%;height:100%;display:block}
@@ -327,12 +328,12 @@ footer .lg.fl svg{width:24px;height:31px}
 
 /* phones: logo on top, section links as a bottom bar within thumb reach */
 @media(max-width:700px){
-header{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(5,5,5,.97)}
+header{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(var(--bgr),.97)}
 header .w{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;flex-wrap:nowrap;row-gap:0;height:56px;padding:0 16px}
 header .lg.lgo{grid-column:2}
 header .lg.lgo svg{width:22px;height:28px}
 header #lgb{grid-column:3;justify-self:end;font-size:.74rem;padding:8px 2px}
-nav{position:fixed;left:0;right:0;bottom:0;z-index:55;order:0;width:auto;display:flex;justify-content:space-between;gap:0;font-size:.68rem;line-height:1.35;padding:0 4px env(safe-area-inset-bottom,0px);background:rgba(5,5,5,.97);border-top:1px solid var(--line)}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:55;order:0;width:auto;display:flex;justify-content:space-between;gap:0;font-size:.68rem;line-height:1.35;padding:0 4px env(safe-area-inset-bottom,0px);background:rgba(var(--bgr),.97);border-top:1px solid var(--line)}
 nav a{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal;min-height:54px;padding:6px 3px;position:relative;text-wrap:balance}
 nav a.on::before{content:"";position:absolute;top:-1px;left:26%;right:26%;height:2px;background:var(--gold)}
 body{padding-bottom:calc(60px + env(safe-area-inset-bottom,0px))}
@@ -358,6 +359,20 @@ html{scroll-padding-top:72px}
 .ci small{display:block;color:var(--soft);font-size:.78rem;margin-bottom:6px}
 .ci a{color:var(--ink);font-size:1.1rem;direction:ltr;display:inline-block}
 .ci a:hover{color:var(--gold2)}
+
+/* dark / light */
+html{color-scheme:dark}
+html[data-theme=light]{color-scheme:light;--bg:#ffffff;--bg2:#f4f1ea;--bg3:#ebe7dd;--bgr:255,255,255;--inkr:20,18,16;--ink:#16130f;--soft:#6a604c;--gold2:#8a7140;--line:rgba(173,145,84,.38)}
+.hr{display:flex;align-items:center;gap:10px}
+.thb{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;color:var(--gold)}
+.thb:hover{background:none;color:var(--gold2)}
+.thb svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.thb .mo{display:none}
+html[data-theme=light] .thb .si{display:none}
+html[data-theme=light] .thb .mo{display:block}
+#va{display:none}.ra #va{display:block}.ra #vh{display:none}
+#news,#works,#ai{scroll-margin-top:110px}
+@media(max-width:700px){.hr{display:contents}header .w>*{grid-row:1}header #thb{grid-column:1;justify-self:start;width:auto;padding:8px 2px}}
 </style>
 </head>
 <body>
@@ -366,7 +381,7 @@ html{scroll-padding-top:72px}
 var o=document.getElementById("intro"),W=innerWidth,H=innerHeight,lh=Math.min(H*.42,W*.7,440),k=lh/703,lw=547*k,x0=(W-lw)/2,y0=(H-lh)/2,x1=x0+lw,y1=y0+lh,cx=x0+274*k,cy=y0+352*k,f=0,T=[];
 function P(a,b,c,e,m){return '<path class="ip '+m+'" pathLength="1" d="M'+a+' '+b+'L'+c+' '+e+'"/>'}
 var top='M'+x0+' '+y0+'L'+x1+' '+y0+'L'+cx+' '+cy+'Z',bot='M'+cx+' '+cy+'L'+x0+' '+y1+'L'+x1+' '+y1+'Z';
-o.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><defs><linearGradient id="ig1" gradientUnits="userSpaceOnUse" x1="'+x0+'" x2="'+x1+'"><stop offset="0" stop-color="#AD9154"/><stop offset="1" stop-color="#0a0907"/></linearGradient><linearGradient id="ig2" gradientUnits="userSpaceOnUse" x1="'+x0+'" x2="'+x1+'"><stop offset="0" stop-color="#0a0907"/><stop offset="1" stop-color="#AD9154"/></linearGradient></defs><g id="ilg"><path class="if" fill="url(#ig1)" d="'+top+'"/><path class="if" fill="url(#ig2)" d="'+bot+'"/>'
+o.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><defs><linearGradient id="ig1" gradientUnits="userSpaceOnUse" x1="'+x0+'" x2="'+x1+'"><stop offset="0" stop-color="#AD9154"/><stop offset="1" style="stop-color:var(--bg)"/></linearGradient><linearGradient id="ig2" gradientUnits="userSpaceOnUse" x1="'+x0+'" x2="'+x1+'"><stop offset="0" style="stop-color:var(--bg)"/><stop offset="1" stop-color="#AD9154"/></linearGradient></defs><g id="ilg"><path class="if" fill="url(#ig1)" d="'+top+'"/><path class="if" fill="url(#ig2)" d="'+bot+'"/>'
  +P(cx,cy,x0,y0,'dg')+P(cx,cy,x1,y0,'dg')+P(cx,cy,x0,y1,'dg')+P(cx,cy,x1,y1,'dg')+P(x0,y0,x1,y0,'ed')+P(x0,y1,x1,y1,'ed')+'</g></svg>';
 function land(){if(f)return;f=1;T.forEach(clearTimeout);d.classList.add("introd");o.classList.add("out");var g=o.firstChild;if(g&&g.parentNode)g.parentNode.removeChild(g);setTimeout(function(){if(o.parentNode)o.parentNode.removeChild(o)},1100)}
 function fly(){if(f)return;try{scrollTo(0,0);var s=document.querySelector(".mk svg"),r=s&&s.getBoundingClientRect();
@@ -376,14 +391,14 @@ function fly(){if(f)return;try{scrollTo(0,0);var s=document.querySelector(".mk s
 T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener("touchstart",land,{passive:true});addEventListener("keydown",land);
 })();</script>
 <svg class="hid" aria-hidden="true"><defs>
-<linearGradient id="ga" x1="0" x2="547" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#AD9154"/><stop offset="1" stop-color="#0a0907"/></linearGradient>
-<linearGradient id="gb" x1="0" x2="547" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0a0907"/><stop offset="1" stop-color="#AD9154"/></linearGradient>
-<pattern id="ht" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#AD9154" stroke-width="1"/></pattern><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#050505"/><stop offset="1" stop-color="#7a6638"/></linearGradient><radialGradient id="sun"><stop offset="0" stop-color="#AD9154" stop-opacity=".55"/><stop offset="1" stop-color="#AD9154" stop-opacity="0"/></radialGradient><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#AD9154" stop-opacity=".3"/><stop offset="1" stop-color="#AD9154" stop-opacity="0"/></linearGradient><symbol id="mark" viewBox="0 0 547 703"><polygon points="0,0 547,0 274,352" fill="url(#ga)"/><polygon points="274,352 0,703 547,703" fill="url(#gb)"/></symbol></defs></svg>
+<linearGradient id="ga" x1="0" x2="547" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#AD9154"/><stop offset="1" style="stop-color:var(--bg)"/></linearGradient>
+<linearGradient id="gb" x1="0" x2="547" gradientUnits="userSpaceOnUse"><stop offset="0" style="stop-color:var(--bg)"/><stop offset="1" stop-color="#AD9154"/></linearGradient>
+<pattern id="ht" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#AD9154" stroke-width="1"/></pattern><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--bg)"/><stop offset="1" stop-color="#7a6638"/></linearGradient><radialGradient id="sun"><stop offset="0" stop-color="#AD9154" stop-opacity=".55"/><stop offset="1" stop-color="#AD9154" stop-opacity="0"/></radialGradient><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#AD9154" stop-opacity=".3"/><stop offset="1" stop-color="#AD9154" stop-opacity="0"/></linearGradient><symbol id="mark" viewBox="0 0 547 703"><polygon points="0,0 547,0 274,352" fill="url(#ga)"/><polygon points="274,352 0,703 547,703" fill="url(#gb)"/></symbol></defs></svg>
 
 <header><div class="w">
 <a href="#" class="lg lgo" aria-label="X Architecture"><svg viewBox="0 0 547 703"><use href="#mark"/></svg></a>
-<nav><a href="#services" data-n="services">الخدمات</a><a href="#courses" data-n="courses">الدورات</a><a href="#works" data-n="works">أعمال الطلاب</a><a href="#news" data-n="news">الأخبار والكتب</a><a href="#contact" data-n="contact">تواصل</a></nav>
-<button id="lgb" class="lgb" type="button">EN</button>
+<nav><a href="#services" data-n="services">الخدمات</a><a href="#courses" data-n="courses">الدورات</a><a href="#works" data-n="works">أعمال الطلاب</a><a href="#ai" data-n="ai">الذكاء الاصطناعي</a><a href="#news" data-n="news">الأخبار والكتب</a><a href="#contact" data-n="contact">تواصل</a></nav>
+<div class="hr"><button id="thb" class="lgb thb" type="button" aria-label="الوضع الفاتح"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg><svg class="mo" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></button><button id="lgb" class="lgb" type="button">EN</button></div>
 </div></header>
 
 <main>
@@ -391,8 +406,8 @@ T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener
 <div class="hero"><div class="w">
 <div>
 <div class="eb">X ARCHITECTURE</div>
-<h1>نعمل مع <em>طلاب العمارة</em> وأصحاب المشاريع</h1>
-<p class="lede">نقد وإشراف ومتابعة، وتصميم وإظهار معماري، ودورات في برامج العمارة.</p>
+<h1>نحن <em>منصة معمارية</em></h1>
+<p class="lede">تضم كل خدمات العمارة من تصميم وإشراف ونقد للطلاب.</p>
 <p class="fd" id="fd" hidden><span>تأسست عام</span> <b dir="ltr"></b></p>
 </div>
 <div class="mk"><svg viewBox="0 0 547 703" aria-hidden="true"><polygon id="tp" points="0,0 547,0 274,352" fill="url(#ga)"/><polygon id="bt" points="274,352 0,703 547,703" fill="url(#gb)"/></svg></div>
@@ -461,6 +476,7 @@ T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener
 <div id="bl"></div></div></section>
 </div>
 <div id="vw"><section><div class="w" id="wk"></div></section></div>
+<div id="va"><section><div class="w" id="ak"></div></section></div>
 </main>
 
 <footer><div class="w fr"><span class="lg fl"><svg viewBox="0 0 547 703" aria-label="X Architecture"><use href="#mark"/></svg></span><span>© 2026 X Architecture — جميع الحقوق محفوظة</span></div></footer>
@@ -469,16 +485,16 @@ T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener
 <script>
 function route(){
   var h=location.hash.slice(1),
-      v=(h==='news'||h==='books')?'n':(h==='works'||h==='refs'||h==='ai')?'w':h==='services'?'s':h==='courses'?'c':h==='contact'?'k':'h',
-      K={n:'news',w:'works',s:'services',c:'courses',k:'contact'};
-  ['n','w','s','c','k'].forEach(function(x){document.body.classList.toggle('r'+x,v===x)});
+      v=(h==='news'||h==='books')?'n':h==='works'?'w':(h==='ai'||h==='refs')?'a':h==='services'?'s':h==='courses'?'c':h==='contact'?'k':'h',
+      K={n:'news',w:'works',a:'ai',s:'services',c:'courses',k:'contact'};
+  ['n','w','a','s','c','k'].forEach(function(x){document.body.classList.toggle('r'+x,v===x)});
   document.querySelectorAll('nav a').forEach(function(a){a.classList.toggle('on',a.dataset.n===K[v])});
   var t=h&&document.getElementById(h);
-  if(t&&(v==='n'||v==='w'))t.scrollIntoView();else window.scrollTo(0,0);
+  if(t&&h!=='news'&&h!=='works'&&h!=='ai'&&(v==='n'||v==='w'||v==='a'))t.scrollIntoView();else window.scrollTo(0,0);
   setTimeout(rvScan,30)
 }
 /* fill these in and the lines appear on the site */
-var SITE={founded:'2025',email:'x.archiitecture@gmail.com',phone:''};
+var SITE={founded:'2025',email:'',phone:''};
 (function(){var f=document.getElementById('fd'),ci=document.getElementById('ci'),ce=document.getElementById('ce'),cp=document.getElementById('cp'),a;
   if(SITE.founded){f.hidden=false;f.querySelector('b').textContent=SITE.founded}
   if(SITE.email){ce.hidden=false;a=ce.querySelector('a');a.textContent=SITE.email;a.href='mailto:'+SITE.email}
@@ -509,8 +525,16 @@ var BK=[
 ["The Architecture of the City","Aldo Rossi","المدينة كذاكرة وأنماط بنائية."],
 ["Cities for People","Jan Gehl","تصميم المدن على مقياس الإنسان."],
 ["Design with Nature","Ian McHarg","التخطيط المنسجم مع الطبيعة والبيئة."]]];
-var L='ar',CS=0,lgb=document.getElementById('lgb');
-var EN={"الخدمات":"Services","الدورات":"Courses","نعمل مع":"We work with","طلاب العمارة":"architecture students","وأصحاب المشاريع":"and project owners","نقد وإشراف ومتابعة، وتصميم وإظهار معماري، ودورات في برامج العمارة.":"Critique, supervision and follow-up, architectural design and visualization, and courses in architecture software.","تأسست عام":"Founded in","ندرّس برامج العمارة والإظهار المعماري في دورات مباشرة أو مسجّلة، وتنتهي كل دورة بمشروع كامل.":"We teach architecture and visualization software in live or recorded courses. Every course ends with a complete project.","أخبرنا بما تحتاجه، خدمة أو دورة، وسنرتب معك الخطوات التالية.":"Tell us what you need, a service or a course, and we will plan the next steps with you.","البريد الإلكتروني":"Email","الهاتف":"Phone","دورات في برامج العمارة والإظهار — مباشرة أو مسجّلة، من الأساسيات حتى تنفيذ مشروع متكامل.":"Courses in architecture and visualization software — live or recorded, from the basics to a complete project.","الدورات التفاعلية":"Live courses","مجموعات أسبوعية على مدار العام، بمعدل ساعتين للمحاضرة والتوقيت بالتوافق مع المشتركين. انضم لمجموعة أو كوّن مجموعتك الخاصة مع أصدقائك.":"Weekly groups all year round, about two hours per lecture, with timing agreed with participants. Join a group or form your own with friends.","شرح مباشر مع إمكانية طرح الأسئلة":"Live teaching with Q&A","برنامج منظّم متسلسل":"A structured, sequential programme","مرونة في المواعيد":"Flexible schedule","الدورات المسجّلة":"Recorded courses","محاضرات مسجّلة ومنظّمة تغطي البرنامج بالتفصيل. فترة تجريبية 24 ساعة قبل الاشتراك، وبعدها وصول دائم مع دعم للإجابة عن استفساراتك.":"Organized recorded lectures covering the software in detail. A 24-hour trial before you subscribe, then permanent access with support for your questions.","تعلّم حسب وقتك":"Learn at your own pace","محتوى متكامل":"Complete content","متابعة ودعم":"Follow-up and support","الأسعار":"Prices","برامج ثلاثية الأبعاد":"3D programs","برامج الإظهار المعماري":"Architectural visualization programs","ألف د.ع":"K IQD","البرامج":"Programs","مدة الدورة 15–20 يوماً":"Course length: 15–20 days","مدة الدورة 7–10 أيام":"Course length: 7–10 days","العروض":"Offers","العرض الأول":"Offer 1","العرض الثاني":"Offer 2","العرض الثالث":"Offer 3","برنامج ثلاثي الأبعاد + برنامج إظهار + دورة حاسوب":"One 3D program + one visualization program + a computer course","برنامجان ثلاثيا الأبعاد + برنامجا إظهار + دورة حاسوب":"Two 3D programs + two visualization programs + a computer course","4 برامج ثلاثية الأبعاد + 5 برامج إظهار + دورة حاسوب":"Four 3D programs + five visualization programs + a computer course","يشمل الاشتراك: تثبيت وتفعيل البرامج، إضافات ومكتبات جاهزة، دعم ومتابعة حتى 100 يوم بعد انتهاء الدورة، وشهادة إتمام.":"Every course includes software installation and activation, ready-made add-ons and libraries, support for up to 100 days after the course, and a certificate of completion.","الأخبار والكتب":"News & Books","تواصل":"Contact",
+var L='ar',CS=0,lgb=document.getElementById('lgb'),thb=document.getElementById('thb');
+function isL(){return document.documentElement.getAttribute('data-theme')==='light'}
+function thl(){thb.setAttribute('aria-label',isL()?(L==='en'?'Dark mode':'الوضع الداكن'):(L==='en'?'Light mode':'الوضع الفاتح'))}
+function setT(t){var d=document.documentElement,m=document.querySelector('meta[name=theme-color]');
+  if(t==='light')d.setAttribute('data-theme','light');else d.removeAttribute('data-theme');
+  if(m)m.setAttribute('content',t==='light'?'#ffffff':'#050505');thl();
+  try{localStorage.setItem('xt',t)}catch(e){}}
+thb.addEventListener('click',function(){setT(isL()?'dark':'light')});
+if(isL())setT('light');
+var EN={"الخدمات":"Services","الذكاء الاصطناعي":"AI","نحن":"We are","منصة معمارية":"an architecture platform","تضم كل خدمات العمارة من تصميم وإشراف ونقد للطلاب.":"Every architecture service in one place: design, supervision and critique for students.","الدورات":"Courses","نعمل مع":"We work with","طلاب العمارة":"architecture students","وأصحاب المشاريع":"and project owners","نقد وإشراف ومتابعة، وتصميم وإظهار معماري، ودورات في برامج العمارة.":"Critique, supervision and follow-up, architectural design and visualization, and courses in architecture software.","تأسست عام":"Founded in","ندرّس برامج العمارة والإظهار المعماري في دورات مباشرة أو مسجّلة، وتنتهي كل دورة بمشروع كامل.":"We teach architecture and visualization software in live or recorded courses. Every course ends with a complete project.","أخبرنا بما تحتاجه، خدمة أو دورة، وسنرتب معك الخطوات التالية.":"Tell us what you need, a service or a course, and we will plan the next steps with you.","البريد الإلكتروني":"Email","الهاتف":"Phone","دورات في برامج العمارة والإظهار — مباشرة أو مسجّلة، من الأساسيات حتى تنفيذ مشروع متكامل.":"Courses in architecture and visualization software — live or recorded, from the basics to a complete project.","الدورات التفاعلية":"Live courses","مجموعات أسبوعية على مدار العام، بمعدل ساعتين للمحاضرة والتوقيت بالتوافق مع المشتركين. انضم لمجموعة أو كوّن مجموعتك الخاصة مع أصدقائك.":"Weekly groups all year round, about two hours per lecture, with timing agreed with participants. Join a group or form your own with friends.","شرح مباشر مع إمكانية طرح الأسئلة":"Live teaching with Q&A","برنامج منظّم متسلسل":"A structured, sequential programme","مرونة في المواعيد":"Flexible schedule","الدورات المسجّلة":"Recorded courses","محاضرات مسجّلة ومنظّمة تغطي البرنامج بالتفصيل. فترة تجريبية 24 ساعة قبل الاشتراك، وبعدها وصول دائم مع دعم للإجابة عن استفساراتك.":"Organized recorded lectures covering the software in detail. A 24-hour trial before you subscribe, then permanent access with support for your questions.","تعلّم حسب وقتك":"Learn at your own pace","محتوى متكامل":"Complete content","متابعة ودعم":"Follow-up and support","الأسعار":"Prices","برامج ثلاثية الأبعاد":"3D programs","برامج الإظهار المعماري":"Architectural visualization programs","ألف د.ع":"K IQD","البرامج":"Programs","مدة الدورة 15–20 يوماً":"Course length: 15–20 days","مدة الدورة 7–10 أيام":"Course length: 7–10 days","العروض":"Offers","العرض الأول":"Offer 1","العرض الثاني":"Offer 2","العرض الثالث":"Offer 3","برنامج ثلاثي الأبعاد + برنامج إظهار + دورة حاسوب":"One 3D program + one visualization program + a computer course","برنامجان ثلاثيا الأبعاد + برنامجا إظهار + دورة حاسوب":"Two 3D programs + two visualization programs + a computer course","4 برامج ثلاثية الأبعاد + 5 برامج إظهار + دورة حاسوب":"Four 3D programs + five visualization programs + a computer course","يشمل الاشتراك: تثبيت وتفعيل البرامج، إضافات ومكتبات جاهزة، دعم ومتابعة حتى 100 يوم بعد انتهاء الدورة، وشهادة إتمام.":"Every course includes software installation and activation, ready-made add-ons and libraries, support for up to 100 days after the course, and a certificate of completion.","الأخبار والكتب":"News & Books","تواصل":"Contact",
 "منصتك المعمارية":"Your architecture platform","للتصميم والإظهار":"for design, visualization","والإشراف":"& supervision",
 "نُظهر مشروعك وننتقده ونتابعه خطوة بخطوة — من الفكرة الأولى حتى اللوحة النهائية.":"We visualize, critique and follow your project step by step — from the first idea to the final board.",
 "خدماتنا":"Our services","أخبار وكتب معمارية":"Architecture news & books","الخدمات التي نقدمها":"Our services",
@@ -571,19 +595,25 @@ function rw(){
   var e=en();
   var h='<div class="hd" id="works"><small>STUDENT WORK</small><h2>'+(e?'Student work':'أعمال الطلاب')+'</h2></div><p class="note">'+(e?'Selected student projects. Hover over a work to reveal its colors, and click it to view it large.':'مشاريع من أعمال الطلاب. مرّر الماوس على أي عمل لتظهر ألوانه الطبيعية، واضغط عليه لعرضه بحجم كبير.')+'</p>';
   h+='<div class="ex">'+IM.map(function(src,i){return '<figure class="'+IK[i]+'" tabindex="0" role="button" data-o="'+i+'" aria-label="'+(e?'View project ':'عرض المشروع ')+(i+1)+'"><img src="'+src+'" alt="'+(e?'Student project ':'مشروع طالب ')+(i+1)+'" style="object-position:'+IP[i]+'" decoding="async"><figcaption><span>0'+(i+1)+'</span><span>X.ARCH</span></figcaption></figure>'}).join('')+'</div>';
-  h+='<div class="hd" id="refs" style="margin-top:56px"><small>REFERENCES</small><h2>'+(e?'Render references':'ريفرنس ريندر')+'</h2></div><p class="note">'+(e?'Global platforms to browse professional renders for inspiration — images stay on their original sites, credited to their authors.':'منصات عالمية لمشاهدة ريندرات احترافية للإلهام — الصور تبقى في مصادرها الأصلية مع حفظ حقوق أصحابها.')+'</p>'+RF.map(function(c){return '<div class="bk"><em>↗</em><div><h3>'+c[0]+'</h3><p>'+c[1+e]+'</p></div><div class="a"><a class="lk" href="'+c[3]+'" target="_blank" rel="noopener">'+(e?'Open ↗':'فتح ↗')+'</a></div></div>'}).join('');
-  h+='<div class="hd" id="ai" style="margin-top:56px"><small>AI</small><h2>'+(e?'AI for architecture':'الذكاء الاصطناعي في العمارة')+'</h2></div><p class="note">'+(e?'Ready-made prompts (in English, as AI tools respond best to it). Copy one, adjust it to your project, and attach your image if the tool supports it.':'برومبتات جاهزة (بالإنجليزية لأن الأدوات تفهمها بدقة أكبر). انسخ البرومبت وعدّله حسب مشروعك وأرفق صورتك إن كانت الأداة تدعم ذلك.')+'</p>'+PR.map(function(c){return '<div class="pr"><h3>'+c[e]+'</h3><code>'+c[2]+'</code><button class="lk" type="button" data-c="1">'+(e?'Copy':'نسخ')+'</button></div>'}).join('');
-  h+='<div class="ct" style="margin-top:56px"><div><h2>'+(e?'Want to learn visualization or join us?':'تريد تتعلم الإظهار أو تشترك معنا؟')+'</h2><p>'+(e?'Message us on Instagram or Telegram.':'راسلنا على إنستغرام أو تيليجرام.')+'</p></div><div class="bt"><a class="b s" href="https://instagram.com/x.archiitecture" target="_blank" rel="noopener">Instagram</a><a class="b" href="https://t.me/x_architecture" target="_blank" rel="noopener">Telegram</a></div></div>';
   document.getElementById('wk').innerHTML=h;
   setTimeout(rvScan,30)
 }
-document.getElementById('wk').addEventListener('click',function(ev){
+function ra(){
+  var e=en();
+  var h='';
+  h+='<div class="hd" id="ai"><small>AI</small><h2>'+(e?'AI for architecture':'الذكاء الاصطناعي في العمارة')+'</h2></div><p class="note">'+(e?'Ready-made prompts (in English, as AI tools respond best to it). Copy one, adjust it to your project, and attach your image if the tool supports it.':'برومبتات جاهزة (بالإنجليزية لأن الأدوات تفهمها بدقة أكبر). انسخ البرومبت وعدّله حسب مشروعك وأرفق صورتك إن كانت الأداة تدعم ذلك.')+'</p>'+PR.map(function(c){return '<div class="pr"><h3>'+c[e]+'</h3><code>'+c[2]+'</code><button class="lk" type="button" data-c="1">'+(e?'Copy':'نسخ')+'</button></div>'}).join('');
+  h+='<div class="hd" id="refs" style="margin-top:56px"><small>REFERENCES</small><h2>'+(e?'Render references':'ريفرنس ريندر')+'</h2></div><p class="note">'+(e?'Global platforms to browse professional renders for inspiration — images stay on their original sites, credited to their authors.':'منصات عالمية لمشاهدة ريندرات احترافية للإلهام — الصور تبقى في مصادرها الأصلية مع حفظ حقوق أصحابها.')+'</p>'+RF.map(function(c){return '<div class="bk"><em>↗</em><div><h3>'+c[0]+'</h3><p>'+c[1+e]+'</p></div><div class="a"><a class="lk" href="'+c[3]+'" target="_blank" rel="noopener">'+(e?'Open ↗':'فتح ↗')+'</a></div></div>'}).join('');
+  document.getElementById('ak').innerHTML=h;
+  setTimeout(rvScan,30)
+}
+function wkc(ev){
   var o=ev.target.closest('[data-o]');if(o){lbo(+o.dataset.o);return}var b=ev.target.closest('[data-c]');if(!b)return;
   var t=b.parentNode.querySelector('code').textContent;
   function ok(){b.textContent=en()?'Copied':'تم النسخ';setTimeout(function(){b.textContent=en()?'Copy':'نسخ'},1500)}
   function fb(){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(x){}a.remove()}
   try{navigator.clipboard.writeText(t).then(ok,fb)}catch(x){fb()}
-});
+}
+['wk','ak'].forEach(function(i){document.getElementById(i).addEventListener('click',wkc)});
 var lb=document.getElementById('lb'),lbi=document.getElementById('lbi'),LI=0;
 function lbo(i){LI=(i+IM.length)%IM.length;lbi.src=IM[LI];lb.hidden=false;document.body.style.overflow='hidden';document.getElementById('lbx').focus()}
 function lbc(){lb.hidden=true;lbi.removeAttribute('src');document.body.style.overflow=''}
@@ -692,13 +722,13 @@ function tr(e){
 function setL(l){
   L=l;document.documentElement.lang=l;document.documentElement.dir=l==='en'?'ltr':'rtl';
   tr(l==='en');document.title=l==='en'?'X Architecture | Platform for Architecture Students':'X Architecture | منصة معمارية للطلاب';
-  lgb.textContent=l==='en'?'AR':'EN';rn();rb(CS);rw();
+  lgb.textContent=l==='en'?'AR':'EN';rn();rb(CS);rw();ra();thl();
   try{localStorage.setItem('xl',l)}catch(e){}
 }
 tb.addEventListener('click',function(e){var b=e.target.closest('button');if(b)rb(+b.dataset.i)});
 lgb.addEventListener('click',function(){setL(L==='en'?'ar':'en')});
 var sv=null;try{sv=localStorage.getItem('xl')}catch(e){}
-if(sv==='en')setL('en');else{rn();rb(0);rw()}
+if(sv==='en')setL('en');else{rn();rb(0);rw();ra()}
 route();
 loadNews(false);
 setTimeout(rvScan,80);
