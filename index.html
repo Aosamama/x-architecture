@@ -354,7 +354,7 @@ html[data-theme=light] .pms{box-shadow:0 28px 70px rgba(60,48,20,.22)}
 .pmbar{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:4px;direction:ltr;padding:10px clamp(12px,2.6vw,24px);background:var(--bg2)}
 .pmz{font-size:.76rem;color:var(--soft);letter-spacing:.14em;margin:0 8px}
 .pmb{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;background:none;border:0;color:var(--gold2);font:inherit;font-size:1.55rem;line-height:1;cursor:pointer;transition:background .2s,color .2s}
-.pmb:hover{background:var(--gold);color:var(--ong)}
+.pmb:hover{background:var(--gold);color:var(--ong)}.pmb svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block}
 .pmb:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 .pmx{margin-left:auto}
 .pmco{padding:4px clamp(20px,4.5vw,52px) clamp(28px,4vw,48px)}
@@ -558,7 +558,7 @@ T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener
 </main>
 
 <footer><div class="w fr"><div class="fb"><span class="lg fl"><svg viewBox="0 0 547 703" aria-label="X Architecture"><use href="#mark"/></svg></span><span class="fc">© X Architecture</span></div><div class="so"><a href="https://instagram.com/x.archiitecture" target="_blank" rel="noopener" aria-label="Instagram"><span>IG</span></a><a href="https://t.me/x_architecture" target="_blank" rel="noopener" aria-label="Telegram"><span>TG</span></a></div></div></footer>
-<div id="pm" class="pm" hidden role="dialog" aria-modal="true" aria-labelledby="pmt"><div class="pms" tabindex="-1"><div class="pmbar"><button id="pmp" class="pmb" type="button">‹</button><span class="pmz" id="pmz"></span><button id="pmn" class="pmb" type="button">›</button><button id="pmx" class="pmb pmx" type="button">×</button></div><div id="pmc" class="pmco"></div></div></div>
+<div id="pm" class="pm" hidden role="dialog" aria-modal="true" aria-labelledby="pmt"><div class="pms" tabindex="-1"><div class="pmbar"><button id="pmp" class="pmb" type="button"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span class="pmz" id="pmz"></span><button id="pmn" class="pmb" type="button"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><button id="pmx" class="pmb pmx" type="button"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div id="pmc" class="pmco"></div></div></div>
 <div id="lb" class="lb" hidden role="dialog" aria-modal="true" aria-label="عرض العمل"><button id="lbx" class="lbb lbx" type="button" aria-label="إغلاق">×</button><button id="lbp" class="lbb lbp" type="button" aria-label="السابق">‹</button><img id="lbi" alt=""><button id="lbn" class="lbb lbn" type="button" aria-label="التالي">›</button></div>
 
 <script>
