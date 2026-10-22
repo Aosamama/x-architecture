@@ -280,6 +280,37 @@ html.intro #bt{animation:bB 6.5s ease-in-out infinite}
 @media(min-width:901px){.hero .w{align-items:stretch}.hero .mk{align-self:stretch;position:relative}.hero .mk svg{position:absolute;top:0;bottom:0;left:50%;height:100%;width:auto;max-width:100%;transform:translateX(-50%)}}
 @media(prefers-reduced-motion:reduce){#intro{display:none!important}}
 .c .nt{text-wrap:balance;display:block;margin:14px 22px 0;padding:10px 12px;font-size:.78rem;font-weight:400;line-height:1.7;color:var(--gold2);background:rgba(173,145,84,.1)}
+
+/* ===== courses: minimal, frame-free ===== */
+#courses .note{margin-top:-14px}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cbx{background:var(--bg2);padding:26px}
+.cbx h3{font-size:1.15rem;font-weight:500;margin-bottom:8px}
+.cbx p{color:var(--soft);font-size:.9rem;font-weight:300}
+.cbx em{display:block;font-style:normal;color:var(--gold);font-size:.8rem;margin:-2px 0 6px}
+.cbx ul{list-style:none;margin-top:16px;display:flex;flex-wrap:wrap;gap:8px 20px}
+.cbx li{font-size:.8rem;color:var(--gold2)}
+.cbx li::before{content:"";display:inline-block;width:5px;height:5px;background:var(--gold);margin-inline-end:8px;vertical-align:middle}
+.cbx ul.en{direction:ltr}
+.cbx ul.en li{font-size:.9rem;color:var(--ink)}
+.cbx ul.en li::before{margin-inline-end:0;margin-inline-start:0;margin-right:8px}
+.ch{font-size:1.15rem;font-weight:500;margin:48px 0 16px;text-align:start}
+.cpt{display:grid;grid-template-columns:minmax(120px,.75fr) 1fr 1fr;gap:10px}
+.cpt>*{padding:20px 24px}
+.cpt .hh{padding:0 24px 2px;color:var(--soft);font-size:.82rem}
+.cpt .rl,.cpt .pc{background:var(--bg2)}
+.cpt .rl{font-weight:500;font-size:.98rem;display:flex;align-items:center}
+.cpt .pc small{display:none;color:var(--soft);font-size:.74rem;margin-bottom:4px}
+.pv{display:inline-flex;align-items:baseline;gap:8px}
+.pv i{font-style:normal;font-size:clamp(1.7rem,3vw,2.3rem);color:var(--gold);direction:ltr;font-weight:500;line-height:1}
+.pv u{text-decoration:none;font-size:.78rem;color:var(--soft)}
+.cof{display:grid;grid-template-columns:150px 1fr auto;gap:18px;align-items:center;background:var(--bg2);padding:20px 24px;margin-bottom:10px}
+.cof b{color:var(--gold);font-weight:500}
+.cof span:not(.pv){color:var(--soft);font-size:.92rem}
+#courses .cin{margin:26px 0 0}.cof span:not(.pv){text-wrap:balance}
+.cta{margin-top:30px;background:linear-gradient(100deg,rgba(173,145,84,.16),rgba(173,145,84,.04));display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.cta>span{font-size:1.02rem}
+@media(max-width:700px){.cg{grid-template-columns:1fr}.cpt{grid-template-columns:1fr 1fr}.cpt .hh{display:none}.cpt .rl{grid-column:1/-1;background:none;padding:14px 0 0}.cpt .pc small{display:block}.cpt .pc{padding:16px 18px}.cof{grid-template-columns:1fr auto;gap:6px 14px}.cof span:not(.pv){grid-column:1/-1;grid-row:2}.cbx{padding:22px}}
 </style>
 </head>
 <body>
@@ -304,7 +335,7 @@ T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener
 
 <header><div class="w">
 <a href="#" class="lg lgo" aria-label="X Architecture"><svg viewBox="0 0 547 703"><use href="#mark"/></svg></a>
-<nav><a href="#services" data-n="services">الخدمات</a><a href="#works" data-n="works">أعمال الطلاب</a><a href="#news" data-n="news">الأخبار والكتب</a><a href="#contact" data-n="contact">تواصل</a></nav>
+<nav><a href="#services" data-n="services">الخدمات</a><a href="#courses" data-n="courses">الكورسات</a><a href="#works" data-n="works">أعمال الطلاب</a><a href="#news" data-n="news">الأخبار والكتب</a><a href="#contact" data-n="contact">تواصل</a></nav>
 <button id="lgb" class="lgb" type="button">EN</button>
 </div></header>
 
@@ -328,6 +359,32 @@ T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener
 <div class="c"><div class="im"><svg viewBox="0 0 96 96"><path d="M16 80 28 52 68 12l16 16-40 40zM60 20l16 16M16 80l12-4"/></svg></div><span>03</span><h3>نقد وإشراف ومتابعة للطلاب</h3><p>مراجعة دورية وملاحظات نقدية واضحة ومتابعة مستمرة لمشروعك حتى الإنجاز — خدمة مخصصة للطلاب.</p></div>
 <div class="c"><div class="im"><svg viewBox="0 0 96 96"><path d="M12 84V40h20v44M38 84V16h20v68M64 84V52h20v32M8 84h80"/></svg></div><span>04</span><h3>لوحات وتقديم المشاريع</h3><p>تنسيق اللوحات والعروض التقديمية بإخراج احترافي يليق بالمشروع.</p></div>
 </div></div></section>
+
+<section id="courses"><div class="w">
+<div class="hd"><small>COURSES</small><h2>الكورسات</h2></div>
+<p class="note">دورات في برامج العمارة والإظهار — مباشرة أو مسجّلة، من الأساسيات حتى تنفيذ مشروع متكامل.</p>
+<div class="cg">
+<div class="cbx"><h3>الدورات التفاعلية</h3><p>مجموعات أسبوعية على مدار العام، بمعدل ساعتين للمحاضرة والتوقيت بالتوافق مع المشتركين. انضم لمجموعة أو كوّن مجموعتك الخاصة مع أصدقائك.</p><ul><li>شرح مباشر مع إمكانية طرح الأسئلة</li><li>برنامج منظّم متسلسل</li><li>مرونة في المواعيد</li></ul></div>
+<div class="cbx"><h3>الدورات المسجّلة</h3><p>محاضرات مسجّلة ومنظّمة تغطي البرنامج بالتفصيل. فترة تجريبية 24 ساعة قبل الاشتراك، وبعدها وصول دائم مع دعم للإجابة عن استفساراتك.</p><ul><li>تعلّم حسب وقتك</li><li>محتوى متكامل</li><li>متابعة ودعم</li></ul></div>
+</div>
+<h3 class="ch">الأسعار</h3>
+<div class="cpt">
+<span class="hh"></span><span class="hh">برامج ثلاثية الأبعاد</span><span class="hh">برامج الإظهار المعماري</span>
+<b class="rl">الدورات التفاعلية</b><div class="pc"><small>برامج ثلاثية الأبعاد</small><span class="pv"><i>250</i><u>ألف د.ع</u></span></div><div class="pc"><small>برامج الإظهار المعماري</small><span class="pv"><i>125</i><u>ألف د.ع</u></span></div>
+<b class="rl">الدورات المسجّلة</b><div class="pc"><small>برامج ثلاثية الأبعاد</small><span class="pv"><i>175</i><u>ألف د.ع</u></span></div><div class="pc"><small>برامج الإظهار المعماري</small><span class="pv"><i>85</i><u>ألف د.ع</u></span></div>
+</div>
+<h3 class="ch">البرامج</h3>
+<div class="cg">
+<div class="cbx"><h3>برامج ثلاثية الأبعاد</h3><em>مدة الدورة 15–20 يوماً</em><ul class="en"><li>AutoCAD</li><li>Revit</li><li>3ds Max</li><li>SketchUp</li><li>Rhinoceros</li><li>Grasshopper</li><li>Blender</li><li>Maya</li><li>Unreal Engine</li></ul></div>
+<div class="cbx"><h3>برامج الإظهار المعماري</h3><em>مدة الدورة 7–10 أيام</em><ul class="en"><li>Corona</li><li>Lumion</li><li>D5 Render</li><li>V-Ray</li><li>Enscape</li><li>Twinmotion</li><li>Vantage</li><li>Photoshop</li><li>Illustrator</li></ul></div>
+</div>
+<h3 class="ch">العروض</h3>
+<div class="cof"><b>العرض الأول</b><span>برنامج ثلاثي الأبعاد + برنامج إظهار + دورة حاسوب</span><span class="pv"><i>220</i><u>ألف د.ع</u></span></div>
+<div class="cof"><b>العرض الثاني</b><span>برنامجان ثلاثيا الأبعاد + برنامجا إظهار + دورة حاسوب</span><span class="pv"><i>450</i><u>ألف د.ع</u></span></div>
+<div class="cof"><b>العرض الثالث</b><span>4 برامج ثلاثية الأبعاد + 5 برامج إظهار + دورة حاسوب</span><span class="pv"><i>750</i><u>ألف د.ع</u></span></div>
+<p class="note cin">يشمل الاشتراك: تثبيت وتفعيل البرامج، إضافات ومكتبات جاهزة، دعم ومتابعة حتى 100 يوم بعد انتهاء الدورة، وشهادة إتمام.</p>
+<div class="cbx cta"><span>للاشتراك والاستفسار تواصل معنا:</span><div class="bt"><a class="b s" href="https://t.me/x_architecture" target="_blank" rel="noopener">تيليجرام x_architecture</a><a class="b" href="https://instagram.com/x.archiitecture" target="_blank" rel="noopener">إنستغرام x.archiitecture</a></div></div>
+</div></section>
 
 <section id="contact"><div class="w"><div class="ct">
 <div><h2>ابدأ مشروعك معنا</h2><p>أخبرنا بما تحتاجه وسنرتب معك الخطوات التالية.</p></div>
@@ -387,7 +444,7 @@ var BK=[
 ["Cities for People","Jan Gehl","تصميم المدن على مقياس الإنسان."],
 ["Design with Nature","Ian McHarg","التخطيط المنسجم مع الطبيعة والبيئة."]]];
 var L='ar',CS=0,lgb=document.getElementById('lgb');
-var EN={"الخدمات":"Services","الأخبار والكتب":"News & Books","تواصل":"Contact",
+var EN={"الخدمات":"Services","الكورسات":"Courses","دورات في برامج العمارة والإظهار — مباشرة أو مسجّلة، من الأساسيات حتى تنفيذ مشروع متكامل.":"Courses in architecture and visualization software — live or recorded, from the basics to a complete project.","الدورات التفاعلية":"Live courses","مجموعات أسبوعية على مدار العام، بمعدل ساعتين للمحاضرة والتوقيت بالتوافق مع المشتركين. انضم لمجموعة أو كوّن مجموعتك الخاصة مع أصدقائك.":"Weekly groups all year round, about two hours per lecture, with timing agreed with participants. Join a group or form your own with friends.","شرح مباشر مع إمكانية طرح الأسئلة":"Live teaching with Q&A","برنامج منظّم متسلسل":"A structured, sequential programme","مرونة في المواعيد":"Flexible schedule","الدورات المسجّلة":"Recorded courses","محاضرات مسجّلة ومنظّمة تغطي البرنامج بالتفصيل. فترة تجريبية 24 ساعة قبل الاشتراك، وبعدها وصول دائم مع دعم للإجابة عن استفساراتك.":"Organized recorded lectures covering the software in detail. A 24-hour trial before you subscribe, then permanent access with support for your questions.","تعلّم حسب وقتك":"Learn at your own pace","محتوى متكامل":"Complete content","متابعة ودعم":"Follow-up and support","الأسعار":"Prices","برامج ثلاثية الأبعاد":"3D programs","برامج الإظهار المعماري":"Architectural visualization programs","ألف د.ع":"K IQD","البرامج":"Programs","مدة الدورة 15–20 يوماً":"Course length: 15–20 days","مدة الدورة 7–10 أيام":"Course length: 7–10 days","العروض":"Offers","العرض الأول":"Offer 1","العرض الثاني":"Offer 2","العرض الثالث":"Offer 3","برنامج ثلاثي الأبعاد + برنامج إظهار + دورة حاسوب":"One 3D program + one visualization program + a computer course","برنامجان ثلاثيا الأبعاد + برنامجا إظهار + دورة حاسوب":"Two 3D programs + two visualization programs + a computer course","4 برامج ثلاثية الأبعاد + 5 برامج إظهار + دورة حاسوب":"Four 3D programs + five visualization programs + a computer course","يشمل الاشتراك: تثبيت وتفعيل البرامج، إضافات ومكتبات جاهزة، دعم ومتابعة حتى 100 يوم بعد انتهاء الدورة، وشهادة إتمام.":"Every course includes software installation and activation, ready-made add-ons and libraries, support for up to 100 days after the course, and a certificate of completion.","للاشتراك والاستفسار تواصل معنا:":"To enrol or ask a question, message us:","الأخبار والكتب":"News & Books","تواصل":"Contact",
 "منصتك المعمارية":"Your architecture platform","للتصميم والإظهار":"for design, visualization","والإشراف":"& supervision",
 "نُظهر مشروعك وننتقده ونتابعه خطوة بخطوة — من الفكرة الأولى حتى اللوحة النهائية.":"We visualize, critique and follow your project step by step — from the first idea to the final board.",
 "خدماتنا":"Our services","أخبار وكتب معمارية":"Architecture news & books","الخدمات التي نقدمها":"Our services",
@@ -534,7 +591,7 @@ function nstep(d){var c=ncar,k=c.querySelector('.nc');if(!k)return;var w=k.getBo
   document.addEventListener('visibilitychange',function(){if(!document.hidden&&Date.now()-NLAST>18e5)loadNews(false)});
 })();
 var NLAST=Date.now();
-var RVSEL='.hd,.note,.libs,.tabs,.c,.ct,.bk,.pr,.ex figure,.fg,.nwrap,footer .w',rvio=null;
+var RVSEL='.hd,.note,.libs,.tabs,.c,.ct,.bk,.pr,.ex figure,.fg,.nwrap,.cbx,.cpt,.cof,.ch,footer .w',rvio=null;
 function rvShow(el){var d=(parseFloat(el.style.getPropertyValue('--d'))||0)*1000;el.classList.add('in','drawn');setTimeout(function(){el.classList.remove('rv','in');el.style.removeProperty('--d')},1500+d)}
 function rvScan(){
   if(!document.documentElement.classList.contains('js'))return;
