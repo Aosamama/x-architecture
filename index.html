@@ -311,15 +311,19 @@ html.intro #bt{animation:bB 6.5s ease-in-out infinite}
 footer{padding:36px 0 32px}
 footer .w.fr{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center}
 footer .lg.fl svg{width:24px;height:31px}
-/* program icons: gold, natural colour on hover */
-.cbx ul.pg{direction:ltr;display:grid;grid-template-columns:repeat(3,1fr);gap:14px 12px;margin-top:22px}
-.cbx ul.pg li{display:flex;align-items:center;gap:11px;font-size:.88rem;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
+/* program logos: gold, natural colours on hover */
+.cbx ul.pg{direction:ltr;display:grid;grid-template-columns:repeat(3,1fr);gap:16px 12px;margin-top:22px}
+.cbx ul.pg li{display:flex;align-items:center;gap:12px;font-size:.88rem;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .cbx ul.pg li::before{display:none}
-.cbx ul.pg i{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:.68rem;font-weight:500;letter-spacing:.03em;color:var(--gold);background:rgba(173,145,84,.14);transition:background .35s,color .35s,transform .35s}
-.cbx ul.pg span{color:var(--soft);transition:color .35s}
-.cbx ul.pg li:hover i,.cbx ul.pg li.hv i{background:var(--pc);color:#0a0a0a;transform:scale(1.08)}
-.cbx ul.pg li:hover span,.cbx ul.pg li.hv span{color:var(--ink)}
-@media(max-width:700px){.cbx ul.pg{grid-template-columns:1fr 1fr}footer .w.fr{font-size:.76rem}}
+.pg .pt{position:relative;flex:none;width:54px;height:54px;background:rgba(173,145,84,.1);transition:background .35s}
+.pg .pt img{position:absolute;inset:11px;width:32px;height:32px;object-fit:contain;transition:opacity .35s}
+.pg .pt .p1{opacity:0}
+.pg .pn{color:var(--soft);transition:color .35s;min-width:0}
+.pg li:hover .pt .p1,.pg li.hv .pt .p1{opacity:1}
+.pg li:hover .pt .p0,.pg li.hv .pt .p0{opacity:0}
+.pg li:hover .pn,.pg li.hv .pn{color:var(--ink)}
+.pg li.lt:hover .pt,.pg li.lt.hv .pt{background:#ececec}
+@media(max-width:700px){.cbx ul.pg{grid-template-columns:1fr 1fr;gap:14px 10px}.pg li{gap:10px}.pg .pt{width:46px;height:46px}.pg .pt img{inset:9px;width:28px;height:28px}}
 
 /* phones: logo on top, section links as a bottom bar within thumb reach */
 @media(max-width:700px){
@@ -334,6 +338,26 @@ nav a.on::before{content:"";position:absolute;top:-1px;left:26%;right:26%;height
 body{padding-bottom:calc(60px + env(safe-area-inset-bottom,0px))}
 html{scroll-padding-top:72px}
 }
+
+/* separate pages */
+#vs,#vc,#vk{display:none}
+.rs #vs,.rc #vc,.rk #vk{display:block}
+.rs #vh,.rc #vh,.rk #vh{display:none}
+/* home = introduction only */
+#vh .hero{min-height:calc(100svh - 69px - 145px);display:flex;align-items:center;border-bottom:0}
+#vh .hero .w{width:100%}
+.hero .eb{line-height:1}
+.hero .lede{margin-bottom:0}
+.hero .fd{margin-top:26px;color:var(--gold);font-size:.92rem;letter-spacing:.06em}
+.hero .fd[hidden]{display:none}
+@media(max-width:700px){#vh .hero{min-height:calc(100svh - 262px)}}
+/* contact details (shown once filled in) */
+.ci{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:14px}
+.ci[hidden],.ci .cr[hidden]{display:none}
+.ci .cr{background:var(--bg2);padding:22px 26px}
+.ci small{display:block;color:var(--soft);font-size:.78rem;margin-bottom:6px}
+.ci a{color:var(--ink);font-size:1.1rem;direction:ltr;display:inline-block}
+.ci a:hover{color:var(--gold2)}
 </style>
 </head>
 <body>
@@ -358,7 +382,7 @@ T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener
 
 <header><div class="w">
 <a href="#" class="lg lgo" aria-label="X Architecture"><svg viewBox="0 0 547 703"><use href="#mark"/></svg></a>
-<nav><a href="#services" data-n="services">الخدمات</a><a href="#courses" data-n="courses">الكورسات</a><a href="#works" data-n="works">أعمال الطلاب</a><a href="#news" data-n="news">الأخبار والكتب</a><a href="#contact" data-n="contact">تواصل</a></nav>
+<nav><a href="#services" data-n="services">الخدمات</a><a href="#courses" data-n="courses">الدورات</a><a href="#works" data-n="works">أعمال الطلاب</a><a href="#news" data-n="news">الأخبار والكتب</a><a href="#contact" data-n="contact">تواصل</a></nav>
 <button id="lgb" class="lgb" type="button">EN</button>
 </div></header>
 
@@ -367,13 +391,14 @@ T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener
 <div class="hero"><div class="w">
 <div>
 <div class="eb">X ARCHITECTURE</div>
-<h1>منصتك المعمارية <em>للتصميم والإظهار</em> والإشراف</h1>
-<p class="lede">نُظهر مشروعك وننتقده ونتابعه خطوة بخطوة — من الفكرة الأولى حتى اللوحة النهائية.</p>
-<div class="bt"><a class="b s" href="#services">خدماتنا</a><a class="b" href="#news">أخبار وكتب معمارية</a></div>
+<h1>نعمل مع <em>طلاب العمارة</em> وأصحاب المشاريع</h1>
+<p class="lede">نقد وإشراف ومتابعة، وتصميم وإظهار معماري، ودورات في برامج العمارة.</p>
+<p class="fd" id="fd" hidden><span>تأسست عام</span> <b dir="ltr"></b></p>
 </div>
 <div class="mk"><svg viewBox="0 0 547 703" aria-hidden="true"><polygon id="tp" points="0,0 547,0 274,352" fill="url(#ga)"/><polygon id="bt" points="274,352 0,703 547,703" fill="url(#gb)"/></svg></div>
 </div></div>
-
+</div>
+<div id="vs">
 <section id="services"><div class="w">
 <div class="hd"><small>SERVICES</small><h2>الخدمات التي نقدمها</h2></div>
 <div class="g4">
@@ -382,13 +407,19 @@ T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener
 <div class="c"><div class="im"><svg viewBox="0 0 96 96"><path d="M16 80 28 52 68 12l16 16-40 40zM60 20l16 16M16 80l12-4"/></svg></div><span>03</span><h3>نقد وإشراف ومتابعة للطلاب</h3><p>مراجعة دورية وملاحظات نقدية واضحة ومتابعة مستمرة لمشروعك حتى الإنجاز — خدمة مخصصة للطلاب.</p></div>
 <div class="c"><div class="im"><svg viewBox="0 0 96 96"><path d="M12 84V40h20v44M38 84V16h20v68M64 84V52h20v32M8 84h80"/></svg></div><span>04</span><h3>لوحات وتقديم المشاريع</h3><p>تنسيق اللوحات والعروض التقديمية بإخراج احترافي يليق بالمشروع.</p></div>
 </div></div></section>
-
+</div>
+<div id="vc">
 <section id="courses"><div class="w">
-<div class="hd"><small>COURSES</small><h2>الكورسات</h2></div>
-<p class="note">دورات في برامج العمارة والإظهار — مباشرة أو مسجّلة، من الأساسيات حتى تنفيذ مشروع متكامل.</p>
+<div class="hd"><small>COURSES</small><h2>الدورات</h2></div>
+<p class="note">ندرّس برامج العمارة والإظهار المعماري في دورات مباشرة أو مسجّلة، وتنتهي كل دورة بمشروع كامل.</p>
 <div class="cg">
 <div class="cbx"><h3>الدورات التفاعلية</h3><p>مجموعات أسبوعية على مدار العام، بمعدل ساعتين للمحاضرة والتوقيت بالتوافق مع المشتركين. انضم لمجموعة أو كوّن مجموعتك الخاصة مع أصدقائك.</p><ul><li>شرح مباشر مع إمكانية طرح الأسئلة</li><li>برنامج منظّم متسلسل</li><li>مرونة في المواعيد</li></ul></div>
 <div class="cbx"><h3>الدورات المسجّلة</h3><p>محاضرات مسجّلة ومنظّمة تغطي البرنامج بالتفصيل. فترة تجريبية 24 ساعة قبل الاشتراك، وبعدها وصول دائم مع دعم للإجابة عن استفساراتك.</p><ul><li>تعلّم حسب وقتك</li><li>محتوى متكامل</li><li>متابعة ودعم</li></ul></div>
+</div>
+<h3 class="ch">البرامج</h3>
+<div class="cg">
+<div class="cbx"><h3>برامج ثلاثية الأبعاد</h3><em>مدة الدورة 15–20 يوماً</em><ul class="pg"><li><span class="pt"><img class="p0" src="icons/autocad-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/autocad.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">AutoCAD</span></li><li><span class="pt"><img class="p0" src="icons/revit-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/revit.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">Revit</span></li><li><span class="pt"><img class="p0" src="icons/3dsmax-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/3dsmax.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">3ds Max</span></li><li><span class="pt"><img class="p0" src="icons/sketchup-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/sketchup.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">SketchUp</span></li><li><span class="pt"><img class="p0" src="icons/rhinoceros-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/rhinoceros.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">Rhinoceros</span></li><li><span class="pt"><img class="p0" src="icons/grasshopper-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/grasshopper.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">Grasshopper</span></li><li><span class="pt"><img class="p0" src="icons/blender-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/blender.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">Blender</span></li><li><span class="pt"><img class="p0" src="icons/maya-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/maya.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">Maya</span></li><li class="lt"><span class="pt"><img class="p0" src="icons/unreal-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/unreal.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">Unreal Engine</span></li></ul></div>
+<div class="cbx"><h3>برامج الإظهار المعماري</h3><em>مدة الدورة 7–10 أيام</em><ul class="pg"><li><span class="pt"><img class="p0" src="icons/corona-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/corona.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">Corona</span></li><li><span class="pt"><img class="p0" src="icons/lumion-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/lumion.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">Lumion</span></li><li><span class="pt"><img class="p0" src="icons/d5render-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/d5render.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">D5 Render</span></li><li><span class="pt"><img class="p0" src="icons/vray-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/vray.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">V-Ray</span></li><li><span class="pt"><img class="p0" src="icons/enscape-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/enscape.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">Enscape</span></li><li class="lt"><span class="pt"><img class="p0" src="icons/twinmotion-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/twinmotion.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">Twinmotion</span></li><li><span class="pt"><img class="p0" src="icons/vantage-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/vantage.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">Vantage</span></li><li><span class="pt"><img class="p0" src="icons/photoshop-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/photoshop.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">Photoshop</span></li><li><span class="pt"><img class="p0" src="icons/illustrator-g.webp" alt="" width="32" height="32" loading="lazy" decoding="async"><img class="p1" src="icons/illustrator.webp" alt="" width="32" height="32" loading="lazy" decoding="async"></span><span class="pn">Illustrator</span></li></ul></div>
 </div>
 <h3 class="ch">الأسعار</h3>
 <div class="cpt">
@@ -396,22 +427,25 @@ T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener
 <b class="rl">الدورات التفاعلية</b><div class="pc"><small>برامج ثلاثية الأبعاد</small><span class="pv"><i>250</i><u>ألف د.ع</u></span></div><div class="pc"><small>برامج الإظهار المعماري</small><span class="pv"><i>125</i><u>ألف د.ع</u></span></div>
 <b class="rl">الدورات المسجّلة</b><div class="pc"><small>برامج ثلاثية الأبعاد</small><span class="pv"><i>175</i><u>ألف د.ع</u></span></div><div class="pc"><small>برامج الإظهار المعماري</small><span class="pv"><i>85</i><u>ألف د.ع</u></span></div>
 </div>
-<h3 class="ch">البرامج</h3>
-<div class="cg">
-<div class="cbx"><h3>برامج ثلاثية الأبعاد</h3><em>مدة الدورة 15–20 يوماً</em><ul class="pg"><li style="--pc:#e5383b"><i>AC</i><span>AutoCAD</span></li><li style="--pc:#1b9ce2"><i>RV</i><span>Revit</span></li><li style="--pc:#2ec4b6"><i>3DS</i><span>3ds Max</span></li><li style="--pc:#4c7ef3"><i>SK</i><span>SketchUp</span></li><li style="--pc:#aab4bf"><i>RH</i><span>Rhinoceros</span></li><li style="--pc:#7bc043"><i>GH</i><span>Grasshopper</span></li><li style="--pc:#f5792a"><i>BL</i><span>Blender</span></li><li style="--pc:#36b0c9"><i>MY</i><span>Maya</span></li><li style="--pc:#e6e6e6"><i>UE</i><span>Unreal Engine</span></li></ul></div>
-<div class="cbx"><h3>برامج الإظهار المعماري</h3><em>مدة الدورة 7–10 أيام</em><ul class="pg"><li style="--pc:#f26a4b"><i>CO</i><span>Corona</span></li><li style="--pc:#34c3a0"><i>LU</i><span>Lumion</span></li><li style="--pc:#b47cf2"><i>D5</i><span>D5 Render</span></li><li style="--pc:#f7b500"><i>VR</i><span>V-Ray</span></li><li style="--pc:#1fa2c9"><i>EN</i><span>Enscape</span></li><li style="--pc:#6c5ce7"><i>TM</i><span>Twinmotion</span></li><li style="--pc:#e84393"><i>VA</i><span>Vantage</span></li><li style="--pc:#31a8ff"><i>PS</i><span>Photoshop</span></li><li style="--pc:#ff9a00"><i>IL</i><span>Illustrator</span></li></ul></div>
-</div>
 <h3 class="ch">العروض</h3>
 <div class="cof"><b>العرض الأول</b><span>برنامج ثلاثي الأبعاد + برنامج إظهار + دورة حاسوب</span><span class="pv"><i>220</i><u>ألف د.ع</u></span></div>
 <div class="cof"><b>العرض الثاني</b><span>برنامجان ثلاثيا الأبعاد + برنامجا إظهار + دورة حاسوب</span><span class="pv"><i>450</i><u>ألف د.ع</u></span></div>
 <div class="cof"><b>العرض الثالث</b><span>4 برامج ثلاثية الأبعاد + 5 برامج إظهار + دورة حاسوب</span><span class="pv"><i>750</i><u>ألف د.ع</u></span></div>
 <p class="note cin">يشمل الاشتراك: تثبيت وتفعيل البرامج، إضافات ومكتبات جاهزة، دعم ومتابعة حتى 100 يوم بعد انتهاء الدورة، وشهادة إتمام.</p>
 </div></section>
-
-<section id="contact"><div class="w"><div class="ct">
-<div><h2>ابدأ مشروعك معنا</h2><p>أخبرنا بما تحتاجه، خدمة أو كورساً، وسنرتب معك الخطوات التالية.</p></div>
+</div>
+<div id="vk">
+<section id="contact"><div class="w">
+<div class="hd"><small>CONTACT</small><h2>تواصل</h2></div>
+<div class="ct">
+<div><h2>ابدأ مشروعك معنا</h2><p>أخبرنا بما تحتاجه، خدمة أو دورة، وسنرتب معك الخطوات التالية.</p></div>
 <div class="bt"><a class="b s" href="https://instagram.com/x.archiitecture" target="_blank" rel="noopener">إنستغرام x.archiitecture</a><a class="b" href="https://t.me/x_architecture" target="_blank" rel="noopener">تيليجرام x_architecture</a></div>
-</div></div></section>
+</div>
+<div class="ci" id="ci" hidden>
+<div class="cr" id="ce" hidden><small>البريد الإلكتروني</small><a></a></div>
+<div class="cr" id="cp" hidden><small>الهاتف</small><a></a></div>
+</div>
+</div></section>
 </div>
 
 <div id="vn">
@@ -434,13 +468,22 @@ T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener
 
 <script>
 function route(){
-  var h=location.hash.slice(1),n=(h==='news'||h==='books'),w=(h==='works'||h==='refs'||h==='ai');
-  document.body.classList.toggle('rn',n);document.body.classList.toggle('rw',w);
-  document.querySelectorAll('nav a').forEach(function(a){a.classList.toggle('on',a.dataset.n===(n?'news':w?'works':h))});
+  var h=location.hash.slice(1),
+      v=(h==='news'||h==='books')?'n':(h==='works'||h==='refs'||h==='ai')?'w':h==='services'?'s':h==='courses'?'c':h==='contact'?'k':'h',
+      K={n:'news',w:'works',s:'services',c:'courses',k:'contact'};
+  ['n','w','s','c','k'].forEach(function(x){document.body.classList.toggle('r'+x,v===x)});
+  document.querySelectorAll('nav a').forEach(function(a){a.classList.toggle('on',a.dataset.n===K[v])});
   var t=h&&document.getElementById(h);
-  if(t)t.scrollIntoView();else window.scrollTo(0,0);
+  if(t&&(v==='n'||v==='w'))t.scrollIntoView();else window.scrollTo(0,0);
   setTimeout(rvScan,30)
 }
+/* fill these in and the lines appear on the site */
+var SITE={founded:'',email:'',phone:''};
+(function(){var f=document.getElementById('fd'),ci=document.getElementById('ci'),ce=document.getElementById('ce'),cp=document.getElementById('cp'),a;
+  if(SITE.founded){f.hidden=false;f.querySelector('b').textContent=SITE.founded}
+  if(SITE.email){ce.hidden=false;a=ce.querySelector('a');a.textContent=SITE.email;a.href='mailto:'+SITE.email}
+  if(SITE.phone){cp.hidden=false;a=cp.querySelector('a');a.textContent=SITE.phone;a.href='tel:'+SITE.phone.replace(/[^+\d]/g,'')}
+  ci.hidden=!(SITE.email||SITE.phone)})();
 addEventListener('hashchange',route);route();
 document.addEventListener('click',function(e){if(!matchMedia('(hover:none)').matches)return;var l=e.target.closest&&e.target.closest('ul.pg li');if(l)l.classList.toggle('hv')});
 var NW=[["سنوهيتا تفتتح دار الأوبرا الكبرى في شنغهاي", "افتتاح الدار بسقف منحنٍ واسع وإطلالات بانورامية على النهر.", "ArchDaily · 19/10", "https://www.archdaily.com/1187067/snohettas-shanghai-grand-opera-house-opens-with-a-sweeping-roof-and-panoramic-river-views"], ["مصنع Green Field في بنغلاديش يفوز بجائزة RIBA الدولية 2026", "فاز مشروع Nakshabid Architects بنموذجه البديل للمصانع.", "ArchDaily · 19/10", "https://www.archdaily.com/1187060/nakshabid-architects-alternative-factory-model-in-bangladesh-receives-the-riba-international-prize-2026"], ["Lion Green Road يفوز بجائزة RIBA ستيرلنغ 2026", "المشروع من تصميم Mary Duggan Architects وruffarchitects.", "ArchDaily · 16/10", "https://www.archdaily.com/1186944/lion-green-road-by-mary-duggan-architects-and-ruffarchitects-wins-riba-stirling-prize-2026"], ["ترشيحات World Monuments Watch 2027 تشير إلى أبرز تهديدات التراث", "تتصدرها التقشف الحكومي وتأثير المناخ ونقص المهارات.", "ArchDaily · 16/10", "https://www.archdaily.com/1186995/world-monuments-watch-2027-nominations-point-to-government-austerity-climate-impact-and-skills-shortages-as-main-threats-to-heritage"], ["OMA وJason Long يحوّلان مصنع Folger Coffee التاريخي في هيوستن إلى مدرسة للموسيقى والفنون", "إعادة استخدام مبنى صناعي تاريخي لوظيفة تعليمية جديدة.", "ArchDaily · 13/10", "https://www.archdaily.com/1186703/oma-jason-long-is-transforming-houstons-historic-folger-coffee-plant-into-a-music-and-arts-school"], ["Utopian Hours 2026 تعود إلى تورينو", "بحضور السير Peter Cook وبرنامج عن صناعة المدن.", "ArchDaily · 12/10", "https://www.archdaily.com/1186668/cities-are-mental-weapons-utopian-hours-2026-returns-to-turin-with-sir-peter-cook-and-a-program-on-city-making"]];
@@ -467,7 +510,7 @@ var BK=[
 ["Cities for People","Jan Gehl","تصميم المدن على مقياس الإنسان."],
 ["Design with Nature","Ian McHarg","التخطيط المنسجم مع الطبيعة والبيئة."]]];
 var L='ar',CS=0,lgb=document.getElementById('lgb');
-var EN={"الخدمات":"Services","الكورسات":"Courses","دورات في برامج العمارة والإظهار — مباشرة أو مسجّلة، من الأساسيات حتى تنفيذ مشروع متكامل.":"Courses in architecture and visualization software — live or recorded, from the basics to a complete project.","الدورات التفاعلية":"Live courses","مجموعات أسبوعية على مدار العام، بمعدل ساعتين للمحاضرة والتوقيت بالتوافق مع المشتركين. انضم لمجموعة أو كوّن مجموعتك الخاصة مع أصدقائك.":"Weekly groups all year round, about two hours per lecture, with timing agreed with participants. Join a group or form your own with friends.","شرح مباشر مع إمكانية طرح الأسئلة":"Live teaching with Q&A","برنامج منظّم متسلسل":"A structured, sequential programme","مرونة في المواعيد":"Flexible schedule","الدورات المسجّلة":"Recorded courses","محاضرات مسجّلة ومنظّمة تغطي البرنامج بالتفصيل. فترة تجريبية 24 ساعة قبل الاشتراك، وبعدها وصول دائم مع دعم للإجابة عن استفساراتك.":"Organized recorded lectures covering the software in detail. A 24-hour trial before you subscribe, then permanent access with support for your questions.","تعلّم حسب وقتك":"Learn at your own pace","محتوى متكامل":"Complete content","متابعة ودعم":"Follow-up and support","الأسعار":"Prices","برامج ثلاثية الأبعاد":"3D programs","برامج الإظهار المعماري":"Architectural visualization programs","ألف د.ع":"K IQD","البرامج":"Programs","مدة الدورة 15–20 يوماً":"Course length: 15–20 days","مدة الدورة 7–10 أيام":"Course length: 7–10 days","العروض":"Offers","العرض الأول":"Offer 1","العرض الثاني":"Offer 2","العرض الثالث":"Offer 3","برنامج ثلاثي الأبعاد + برنامج إظهار + دورة حاسوب":"One 3D program + one visualization program + a computer course","برنامجان ثلاثيا الأبعاد + برنامجا إظهار + دورة حاسوب":"Two 3D programs + two visualization programs + a computer course","4 برامج ثلاثية الأبعاد + 5 برامج إظهار + دورة حاسوب":"Four 3D programs + five visualization programs + a computer course","يشمل الاشتراك: تثبيت وتفعيل البرامج، إضافات ومكتبات جاهزة، دعم ومتابعة حتى 100 يوم بعد انتهاء الدورة، وشهادة إتمام.":"Every course includes software installation and activation, ready-made add-ons and libraries, support for up to 100 days after the course, and a certificate of completion.","الأخبار والكتب":"News & Books","تواصل":"Contact",
+var EN={"الخدمات":"Services","الدورات":"Courses","نعمل مع":"We work with","طلاب العمارة":"architecture students","وأصحاب المشاريع":"and project owners","نقد وإشراف ومتابعة، وتصميم وإظهار معماري، ودورات في برامج العمارة.":"Critique, supervision and follow-up, architectural design and visualization, and courses in architecture software.","تأسست عام":"Founded in","ندرّس برامج العمارة والإظهار المعماري في دورات مباشرة أو مسجّلة، وتنتهي كل دورة بمشروع كامل.":"We teach architecture and visualization software in live or recorded courses. Every course ends with a complete project.","أخبرنا بما تحتاجه، خدمة أو دورة، وسنرتب معك الخطوات التالية.":"Tell us what you need, a service or a course, and we will plan the next steps with you.","البريد الإلكتروني":"Email","الهاتف":"Phone","دورات في برامج العمارة والإظهار — مباشرة أو مسجّلة، من الأساسيات حتى تنفيذ مشروع متكامل.":"Courses in architecture and visualization software — live or recorded, from the basics to a complete project.","الدورات التفاعلية":"Live courses","مجموعات أسبوعية على مدار العام، بمعدل ساعتين للمحاضرة والتوقيت بالتوافق مع المشتركين. انضم لمجموعة أو كوّن مجموعتك الخاصة مع أصدقائك.":"Weekly groups all year round, about two hours per lecture, with timing agreed with participants. Join a group or form your own with friends.","شرح مباشر مع إمكانية طرح الأسئلة":"Live teaching with Q&A","برنامج منظّم متسلسل":"A structured, sequential programme","مرونة في المواعيد":"Flexible schedule","الدورات المسجّلة":"Recorded courses","محاضرات مسجّلة ومنظّمة تغطي البرنامج بالتفصيل. فترة تجريبية 24 ساعة قبل الاشتراك، وبعدها وصول دائم مع دعم للإجابة عن استفساراتك.":"Organized recorded lectures covering the software in detail. A 24-hour trial before you subscribe, then permanent access with support for your questions.","تعلّم حسب وقتك":"Learn at your own pace","محتوى متكامل":"Complete content","متابعة ودعم":"Follow-up and support","الأسعار":"Prices","برامج ثلاثية الأبعاد":"3D programs","برامج الإظهار المعماري":"Architectural visualization programs","ألف د.ع":"K IQD","البرامج":"Programs","مدة الدورة 15–20 يوماً":"Course length: 15–20 days","مدة الدورة 7–10 أيام":"Course length: 7–10 days","العروض":"Offers","العرض الأول":"Offer 1","العرض الثاني":"Offer 2","العرض الثالث":"Offer 3","برنامج ثلاثي الأبعاد + برنامج إظهار + دورة حاسوب":"One 3D program + one visualization program + a computer course","برنامجان ثلاثيا الأبعاد + برنامجا إظهار + دورة حاسوب":"Two 3D programs + two visualization programs + a computer course","4 برامج ثلاثية الأبعاد + 5 برامج إظهار + دورة حاسوب":"Four 3D programs + five visualization programs + a computer course","يشمل الاشتراك: تثبيت وتفعيل البرامج، إضافات ومكتبات جاهزة، دعم ومتابعة حتى 100 يوم بعد انتهاء الدورة، وشهادة إتمام.":"Every course includes software installation and activation, ready-made add-ons and libraries, support for up to 100 days after the course, and a certificate of completion.","الأخبار والكتب":"News & Books","تواصل":"Contact",
 "منصتك المعمارية":"Your architecture platform","للتصميم والإظهار":"for design, visualization","والإشراف":"& supervision",
 "نُظهر مشروعك وننتقده ونتابعه خطوة بخطوة — من الفكرة الأولى حتى اللوحة النهائية.":"We visualize, critique and follow your project step by step — from the first idea to the final board.",
 "خدماتنا":"Our services","أخبار وكتب معمارية":"Architecture news & books","الخدمات التي نقدمها":"Our services",
@@ -614,7 +657,7 @@ function nstep(d){var c=ncar,k=c.querySelector('.nc');if(!k)return;var w=k.getBo
   document.addEventListener('visibilitychange',function(){if(!document.hidden&&Date.now()-NLAST>18e5)loadNews(false)});
 })();
 var NLAST=Date.now();
-var RVSEL='.hd,.note,.libs,.tabs,.c,.ct,.bk,.pr,.ex figure,.fg,.nwrap,.cbx,.cpt,.cof,.ch,footer .w',rvio=null;
+var RVSEL='.hd,.note,.libs,.tabs,.c,.ct,.ci,.bk,.pr,.ex figure,.fg,.nwrap,.cbx,.cpt,.cof,.ch,footer .w',rvio=null;
 function rvShow(el){var d=(parseFloat(el.style.getPropertyValue('--d'))||0)*1000;el.classList.add('in','drawn');setTimeout(function(){el.classList.remove('rv','in');el.style.removeProperty('--d')},1500+d)}
 function rvScan(){
   if(!document.documentElement.classList.contains('js'))return;
@@ -649,7 +692,7 @@ function tr(e){
 function setL(l){
   L=l;document.documentElement.lang=l;document.documentElement.dir=l==='en'?'ltr':'rtl';
   tr(l==='en');document.title=l==='en'?'X Architecture | Platform for Architecture Students':'X Architecture | منصة معمارية للطلاب';
-  lgb.textContent=l==='en'?'العربية':'EN';rn();rb(CS);rw();
+  lgb.textContent=l==='en'?'AR':'EN';rn();rb(CS);rw();
   try{localStorage.setItem('xl',l)}catch(e){}
 }
 tb.addEventListener('click',function(e){var b=e.target.closest('button');if(b)rb(+b.dataset.i)});
