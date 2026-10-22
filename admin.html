@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>إحصائيات المنصة | X Architecture</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script>try{var xt=localStorage.getItem("xt");if(xt==="light"||xt==="mono")document.documentElement.setAttribute("data-theme",xt)}catch(e){}</script>
+<script src="config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--gr:173,145,84;--bgr:5,5,5;--inkr:255,255,255;--bg:#050505;--bg2:#0e0d0b;--bg3:#12100c;--ong:#0a0a0a;--gold:#AD9154;--gold2:#d6bd7e;--ink:#f2efe8;--soft:#a39c8c;--line:rgba(var(--gr),.24);--err:#e07a68;
+--f:'Century Gothic',CenturyGothic,'Questrial','Tajawal',sans-serif;color-scheme:dark}
+html[data-theme=light]{color-scheme:light;--bg:#fff;--bg2:#f4f1ea;--bg3:#ebe7dd;--bgr:255,255,255;--inkr:20,18,16;--ink:#16130f;--soft:#6a604c;--gold2:#8a7140;--line:rgba(var(--gr),.38);--err:#b0392a}
+html[data-theme=mono]{color-scheme:light;--bg:#fff;--bg2:#f6f6f6;--bg3:#ececec;--bgr:255,255,255;--inkr:0,0,0;--ink:#000;--soft:#454545;--gold:#000;--gold2:#000;--gr:0,0,0;--line:rgba(0,0,0,.22);--ong:#fff;--err:#000}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f);line-height:1.7;min-height:100vh}
+a{color:inherit}
+.w{max-width:1240px;margin:0 auto;padding:0 clamp(16px,3vw,32px)}
+header{border-bottom:1px solid var(--line);background:rgba(var(--bgr),.9);position:sticky;top:0;z-index:5;backdrop-filter:blur(10px)}
+header .w{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+header .t{display:flex;align-items:center;gap:12px;font-size:1rem;letter-spacing:.04em}
+header .t svg{width:18px;height:24px}
+header .t small{color:var(--gold);letter-spacing:.28em;font-size:.7rem}
+.act{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+button{font:inherit;cursor:pointer}
+.bt{background:var(--gold);color:var(--ong);border:0;padding:9px 18px;font-size:.84rem}
+.bt:hover{background:var(--gold2)}
+.bt.g{background:rgba(var(--inkr),.07);color:var(--ink)}
+.bt.g:hover{background:rgba(var(--gr),.18)}
+.bt:focus-visible,input:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
+main{padding:34px 0 70px}
+h1{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:500;margin-bottom:6px}
+.sub{color:var(--soft);font-size:.9rem}
+.gate{max-width:520px;margin:9vh auto 0;background:var(--bg2);padding:clamp(22px,4vw,38px)}
+.gate label{display:block;font-size:.8rem;color:var(--soft);margin:18px 0 6px}
+.gate input{width:100%;font:inherit;font-size:.95rem;color:var(--ink);background:rgba(var(--inkr),.06);border:0;border-bottom:1px solid var(--line);padding:12px 14px;direction:ltr;text-align:start}
+.gate .row{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.msg{margin-top:16px;color:var(--err);font-size:.86rem;min-height:1.4em}
+.note{margin-top:22px;color:var(--soft);font-size:.82rem;line-height:1.9}
+.demo{background:rgba(var(--gr),.12);border-inline-start:3px solid var(--gold);padding:10px 14px;margin:18px 0 0;font-size:.86rem}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:24px 0}
+.kpi{background:var(--bg2);padding:20px 22px}
+.kpi small{display:block;color:var(--soft);font-size:.78rem}
+.kpi b{display:block;font-size:clamp(1.8rem,3.4vw,2.6rem);font-weight:500;line-height:1.2;margin-top:4px;direction:ltr;text-align:start}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}
+.card{background:var(--bg2);padding:22px 24px;min-width:0}
+.c12{grid-column:span 12}.c8{grid-column:span 8}.c6{grid-column:span 6}.c4{grid-column:span 4}
+.card h2{font-size:1rem;font-weight:500;margin-bottom:14px}
+.card h2 small{color:var(--soft);font-weight:400;font-size:.78rem;margin-inline-start:8px}
+.rows{display:grid;gap:9px}
+.r{display:grid;grid-template-columns:minmax(0,13em) minmax(0,1fr) 3.2em;align-items:center;gap:10px;font-size:.86rem}
+.r span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.r .b{height:8px;background:rgba(var(--inkr),.08)}
+.r .b i{display:block;height:100%;background:var(--gold)}
+.r em{font-style:normal;color:var(--soft);text-align:end;direction:ltr}
+.cc{display:inline-block;min-width:1.9em;margin-inline-end:6px;font-size:.68rem;letter-spacing:.06em;color:var(--gold2);direction:ltr}
+.days{display:flex;align-items:flex-end;gap:3px;height:150px;direction:ltr}
+.days i{flex:1;min-width:3px;background:var(--gold);min-height:2px;opacity:.9;position:relative}
+.days i:hover{opacity:1;background:var(--gold2)}
+.axis{display:flex;justify-content:space-between;color:var(--soft);font-size:.72rem;margin-top:6px;direction:ltr}
+.empty{color:var(--soft);font-size:.86rem}
+.tw{overflow:auto;max-height:560px;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:.84rem}
+th,td{text-align:start;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{position:sticky;top:0;background:var(--bg2);color:var(--soft);font-weight:400;font-size:.76rem}
+td.e{direction:ltr;text-align:start}
+.srch{width:min(340px,100%);font:inherit;font-size:.9rem;color:var(--ink);background:rgba(var(--inkr),.06);border:0;border-bottom:1px solid var(--line);padding:9px 12px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+[hidden]{display:none!important}
+@media(max-width:1000px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.c8,.c6,.c4{grid-column:span 12}}
+@media(max-width:520px){.r{grid-template-columns:minmax(0,7.5em) minmax(0,1fr) 2.8em}}
+</style>
+</head>
+<body>
+<header><div class="w">
+<div class="t"><svg viewBox="0 0 547 703" aria-hidden="true"><polygon points="0,0 547,0 274,352" fill="currentColor" style="color:var(--gold)"/><polygon points="274,352 0,703 547,703" fill="currentColor" style="color:var(--gold2)"/></svg><span>X Architecture</span><small>STATS</small></div>
+<div class="act"><button class="bt g" id="rf" hidden>تحديث</button><button class="bt g" id="ex" hidden>تصدير CSV</button><button class="bt g" id="out" hidden>خروج</button></div>
+</div></header>
+
+<main><div class="w">
+<section class="gate" id="gate">
+<h1>لوحة الإحصائيات</h1>
+<p class="sub">للاطلاع على المسجّلين في المنصة وبلدانهم وجامعاتهم وما يهمّهم.</p>
+<form id="gf" autocomplete="off">
+<div id="apiw"><label for="api">رابط الخادم (Apps Script — ينتهي بـ /exec)</label><input id="api" type="url" placeholder="https://script.google.com/macros/s/…/exec"></div>
+<label for="key">مفتاح الإدارة</label><input id="key" type="password" autocomplete="off">
+<div class="row"><button class="bt" type="submit">عرض الإحصائيات</button><button class="bt g" type="button" id="dm">معاينة ببيانات تجريبية</button></div>
+<p class="msg" id="msg" role="alert"></p>
+</form>
+<p class="note">المفتاح هو القيمة <b>ADMIN_KEY</b> التي ضبطتها في إعدادات السكربت. لا يُحفظ إلا في هذه النافذة المفتوحة (يُنسى عند إغلاقها). راجع <b>backend/SETUP.md</b> لخطوات التشغيل.</p>
+</section>
+
+<section id="dash" hidden>
+<div class="top"><div><h1>إحصائيات المنصة</h1><p class="sub" id="gen"></p></div></div>
+<p class="demo" id="demo" hidden>هذه بيانات تجريبية للمعاينة فقط وليست بيانات حقيقية.</p>
+<div class="kpis" id="kpis"></div>
+<div class="grid">
+<div class="card c8"><h2>التسجيلات اليومية <small>آخر 30 يوماً</small></h2><div id="days"></div></div>
+<div class="card c4"><h2>التفاعل مع التواصل</h2><div class="rows" id="ev"></div></div>
+<div class="card c6"><h2>الدول</h2><div class="rows" id="co"></div></div>
+<div class="card c6"><h2>من هم المسجّلون</h2><div class="rows" id="kind"></div><h2 style="margin-top:22px">المرحلة الدراسية</h2><div class="rows" id="stage"></div></div>
+<div class="card c6"><h2>الجامعات</h2><div class="rows" id="uni"></div></div>
+<div class="card c6"><h2>التخصصات</h2><div class="rows" id="spec"></div></div>
+<div class="card c6"><h2>ما الذي يهمّهم</h2><div class="rows" id="int"></div></div>
+<div class="card c6"><h2>البرامج الأكثر مشاهدة</h2><div class="rows" id="prog"></div></div>
+<div class="card c12"><div class="top"><h2>المسجّلون <small id="cnt"></small></h2><input class="srch" id="sq" type="search" placeholder="بحث بالاسم أو البريد أو الجامعة…" aria-label="بحث"></div><div class="tw"><table><thead><tr><th>الاسم</th><th>البريد</th><th>الدولة</th><th>الصفة</th><th>الجامعة</th><th>التخصص</th><th>تواصل</th><th>الاهتمامات</th><th>التسجيل</th></tr></thead><tbody id="ut"></tbody></table></div></div>
+</div>
+</section>
+</div></main>
+
+<script>
+(function(){
+var API=(window.XCFG&&XCFG.api)||'',D=null,DEMO=false;
+var $=function(i){return document.getElementById(i)};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+var KIND={student:'طالب',grad:'متخرج',other:'آخر'},
+STAGE={'1':'المرحلة الأولى','2':'المرحلة الثانية','3':'المرحلة الثالثة','4':'المرحلة الرابعة','5':'المرحلة الخامسة',pg:'دراسات عليا',pre:'قبل الجامعة'},
+INT={courses:'الدورات',design:'تصميم معماري',viz:'إظهار معماري',critique:'نقد معماري',super:'إشراف ومتابعة'},
+LANG={ar:'العربية',en:'English',tr:'Türkçe',fr:'Français',ku:'کوردی'},
+PROG={autocad:'AutoCAD',revit:'Revit','3dsmax':'3ds Max',sketchup:'SketchUp',rhinoceros:'Rhinoceros',grasshopper:'Grasshopper',blender:'Blender',maya:'Maya',unreal:'Unreal Engine',corona:'Corona',lumion:'Lumion',d5render:'D5 Render',vray:'V-Ray',enscape:'Enscape',twinmotion:'Twinmotion',vantage:'Vantage',photoshop:'Photoshop',illustrator:'Illustrator',computer:'دورة الحاسوب'};
+var dn=null;try{dn=new Intl.DisplayNames(['ar'],{type:'region'})}catch(e){}
+function cname(c,en){try{return dn&&dn.of(c)||en||c}catch(e){return en||c}}
+if(API)$('apiw').hidden=true;
+var sk=null;try{sk=sessionStorage.getItem('xk')}catch(e){}if(sk)$('key').value=sk;
+
+function rows(el,list,fmt){
+  var mx=Math.max.apply(null,list.map(function(x){return x[1]}).concat([1]));
+  el.innerHTML=list.length?list.map(function(x){var l=fmt?fmt(x[0]):esc(x[0]);return'<div class="r"><span title="'+esc(typeof l==='string'?l.replace(/<[^>]*>/g,''):'')+'">'+l+'</span><div class="b"><i style="width:'+Math.max(2,Math.round(x[1]/mx*100))+'%"></i></div><em>'+x[1]+'</em></div>'}).join(''):'<p class="empty">لا توجد بيانات بعد.</p>'}
+function objList(o,map){return Object.keys(o||{}).map(function(k){return[k,o[k]]}).sort(function(a,b){return b[1]-a[1]})}
+function render(){
+  var d=D;$('gen').textContent='آخر تحديث: '+new Date(d.generated).toLocaleString('ar-IQ-u-nu-latn',{dateStyle:'medium',timeStyle:'short'});
+  $('demo').hidden=!DEMO;
+  var k=[['المسجّلون',d.total],['اليوم',d.today],['آخر 7 أيام',d.last7],['آخر 30 يوماً',d.last30],['نشطون خلال 7 أيام',d.active7]];
+  $('kpis').innerHTML=k.map(function(x){return'<div class="kpi"><small>'+x[0]+'</small><b>'+x[1]+'</b></div>'}).join('');
+  // daily chart: last 30 days
+  var days=[],now=new Date(),mx=1;
+  for(var i=29;i>=0;i--){var t=new Date(now.getTime()-i*864e5),s=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Baghdad'}).format(t);days.push([s,(d.byDay||{})[s]||0]);mx=Math.max(mx,days[days.length-1][1])}
+  $('days').innerHTML='<div class="days">'+days.map(function(x){return'<i style="height:'+Math.max(2,Math.round(x[1]/mx*100))+'%" title="'+x[0]+' · '+x[1]+'"></i>'}).join('')+'</div><div class="axis"><span>'+days[0][0]+'</span><span>'+days[29][0]+'</span></div>';
+  var e=d.events||{};
+  rows($('ev'),[['تيليجرام',e.tg||0],['إنستغرام',e.ig||0],['صفحة التواصل',e.contact||0],['زيارات المسجّلين',e.visits||0]]);
+  rows($('co'),(d.country||[]).map(function(x){return[x[0],x[2],x[1]]}),function(c){var it=(d.country||[]).filter(function(y){return y[0]===c})[0];return'<b class="cc">'+esc(c)+'</b>'+esc(cname(c,it&&it[1]))});
+  rows($('kind'),objList(d.kind),function(x){return esc(KIND[x]||x)});
+  rows($('stage'),objList(d.stage).sort(function(a,b){return String(a[0])<String(b[0])?-1:1}),function(x){return esc(STAGE[x]||x)});
+  rows($('uni'),d.uni||[]);rows($('spec'),d.spec||[]);
+  rows($('int'),objList(d.interests),function(x){return esc(INT[x]||x)});
+  rows($('prog'),e.prog||[],function(x){return esc(PROG[x]||x)});
+  tbl();
+}
+function tbl(){
+  var q=($('sq').value||'').trim().toLowerCase(),u=(D.users||[]).filter(function(x){return!q||(x.name+' '+x.email+' '+x.uni+' '+x.spec+' '+x.contact).toLowerCase().indexOf(q)>=0});
+  $('cnt').textContent=u.length+' / '+(D.users||[]).length;
+  $('ut').innerHTML=u.map(function(x){
+    var st=x.kind==='student'?(KIND.student+(x.stage?' · '+(STAGE[x.stage]||x.stage):'')):x.kind==='grad'?(KIND.grad+(x.gradYear?' · '+x.gradYear:'')):KIND.other;
+    return'<tr><td>'+esc(x.name)+'</td><td class="e">'+esc(x.email)+'</td><td>'+esc(cname(x.country,x.countryName))+'</td><td>'+esc(st)+'</td><td>'+esc(x.uni)+'</td><td>'+esc(x.spec)+'</td><td class="e">'+esc(x.contact)+'</td><td>'+esc((x.interests||'').split(',').filter(Boolean).map(function(i){return INT[i]||i}).join('، '))+'</td><td class="e">'+esc((x.created||'').slice(0,10))+'</td></tr>'}).join('')||'<tr><td colspan="9" class="empty">لا توجد نتائج.</td></tr>'}
+$('sq').addEventListener('input',function(){if(D)tbl()});
+function show(){$('gate').hidden=true;$('dash').hidden=false;['rf','ex','out'].forEach(function(i){$(i).hidden=false});render()}
+function msg(t){$('msg').textContent=t||''}
+function load(){
+  var key=$('key').value.trim(),api=API||$('api').value.trim();
+  if(!api){msg('أدخل رابط الخادم.');return}
+  if(!key){msg('أدخل مفتاح الإدارة.');return}
+  msg('جارٍ التحميل…');DEMO=false;
+  fetch(api,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({a:'stats',key:key})})
+   .then(function(r){return r.json()})
+   .then(function(j){
+     if(!j||!j.ok){msg(j&&j.err==='wrong key'?'المفتاح غير صحيح.':'تعذّر التحميل: '+(j&&j.err||'خطأ'));return}
+     try{sessionStorage.setItem('xk',key)}catch(e){}
+     if(!API)try{sessionStorage.setItem('xa',api)}catch(e){}
+     D=j;msg('');show()})
+   .catch(function(){msg('تعذّر الاتصال بالخادم. تأكد من الرابط ومن أن النشر مضبوط على "Anyone".')})}
+$('gf').addEventListener('submit',function(e){e.preventDefault();load()});
+$('rf').addEventListener('click',function(){if(DEMO){demo();return}$('dash').hidden=true;$('gate').hidden=false;load()});
+$('out').addEventListener('click',function(){try{sessionStorage.removeItem('xk');sessionStorage.removeItem('xa')}catch(e){}D=null;$('key').value='';$('dash').hidden=true;$('gate').hidden=false;['rf','ex','out'].forEach(function(i){$(i).hidden=true})});
+var sa=null;try{sa=sessionStorage.getItem('xa')}catch(e){}if(sa&&!API)$('api').value=sa;
+if(sk&&(API||sa))load();
+$('ex').addEventListener('click',function(){
+  if(!D)return;var cols=['name','email','country','countryName','kind','stage','spec','gradYear','uni','contact','interests','lang','created','last_seen','visits'];
+  function c(v){v=String(v==null?'':v);if(/^[=+\-@\t\r]/.test(v))v="'"+v;return'"'+v.replace(/"/g,'""')+'"'}
+  var csv='﻿'+cols.join(',')+'\n'+(D.users||[]).map(function(u){return cols.map(function(k){return c(u[k])}).join(',')}).join('\n');
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='x-architecture-users-'+new Date().toISOString().slice(0,10)+'.csv';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500)});
+/* sample data so the page can be previewed before the backend exists */
+function demo(){
+  var rnd=function(n){var x=Math.sin(n*9301+49297)*233280;return x-Math.floor(x)};
+  var C=[['IQ','Iraq',46],['SA','Saudi Arabia',9],['JO','Jordan',7],['TR','Türkiye',6],['EG','Egypt',5],['SY','Syria',4],['AE','United Arab Emirates',3],['LB','Lebanon',2]],
+  U=['جامعة بغداد','الجامعة التكنولوجية','جامعة الموصل','جامعة البصرة','جامعة دهوك','جامعة النهرين','جامعة الكوفة'],
+  N=['أحمد علي','سارة حسن','محمد كاظم','نور الهدى','زينب مهدي','علي حيدر','مريم صباح','حسين جاسم','ريم سعد','عمر فاضل'],
+  list=[],byDay={},k=0;
+  C.forEach(function(c){for(var i=0;i<c[2];i++){k++;var dd=Math.floor(rnd(k)*34),t=new Date(Date.now()-dd*864e5),kind=rnd(k+7)<.72?'student':rnd(k+7)<.92?'grad':'other',day=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Baghdad'}).format(t);
+    byDay[day]=(byDay[day]||0)+1;
+    list.push({name:N[k%N.length],email:'user'+k+'@example.com',country:c[0],countryName:c[1],kind:kind,stage:kind==='student'?String(1+Math.floor(rnd(k+3)*5)):'',spec:kind==='student'?'':'هندسة معمارية',gradYear:kind==='grad'?String(2018+Math.floor(rnd(k+5)*8)):'',uni:kind==='other'?'':U[Math.floor(rnd(k+11)*U.length)],contact:rnd(k)<.5?'@user'+k:'',interests:['courses','viz','design','super'].slice(0,1+Math.floor(rnd(k+2)*3)).join(','),lang:'ar',created:t.toISOString(),last_seen:t.toISOString(),visits:'1'})}});
+  var cnt=function(f){var o={};list.forEach(function(u){var v=f(u);if(v)o[v]=(o[v]||0)+1});return o},top=function(o,n){return objList(o).slice(0,n)};
+  D={ok:true,generated:new Date().toISOString(),total:list.length,today:byDay[new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Baghdad'}).format(new Date())]||0,last7:list.filter(function(u){return Date.now()-new Date(u.created)<7*864e5}).length,last30:list.filter(function(u){return Date.now()-new Date(u.created)<30*864e5}).length,active7:31,active30:58,
+   country:C.map(function(c){return[c[0],c[1],c[2]]}),kind:cnt(function(u){return u.kind}),stage:cnt(function(u){return u.stage}),interests:(function(){var o={};list.forEach(function(u){u.interests.split(',').forEach(function(i){o[i]=(o[i]||0)+1})});return o})(),lang:{ar:80,en:12,tr:4,fr:2,ku:6},
+   uni:top(cnt(function(u){return u.uni.toLowerCase()}),20),spec:top(cnt(function(u){return u.spec.toLowerCase()}),20),byDay:byDay,
+   events:{prog:[['revit',64],['3dsmax',51],['autocad',47],['vray',39],['lumion',33],['rhinoceros',22],['photoshop',15]],tg:77,ig:41,contact:58,visits:312},users:list.sort(function(a,b){return a.created<b.created?1:-1})};
+  DEMO=true;show()}
+$('dm').addEventListener('click',demo);
+if(/[?&]demo\b/.test(location.search))demo();
+})();
+</script>
+</body>
+</html>
