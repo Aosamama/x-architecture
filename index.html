@@ -291,9 +291,6 @@ html.intro #bt{animation:bB 6.5s ease-in-out infinite}
 .cbx ul{list-style:none;margin-top:16px;display:flex;flex-wrap:wrap;gap:8px 20px}
 .cbx li{font-size:.8rem;color:var(--gold2)}
 .cbx li::before{content:"";display:inline-block;width:5px;height:5px;background:var(--gold);margin-inline-end:8px;vertical-align:middle}
-.cbx ul.en{direction:ltr}
-.cbx ul.en li{font-size:.9rem;color:var(--ink)}
-.cbx ul.en li::before{margin-inline-end:0;margin-inline-start:0;margin-right:8px}
 .ch{font-size:1.15rem;font-weight:500;margin:48px 0 16px;text-align:start}
 .cpt{display:grid;grid-template-columns:minmax(120px,.75fr) 1fr 1fr;gap:10px}
 .cpt>*{padding:20px 24px}
@@ -308,9 +305,22 @@ html.intro #bt{animation:bB 6.5s ease-in-out infinite}
 .cof b{color:var(--gold);font-weight:500}
 .cof span:not(.pv){color:var(--soft);font-size:.92rem}
 #courses .cin{margin:26px 0 0}.cof span:not(.pv){text-wrap:balance}
-.cta{margin-top:30px;background:linear-gradient(100deg,rgba(173,145,84,.16),rgba(173,145,84,.04));display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
-.cta>span{font-size:1.02rem}
 @media(max-width:700px){.cg{grid-template-columns:1fr}.cpt{grid-template-columns:1fr 1fr}.cpt .hh{display:none}.cpt .rl{grid-column:1/-1;background:none;padding:14px 0 0}.cpt .pc small{display:block}.cpt .pc{padding:16px 18px}.cof{grid-template-columns:1fr auto;gap:6px 14px}.cof span:not(.pv){grid-column:1/-1;grid-row:2}.cbx{padding:22px}}
+
+/* footer: rights | logo | year */
+footer .w.fr{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px}
+footer .w.fr>span:last-child{text-align:end}
+footer .lg.fl svg{width:24px;height:31px}
+footer .w.fr>span:first-child{letter-spacing:.02em}
+/* program icons: gold, natural colour on hover */
+.cbx ul.pg{direction:ltr;display:grid;grid-template-columns:repeat(3,1fr);gap:14px 12px;margin-top:22px}
+.cbx ul.pg li{display:flex;align-items:center;gap:11px;font-size:.88rem;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.cbx ul.pg li::before{display:none}
+.cbx ul.pg i{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:.68rem;font-weight:500;letter-spacing:.03em;color:var(--gold);background:rgba(173,145,84,.14);transition:background .35s,color .35s,transform .35s}
+.cbx ul.pg span{color:var(--soft);transition:color .35s}
+.cbx ul.pg li:hover i,.cbx ul.pg li.hv i{background:var(--pc);color:#0a0a0a;transform:scale(1.08)}
+.cbx ul.pg li:hover span,.cbx ul.pg li.hv span{color:var(--ink)}
+@media(max-width:700px){.cbx ul.pg{grid-template-columns:1fr 1fr}footer .w.fr{gap:10px;font-size:.74rem}}
 </style>
 </head>
 <body>
@@ -375,19 +385,18 @@ T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener
 </div>
 <h3 class="ch">البرامج</h3>
 <div class="cg">
-<div class="cbx"><h3>برامج ثلاثية الأبعاد</h3><em>مدة الدورة 15–20 يوماً</em><ul class="en"><li>AutoCAD</li><li>Revit</li><li>3ds Max</li><li>SketchUp</li><li>Rhinoceros</li><li>Grasshopper</li><li>Blender</li><li>Maya</li><li>Unreal Engine</li></ul></div>
-<div class="cbx"><h3>برامج الإظهار المعماري</h3><em>مدة الدورة 7–10 أيام</em><ul class="en"><li>Corona</li><li>Lumion</li><li>D5 Render</li><li>V-Ray</li><li>Enscape</li><li>Twinmotion</li><li>Vantage</li><li>Photoshop</li><li>Illustrator</li></ul></div>
+<div class="cbx"><h3>برامج ثلاثية الأبعاد</h3><em>مدة الدورة 15–20 يوماً</em><ul class="pg"><li style="--pc:#e5383b"><i>AC</i><span>AutoCAD</span></li><li style="--pc:#1b9ce2"><i>RV</i><span>Revit</span></li><li style="--pc:#2ec4b6"><i>3DS</i><span>3ds Max</span></li><li style="--pc:#4c7ef3"><i>SK</i><span>SketchUp</span></li><li style="--pc:#aab4bf"><i>RH</i><span>Rhinoceros</span></li><li style="--pc:#7bc043"><i>GH</i><span>Grasshopper</span></li><li style="--pc:#f5792a"><i>BL</i><span>Blender</span></li><li style="--pc:#36b0c9"><i>MY</i><span>Maya</span></li><li style="--pc:#e6e6e6"><i>UE</i><span>Unreal Engine</span></li></ul></div>
+<div class="cbx"><h3>برامج الإظهار المعماري</h3><em>مدة الدورة 7–10 أيام</em><ul class="pg"><li style="--pc:#f26a4b"><i>CO</i><span>Corona</span></li><li style="--pc:#34c3a0"><i>LU</i><span>Lumion</span></li><li style="--pc:#b47cf2"><i>D5</i><span>D5 Render</span></li><li style="--pc:#f7b500"><i>VR</i><span>V-Ray</span></li><li style="--pc:#1fa2c9"><i>EN</i><span>Enscape</span></li><li style="--pc:#6c5ce7"><i>TM</i><span>Twinmotion</span></li><li style="--pc:#e84393"><i>VA</i><span>Vantage</span></li><li style="--pc:#31a8ff"><i>PS</i><span>Photoshop</span></li><li style="--pc:#ff9a00"><i>IL</i><span>Illustrator</span></li></ul></div>
 </div>
 <h3 class="ch">العروض</h3>
 <div class="cof"><b>العرض الأول</b><span>برنامج ثلاثي الأبعاد + برنامج إظهار + دورة حاسوب</span><span class="pv"><i>220</i><u>ألف د.ع</u></span></div>
 <div class="cof"><b>العرض الثاني</b><span>برنامجان ثلاثيا الأبعاد + برنامجا إظهار + دورة حاسوب</span><span class="pv"><i>450</i><u>ألف د.ع</u></span></div>
 <div class="cof"><b>العرض الثالث</b><span>4 برامج ثلاثية الأبعاد + 5 برامج إظهار + دورة حاسوب</span><span class="pv"><i>750</i><u>ألف د.ع</u></span></div>
 <p class="note cin">يشمل الاشتراك: تثبيت وتفعيل البرامج، إضافات ومكتبات جاهزة، دعم ومتابعة حتى 100 يوم بعد انتهاء الدورة، وشهادة إتمام.</p>
-<div class="cbx cta"><span>للاشتراك والاستفسار تواصل معنا:</span><div class="bt"><a class="b s" href="https://t.me/x_architecture" target="_blank" rel="noopener">تيليجرام x_architecture</a><a class="b" href="https://instagram.com/x.archiitecture" target="_blank" rel="noopener">إنستغرام x.archiitecture</a></div></div>
 </div></section>
 
 <section id="contact"><div class="w"><div class="ct">
-<div><h2>ابدأ مشروعك معنا</h2><p>أخبرنا بما تحتاجه وسنرتب معك الخطوات التالية.</p></div>
+<div><h2>ابدأ مشروعك معنا</h2><p>أخبرنا بما تحتاجه، خدمة أو كورساً، وسنرتب معك الخطوات التالية.</p></div>
 <div class="bt"><a class="b s" href="https://instagram.com/x.archiitecture" target="_blank" rel="noopener">إنستغرام x.archiitecture</a><a class="b" href="https://t.me/x_architecture" target="_blank" rel="noopener">تيليجرام x_architecture</a></div>
 </div></div></section>
 </div>
@@ -407,7 +416,7 @@ T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener
 <div id="vw"><section><div class="w" id="wk"></div></section></div>
 </main>
 
-<footer><div class="w"><span class="lg"><svg viewBox="0 0 547 703"><use href="#mark"/></svg><b>X</b><i>.ARCH</i></span><span>© 2026 X Architecture — جميع الحقوق محفوظة</span></div></footer>
+<footer><div class="w fr"><span>جميع الحقوق محفوظة</span><span class="lg fl"><svg viewBox="0 0 547 703" aria-label="X Architecture"><use href="#mark"/></svg></span><span>© 2026</span></div></footer>
 <div id="lb" class="lb" hidden role="dialog" aria-modal="true" aria-label="عرض العمل"><button id="lbx" class="lbb lbx" type="button" aria-label="إغلاق">×</button><button id="lbp" class="lbb lbp" type="button" aria-label="السابق">‹</button><img id="lbi" alt=""><button id="lbn" class="lbb lbn" type="button" aria-label="التالي">›</button></div>
 
 <script>
@@ -420,6 +429,7 @@ function route(){
   setTimeout(rvScan,30)
 }
 addEventListener('hashchange',route);route();
+document.addEventListener('click',function(e){if(!matchMedia('(hover:none)').matches)return;var l=e.target.closest&&e.target.closest('ul.pg li');if(l)l.classList.toggle('hv')});
 var NW=[["سنوهيتا تفتتح دار الأوبرا الكبرى في شنغهاي", "افتتاح الدار بسقف منحنٍ واسع وإطلالات بانورامية على النهر.", "ArchDaily · 19/10", "https://www.archdaily.com/1187067/snohettas-shanghai-grand-opera-house-opens-with-a-sweeping-roof-and-panoramic-river-views"], ["مصنع Green Field في بنغلاديش يفوز بجائزة RIBA الدولية 2026", "فاز مشروع Nakshabid Architects بنموذجه البديل للمصانع.", "ArchDaily · 19/10", "https://www.archdaily.com/1187060/nakshabid-architects-alternative-factory-model-in-bangladesh-receives-the-riba-international-prize-2026"], ["Lion Green Road يفوز بجائزة RIBA ستيرلنغ 2026", "المشروع من تصميم Mary Duggan Architects وruffarchitects.", "ArchDaily · 16/10", "https://www.archdaily.com/1186944/lion-green-road-by-mary-duggan-architects-and-ruffarchitects-wins-riba-stirling-prize-2026"], ["ترشيحات World Monuments Watch 2027 تشير إلى أبرز تهديدات التراث", "تتصدرها التقشف الحكومي وتأثير المناخ ونقص المهارات.", "ArchDaily · 16/10", "https://www.archdaily.com/1186995/world-monuments-watch-2027-nominations-point-to-government-austerity-climate-impact-and-skills-shortages-as-main-threats-to-heritage"], ["OMA وJason Long يحوّلان مصنع Folger Coffee التاريخي في هيوستن إلى مدرسة للموسيقى والفنون", "إعادة استخدام مبنى صناعي تاريخي لوظيفة تعليمية جديدة.", "ArchDaily · 13/10", "https://www.archdaily.com/1186703/oma-jason-long-is-transforming-houstons-historic-folger-coffee-plant-into-a-music-and-arts-school"], ["Utopian Hours 2026 تعود إلى تورينو", "بحضور السير Peter Cook وبرنامج عن صناعة المدن.", "ArchDaily · 12/10", "https://www.archdaily.com/1186668/cities-are-mental-weapons-utopian-hours-2026-returns-to-turin-with-sir-peter-cook-and-a-program-on-city-making"]];
 var SN=["المرحلة الأولى","المرحلة الثانية","المرحلة الثالثة","المرحلة الرابعة","المرحلة الخامسة"];
 var BK=[
@@ -444,7 +454,7 @@ var BK=[
 ["Cities for People","Jan Gehl","تصميم المدن على مقياس الإنسان."],
 ["Design with Nature","Ian McHarg","التخطيط المنسجم مع الطبيعة والبيئة."]]];
 var L='ar',CS=0,lgb=document.getElementById('lgb');
-var EN={"الخدمات":"Services","الكورسات":"Courses","دورات في برامج العمارة والإظهار — مباشرة أو مسجّلة، من الأساسيات حتى تنفيذ مشروع متكامل.":"Courses in architecture and visualization software — live or recorded, from the basics to a complete project.","الدورات التفاعلية":"Live courses","مجموعات أسبوعية على مدار العام، بمعدل ساعتين للمحاضرة والتوقيت بالتوافق مع المشتركين. انضم لمجموعة أو كوّن مجموعتك الخاصة مع أصدقائك.":"Weekly groups all year round, about two hours per lecture, with timing agreed with participants. Join a group or form your own with friends.","شرح مباشر مع إمكانية طرح الأسئلة":"Live teaching with Q&A","برنامج منظّم متسلسل":"A structured, sequential programme","مرونة في المواعيد":"Flexible schedule","الدورات المسجّلة":"Recorded courses","محاضرات مسجّلة ومنظّمة تغطي البرنامج بالتفصيل. فترة تجريبية 24 ساعة قبل الاشتراك، وبعدها وصول دائم مع دعم للإجابة عن استفساراتك.":"Organized recorded lectures covering the software in detail. A 24-hour trial before you subscribe, then permanent access with support for your questions.","تعلّم حسب وقتك":"Learn at your own pace","محتوى متكامل":"Complete content","متابعة ودعم":"Follow-up and support","الأسعار":"Prices","برامج ثلاثية الأبعاد":"3D programs","برامج الإظهار المعماري":"Architectural visualization programs","ألف د.ع":"K IQD","البرامج":"Programs","مدة الدورة 15–20 يوماً":"Course length: 15–20 days","مدة الدورة 7–10 أيام":"Course length: 7–10 days","العروض":"Offers","العرض الأول":"Offer 1","العرض الثاني":"Offer 2","العرض الثالث":"Offer 3","برنامج ثلاثي الأبعاد + برنامج إظهار + دورة حاسوب":"One 3D program + one visualization program + a computer course","برنامجان ثلاثيا الأبعاد + برنامجا إظهار + دورة حاسوب":"Two 3D programs + two visualization programs + a computer course","4 برامج ثلاثية الأبعاد + 5 برامج إظهار + دورة حاسوب":"Four 3D programs + five visualization programs + a computer course","يشمل الاشتراك: تثبيت وتفعيل البرامج، إضافات ومكتبات جاهزة، دعم ومتابعة حتى 100 يوم بعد انتهاء الدورة، وشهادة إتمام.":"Every course includes software installation and activation, ready-made add-ons and libraries, support for up to 100 days after the course, and a certificate of completion.","للاشتراك والاستفسار تواصل معنا:":"To enrol or ask a question, message us:","الأخبار والكتب":"News & Books","تواصل":"Contact",
+var EN={"الخدمات":"Services","الكورسات":"Courses","دورات في برامج العمارة والإظهار — مباشرة أو مسجّلة، من الأساسيات حتى تنفيذ مشروع متكامل.":"Courses in architecture and visualization software — live or recorded, from the basics to a complete project.","الدورات التفاعلية":"Live courses","مجموعات أسبوعية على مدار العام، بمعدل ساعتين للمحاضرة والتوقيت بالتوافق مع المشتركين. انضم لمجموعة أو كوّن مجموعتك الخاصة مع أصدقائك.":"Weekly groups all year round, about two hours per lecture, with timing agreed with participants. Join a group or form your own with friends.","شرح مباشر مع إمكانية طرح الأسئلة":"Live teaching with Q&A","برنامج منظّم متسلسل":"A structured, sequential programme","مرونة في المواعيد":"Flexible schedule","الدورات المسجّلة":"Recorded courses","محاضرات مسجّلة ومنظّمة تغطي البرنامج بالتفصيل. فترة تجريبية 24 ساعة قبل الاشتراك، وبعدها وصول دائم مع دعم للإجابة عن استفساراتك.":"Organized recorded lectures covering the software in detail. A 24-hour trial before you subscribe, then permanent access with support for your questions.","تعلّم حسب وقتك":"Learn at your own pace","محتوى متكامل":"Complete content","متابعة ودعم":"Follow-up and support","الأسعار":"Prices","برامج ثلاثية الأبعاد":"3D programs","برامج الإظهار المعماري":"Architectural visualization programs","ألف د.ع":"K IQD","البرامج":"Programs","مدة الدورة 15–20 يوماً":"Course length: 15–20 days","مدة الدورة 7–10 أيام":"Course length: 7–10 days","العروض":"Offers","العرض الأول":"Offer 1","العرض الثاني":"Offer 2","العرض الثالث":"Offer 3","برنامج ثلاثي الأبعاد + برنامج إظهار + دورة حاسوب":"One 3D program + one visualization program + a computer course","برنامجان ثلاثيا الأبعاد + برنامجا إظهار + دورة حاسوب":"Two 3D programs + two visualization programs + a computer course","4 برامج ثلاثية الأبعاد + 5 برامج إظهار + دورة حاسوب":"Four 3D programs + five visualization programs + a computer course","يشمل الاشتراك: تثبيت وتفعيل البرامج، إضافات ومكتبات جاهزة، دعم ومتابعة حتى 100 يوم بعد انتهاء الدورة، وشهادة إتمام.":"Every course includes software installation and activation, ready-made add-ons and libraries, support for up to 100 days after the course, and a certificate of completion.","الأخبار والكتب":"News & Books","تواصل":"Contact",
 "منصتك المعمارية":"Your architecture platform","للتصميم والإظهار":"for design, visualization","والإشراف":"& supervision",
 "نُظهر مشروعك وننتقده ونتابعه خطوة بخطوة — من الفكرة الأولى حتى اللوحة النهائية.":"We visualize, critique and follow your project step by step — from the first idea to the final board.",
 "خدماتنا":"Our services","أخبار وكتب معمارية":"Architecture news & books","الخدمات التي نقدمها":"Our services",
@@ -452,11 +462,11 @@ var EN={"الخدمات":"Services","الكورسات":"Courses","دورات ف�
 "تصميم معماري":"Architectural design","تصميم مشاريع لأصحاب المشاريع والعملاء، من الفكرة الأولى حتى المخططات والتسليم.":"Design of projects for project owners and clients, from the first idea to drawings and handover.",
 "نقد وإشراف ومتابعة للطلاب":"Critique, supervision & follow-up for students","مراجعة دورية وملاحظات نقدية واضحة ومتابعة مستمرة لمشروعك حتى الإنجاز — خدمة مخصصة للطلاب.":"Regular reviews, clear critical feedback and continuous follow-up on your project until completion — a service dedicated to students.",
 "لوحات وتقديم المشاريع":"Boards & project presentation","ملاحظة: لا نصمّم مشاريع الطلاب — نقدّم النقد والإشراف والمتابعة لهم فقط.":"Note: we do not design students’ projects — we only offer them critique, supervision and follow-up.","تنسيق اللوحات والعروض التقديمية بإخراج احترافي يليق بالمشروع.":"Layout of boards and presentations with a professional finish worthy of the project.",
-"ابدأ مشروعك معنا":"Start your project with us","أخبرنا بما تحتاجه وسنرتب معك الخطوات التالية.":"Tell us what you need and we will plan the next steps with you.",
+"ابدأ مشروعك معنا":"Start your project with us","أخبرنا بما تحتاجه، خدمة أو كورساً، وسنرتب معك الخطوات التالية.":"Tell us what you need, a service or a course, and we will plan the next steps with you.",
 "إنستغرام x.archiitecture":"Instagram x.archiitecture","تيليجرام x_architecture":"Telegram x_architecture",
 "أخبار معمارية":"Architecture news","أخبار معمارية من مصادر عالمية تتحدّث تلقائياً كل يوم — الصور من مصادرها الأصلية، واضغط على الخبر لقراءته هناك.":"Architecture news from global sources, refreshed automatically every day — images come from their original sources; click a story to read it there.",
 "كتب معمارية حسب المرحلة":"Architecture books by year","اختر مرحلتك الدراسية. الكتب المنهجية الحديثة محمية بحقوق النشر، لذلك يفتح زرها صفحة الاستعارة المجانية في Open Library لقراءة الكتاب كاملاً في المتصفح بحساب مجاني. أما قسم «ملفات مجانية» فروابطه للقراءة أو التحميل المباشر بدون حساب.":"Choose your study year. Recent textbooks are under copyright, so their button opens the free lending page on Open Library, where you can read the full book in your browser with a free account. The “Free files” section links to books you can read or download directly, no account needed.",
-"© 2026 X Architecture — جميع الحقوق محفوظة":"© 2026 X Architecture — All rights reserved","مكتبات مجانية:":"Free libraries:","أعمال الطلاب":"Student work"};
+"جميع الحقوق محفوظة":"All rights reserved","مكتبات مجانية:":"Free libraries:","أعمال الطلاب":"Student work"};
 var NWE=[["Snøhetta’s Shanghai Grand Opera House opens", "The opera house opens with a sweeping roof and panoramic river views."], ["Green Field Factory in Bangladesh wins the RIBA International Prize 2026", "Nakshabid Architects’ project wins with its alternative factory model."], ["Lion Green Road wins the RIBA Stirling Prize 2026", "The project is designed by Mary Duggan Architects and ruffarchitects."], ["World Monuments Watch 2027 nominations point to the main threats to heritage", "Led by government austerity, climate impact and skills shortages."], ["OMA and Jason Long transform Houston’s historic Folger Coffee Plant into a music and arts school", "Reusing a historic industrial building for a new educational purpose."], ["Utopian Hours 2026 returns to Turin", "With Sir Peter Cook and a program on city-making."]];
 var SNE=["Year 1","Year 2","Year 3","Year 4","Year 5"];
 var BKE=[["The foundation for understanding mass, space and order in design.","Architectural drawing and visual communication techniques.","A reference for dimensions and design standards.","The oldest surviving architectural treatise — completely free."],
