@@ -40,7 +40,7 @@ html[data-fxcur] input,html[data-fxcur] textarea,html[data-fxcur] [contenteditab
 @keyframes fxk{from{transform:translate(var(--x),var(--y)) scale(.3);opacity:.95}to{transform:translate(var(--x),var(--y)) scale(3.4);opacity:0}}
 
 /* ---------- hero: parametric line ribbons + headline ---------- */
-#fxn{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(#000 72%,transparent);mask-image:linear-gradient(#000 72%,transparent)}
+#fxn{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(transparent,#000 24%,#000 70%,transparent);mask-image:linear-gradient(transparent,#000 24%,#000 70%,transparent)}
 /* the hero mark just breathes: it comes a little closer, then drifts back (no pointer tilt) */
 html[data-fx="1"] .mk{will-change:transform;animation:fxz 7s ease-in-out 3.4s infinite}
 @keyframes fxz{0%,100%{transform:scale(1)}50%{transform:scale(1.075)}}
