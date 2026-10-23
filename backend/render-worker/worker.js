@@ -8,7 +8,7 @@
    Optional variables (Settings → Variables):
      DAILY_LIMIT  images per student per day      default 2
      IP_LIMIT     images per network address/day  default 6   (shared mobile networks need more than 2)
-     GLOBAL_CAP   images for everyone per day     default 90  (one 1024px image costs ~85-110 of the 10,000 free neurons/day)
+     GLOBAL_CAP   images for everyone per day     default 55  (one ~1.5 MP image costs ~160 of the 10,000 free neurons/day)
      MODEL        flux2 | sd15                    default flux2
      ORIGINS      comma list of allowed websites  default https://xarch.site,https://www.xarch.site
    Setup in Arabic: backend/render-worker/SETUP.md */
@@ -24,6 +24,7 @@ const STYLES = {
   massing: 'Turn this massing model into a realistic architectural visualization in an urban context. Keep the form and camera angle. Golden hour light, trees, people and street details, shallow depth of field.',
   custom: 'Edit this architectural image exactly as the architect asks. Keep the building geometry, proportions and camera angle unless the architect says otherwise. Photorealistic architectural visualization, realistic materials and lighting.'
 };
+const QUALITY = ' Ultra-sharp, high resolution, crisp fine details, clean edges, no blur, no noise, no distortion.';
 const BAD = /(nude|naked|porn|sex|nsfw|erotic|fetish|gore|blood|corpse|kill|murder|weapon|gun|rifle|terror|bomb|explosive|swastika|isis|عاري|عارية|عراة|جنس|اباحي|إباحي|دم|جثة|قتل|سلاح|بندقية|إرهاب|ارهاب|قنبلة|متفجر)/i;
 const MAX_BYTES = 1.6 * 1024 * 1024;
 const NOTE_MAX = 300;
@@ -62,7 +63,22 @@ async function english(env, note) {
     return t || note;
   } catch (e) { return note; }
 }
-function snap(n) { n = Math.max(256, Math.min(1024, Math.round(n / 64) * 64)); return n; }
+// Output size: as many pixels as 6 tiles of 512x512 allow (about 1.5 MP, up to 1536x1024), keeping the picture's shape.
+// The model bills per 512x512 tile, so the box is chosen from whole tiles and the sides are multiples of 64.
+function dims(asp) {
+  let best = null;
+  for (let cx = 1; cx <= 3; cx++) for (let cy = 1; cy <= 3; cy++) {
+    if (cx * cy > 6) continue;
+    const bw = cx * 512, bh = cy * 512;
+    let w = bw, h = w / asp;
+    if (h > bh) { h = bh; w = h * asp; }
+    w = Math.min(bw, Math.max(256, Math.round(w / 64) * 64));
+    h = Math.min(bh, Math.max(256, Math.round(h / 64) * 64));
+    const a = w * h, err = Math.abs(Math.log(w / h / asp));
+    if (!best || a > best.a * 1.001 || (Math.abs(a - best.a) <= best.a * 0.001 && err < best.err)) best = { w, h, a, err };
+  }
+  return [best.w, best.h];
+}
 
 async function ids(req, env, uid, email) {
   const ip = req.headers.get('CF-Connecting-IP') || 'x';
@@ -127,13 +143,13 @@ export default {
     const per = num(env.DAILY_LIMIT, 2);
     if ((await left(env, k)) <= 0) return json({ ok: false, error: 'limit', left: 0 }, 429, h);
     if ((await getN(env, k.kI)) >= num(env.IP_LIMIT, 6)) return json({ ok: false, error: 'limit', left: 0 }, 429, h);
-    if ((await getN(env, k.kG)) >= num(env.GLOBAL_CAP, 90)) return json({ ok: false, error: 'busy' }, 503, h);
+    if ((await getN(env, k.kG)) >= num(env.GLOBAL_CAP, 55)) return json({ ok: false, error: 'busy' }, 503, h);
 
     const iw = Math.max(1, num(fd.get('iw'), 4)), ih = Math.max(1, num(fd.get('ih'), 3)), asp = Math.min(3, Math.max(1 / 3, iw / ih));
-    const w = asp >= 1 ? 1024 : snap(1024 * asp), hh = asp >= 1 ? snap(1024 / asp) : 1024;
+    const [w, hh] = dims(asp);
     const en = await english(env, note);
     if (en !== note && BAD.test(en)) return json({ ok: false, error: 'note' }, 400, h);
-    const prompt = STYLES[style] + (en ? ' The architect asks for: ' + en + '.' : '');
+    const prompt = STYLES[style] + (en ? ' The architect asks for: ' + en + '.' : '') + QUALITY;
 
     // reserve the slot first (narrows the window for parallel requests), give it back if the model fails
     const keys = [k.kU, k.kE, k.kI, k.kG].filter(Boolean);
