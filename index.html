@@ -19,7 +19,7 @@
 <script src="config.js?v=2"></script>
 <script>try{localStorage.removeItem("xt");var xt=sessionStorage.getItem("xt");if(xt==="light"||xt==="mono"||xt==="red")document.documentElement.setAttribute("data-theme",xt)}catch(e){}</script>
 <script>try{if(localStorage.getItem("xm")!=="0"&&!matchMedia("(prefers-reduced-motion:reduce)").matches)document.documentElement.setAttribute("data-fx","1")}catch(e){}</script>
-<script>try{var D=document.documentElement;if(!matchMedia("(prefers-reduced-motion:reduce)").matches){D.classList.add("js");if(!location.hash.slice(1)){var K=0;try{K=sessionStorage.getItem("xnoi");sessionStorage.removeItem("xnoi")}catch(e){}if(!K){D.classList.add("intro");setTimeout(function(){D.classList.add("introd")},5200)}}}}catch(e){}</script>
+<script>try{var D=document.documentElement;if(!matchMedia("(prefers-reduced-motion:reduce)").matches){D.classList.add("js");if(!location.hash.slice(1)){var K=0;try{K=sessionStorage.getItem("xnoi");sessionStorage.removeItem("xnoi")}catch(e){}if(!K){D.classList.add("intro","xs","xw");setTimeout(function(){D.classList.add("introd")},5200)}}}}catch(e){}</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preload" href="fonts/TeXGyreAdventor-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -736,54 +736,73 @@ html[dir=rtl] .bkh::before{content:"\203A"}
 @media(max-width:640px){.hsv{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 18px}.hn{grid-template-columns:minmax(0,1fr)}.hn .nc:nth-child(n+3){display:none}.hcta .bt{width:100%}#hm .rsy{grid-template-columns:minmax(0,1fr)}.hd .nct{width:auto}}
 @media(min-width:701px) and (max-width:1000px){header .w{gap:14px}nav{gap:15px;font-size:.8rem}.hr{gap:8px}}
 @media(min-width:701px) and (max-width:800px){nav{gap:11px;font-size:.74rem}.lgb{padding:5px 9px}header .w{gap:10px}}
-/* the X mark is the menu button: the pages live in a list that opens under it */
+/* the X mark is the menu button: hover (or tap) turns it into three lines and the pages drop out of it as plain links */
 .lg.lgo{background:none;border:0;color:inherit;font:inherit;cursor:pointer;padding:8px 10px;margin-inline-start:-10px;-webkit-tap-highlight-color:transparent}
-.lg.lgo svg{display:block;transition:transform .55s cubic-bezier(.2,.7,.2,1)}
-html.mno .lg.lgo svg{transform:rotate(180deg)}
+.lg.lgo svg{display:block;overflow:visible}
 .lg.lgo:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 header .w{position:relative}
-.mnk{position:fixed;inset:0;z-index:45;background:rgba(var(--bgr),.72);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);animation:mnf .25s ease both}
-.mnk[hidden],.mnp[hidden]{display:none}
-.mnp{position:absolute;top:100%;inset-inline-start:0;width:min(360px,calc(100vw - 56px));max-height:calc(100vh - 90px);overflow:auto;background:var(--bg);border:1px solid var(--line);box-shadow:0 24px 60px rgba(0,0,0,.35);animation:mnd .28s cubic-bezier(.2,.7,.2,1) both}
-.mn{display:flex;flex-direction:column;padding:6px 0}
-.mn a{display:flex;align-items:baseline;gap:16px;padding:15px 26px;color:var(--ink);text-decoration:none;font-size:1.04rem;border-top:1px solid var(--line);transition:background .25s,color .25s}
-.mn a:first-child{border-top:0}
-.mn a em{flex:none;width:2.2em;font-style:normal;color:var(--gold);font-size:.72rem;letter-spacing:.2em;direction:ltr;text-align:start}
-.mn a:hover,.mn a:focus-visible{background:rgba(var(--gr),.12);color:var(--gold2);outline:0}
+.mnk{position:fixed;inset:0;z-index:45;background:rgba(var(--bgr),.8);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease,visibility 0s linear .35s}
+html.mno .mnk{opacity:1;visibility:visible;pointer-events:auto;transition-delay:0s}
+.mnp{position:absolute;top:100%;inset-inline-start:clamp(18px,4.5vw,76px);padding-top:2px;visibility:hidden;pointer-events:none;transition:visibility 0s linear .3s}
+html.mno .mnp{visibility:visible;pointer-events:auto;transition-delay:0s}
+.mn{display:flex;flex-direction:column;align-items:flex-start}
+.mn a{display:inline-flex;align-items:baseline;gap:16px;padding:8px 0;color:var(--ink);text-decoration:none;font-size:clamp(1.35rem,2.3vw,2rem);line-height:1.25;font-weight:300;opacity:0;transform:translateY(-16px);transition:opacity .2s ease,transform .3s ease,color .25s}
+html.mno .mn a{opacity:1;transform:none;transition:opacity .45s ease calc(var(--i)*60ms + 80ms),transform .55s cubic-bezier(.2,.7,.2,1) calc(var(--i)*60ms + 80ms),color .25s}
+.mn a em{flex:none;width:2.2em;font-style:normal;color:var(--gold);font-size:.4em;letter-spacing:.22em;direction:ltr;text-align:start}
 .mn a.on{color:var(--gold)}
-@keyframes mnd{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
-@keyframes mnf{from{opacity:0}to{opacity:1}}
-@media(prefers-reduced-motion:reduce){.mnp,.mnk{animation:none}.lg.lgo svg{transition:none}}
-@media(max-width:700px){header .w{position:static}.mnp{inset-inline:0;width:auto;max-height:calc(100vh - 70px);border-inline:0}.mn a{padding:18px 20px;font-size:1.12rem}}
+.mn a:hover,.mn a:focus-visible{color:var(--gold2);outline:0}
+@media(prefers-reduced-motion:reduce){.mnk,.mnp,.mn a,html.mno .mn a{transition:none!important}}
+@media(max-width:700px){header .w{position:static}.mnp{inset-inline-start:16px}.mn a{padding:9px 0;font-size:1.55rem}}
+/* the mark lands in the hero first, then flies up and becomes the logo in the header (the hero keeps only the text) */
+.mk{display:none}
+html.xs .mk{display:flex}
+html.xf .mk{visibility:hidden}
+html.xw #mnb svg{opacity:0}
+#xfl{position:fixed;left:0;top:0;z-index:310;pointer-events:none;transform-origin:0 0;will-change:transform}
+#xfl.go{transition:transform 1.15s cubic-bezier(.65,0,.25,1)}
+#xfl svg{display:block;width:100%;height:100%}
 </style>
-<link rel="stylesheet" href="motion.css?v=8">
+<link rel="stylesheet" href="motion.css?v=9">
 </head>
 <body>
 <div id="glow" aria-hidden="true"></div>
 <div id="intro" aria-hidden="true"></div>
 <script>(function(){var d=document.documentElement;if(!d.classList.contains("intro"))return;
-var o=document.getElementById("intro"),W=innerWidth,H=innerHeight,lh=Math.min(H*.42,W*.7,440),k=lh/703,lw=547*k,x0=(W-lw)/2,y0=(H-lh)/2,x1=x0+lw,y1=y0+lh,cx=x0+274*k,cy=y0+352*k,f=0,T=[];
+var o=document.getElementById("intro"),W=innerWidth,H=innerHeight,lh=Math.min(H*.42,W*.7,440),k=lh/703,lw=547*k,x0=(W-lw)/2,y0=(H-lh)/2,x1=x0+lw,y1=y0+lh,cx=x0+274*k,cy=y0+352*k,f=0,z=0,T=[];
 function P(a,b,c,e,m){return '<path class="ip '+m+'" pathLength="1" d="M'+a+' '+b+'L'+c+' '+e+'"/>'}
 var top='M'+x0+' '+y0+'L'+x1+' '+y0+'L'+cx+' '+cy+'Z',bot='M'+cx+' '+cy+'L'+x0+' '+y1+'L'+x1+' '+y1+'Z';
 o.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><defs><linearGradient id="ig1" gradientUnits="userSpaceOnUse" x1="'+x0+'" x2="'+x1+'"><stop offset="0" stop-color="#AD9154"/><stop offset="1" stop-color="#0a0907"/></linearGradient><linearGradient id="ig2" gradientUnits="userSpaceOnUse" x1="'+x0+'" x2="'+x1+'"><stop offset="0" stop-color="#0a0907"/><stop offset="1" stop-color="#AD9154"/></linearGradient></defs><g id="ilg"><path class="if" fill="url(#ig1)" d="'+top+'"/><path class="if" fill="url(#ig2)" d="'+bot+'"/>'
  +P(cx,cy,x0,y0,'dg')+P(cx,cy,x1,y0,'dg')+P(cx,cy,x0,y1,'dg')+P(cx,cy,x1,y1,'dg')+P(x0,y0,x1,y0,'ed')+P(x0,y1,x1,y1,'ed')+'</g></svg>';
-function land(){if(f)return;f=1;T.forEach(clearTimeout);d.classList.add("introd");o.classList.add("out");var g=o.firstChild;if(g&&g.parentNode)g.parentNode.removeChild(g);setTimeout(function(){if(o.parentNode)o.parentNode.removeChild(o)},1100)}
-function fly(){if(f)return;try{scrollTo(0,0);var s=document.querySelector(".mk svg"),r=s&&s.getBoundingClientRect();
- if(!r||r.width<24||r.height<24){land();return}
+function fin(){if(z)return;z=1;f=1;T.forEach(clearTimeout);var c=document.getElementById("xfl");if(c&&c.parentNode)c.parentNode.removeChild(c);var t=document.querySelector(".hero .w>div");if(t)t.style.cssText="";d.classList.add("introd");d.classList.remove("xs","xf","xw");o.classList.add("out");var g=o.firstChild;if(g&&g.parentNode)g.parentNode.removeChild(g);setTimeout(function(){if(o.parentNode)o.parentNode.removeChild(o)},1100)}
+function land(){if(f||z)return;f=1;T.forEach(clearTimeout);T=[];d.classList.add("introd");o.classList.add("out");var g=o.firstChild;if(g&&g.parentNode)g.parentNode.removeChild(g);setTimeout(function(){if(o.parentNode)o.parentNode.removeChild(o)},1100);T.push(setTimeout(up,1000))}
+function fly(){if(f||z)return;try{scrollTo(0,0);var s=document.querySelector(".mk svg"),r=s&&s.getBoundingClientRect();
+ if(!r||r.width<24||r.height<24){fin();return}
  var q=Math.min(r.width/547,r.height/703),tw=547*q,th=703*q,tx=r.left+(r.width-tw)/2,ty=r.top+(r.height-th)/2,c=tw/lw,g=document.getElementById("ilg");
- g.style.transform='translate('+(tx-c*x0)+'px,'+(ty-c*y0)+'px) scale('+c+')';g.classList.add("fly");T.push(setTimeout(land,1150))}catch(e){land()}}
-T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener("touchstart",land,{passive:true});addEventListener("keydown",land);
+ g.style.transform='translate('+(tx-c*x0)+'px,'+(ty-c*y0)+'px) scale('+c+')';g.classList.add("fly");T.push(setTimeout(land,1150))}catch(e){fin()}}
+/* second move: the mark rests in the hero for a moment, then flies up and becomes the logo (menu button) in the header */
+function up(){if(z)return;try{
+ var m=document.querySelector(".mk"),s=m&&m.querySelector("svg"),r=s&&s.getBoundingClientRect(),h=document.querySelector("#mnb svg"),e=h&&h.getBoundingClientRect();
+ if(!r||!e||r.width<8||e.width<8||Math.abs(window.scrollY||0)>40){fin();return}
+ var q=Math.min(r.width/547,r.height/703),tw=547*q,th=703*q,sx=r.left+(r.width-tw)/2,sy=r.top+(r.height-th)/2,
+  p=Math.min(e.width/547,e.height/703),ex=e.left+(e.width-547*p)/2,ey=e.top+(e.height-703*p)/2,t=document.querySelector(".hero .w>div"),y0=t?t.getBoundingClientRect().top:0,
+  c=document.createElement("div");c.id="xfl";c.setAttribute("aria-hidden","true");c.style.cssText="width:"+tw+"px;height:"+th+"px;transform:translate("+sx+"px,"+sy+"px)";
+ c.innerHTML='<svg viewBox="0 0 547 703"><polygon points="0,0 547,0 274,352" fill="url(#ga)"/><polygon points="274,352 0,703 547,703" fill="url(#gb)"/></svg>';
+ document.body.appendChild(c);d.classList.add("xf");d.classList.remove("xs");
+ if(t){var dy=y0-t.getBoundingClientRect().top;if(Math.abs(dy)>1){t.style.transition="none";t.style.transform="translateY("+dy+"px)";t.getBoundingClientRect();t.style.transition="transform 1.1s cubic-bezier(.65,0,.25,1)";t.style.transform="none"}}
+ c.getBoundingClientRect();c.classList.add("go");c.style.transform="translate("+ex+"px,"+ey+"px) scale("+(547*p/tw)+")";T.push(setTimeout(fin,1250))}catch(x){fin()}}
+T.push(setTimeout(fly,2150));o.addEventListener("click",fin);o.addEventListener("touchstart",fin,{passive:true});addEventListener("keydown",fin);
 })();</script>
 <svg class="hid" aria-hidden="true"><defs>
 <linearGradient id="ga" x1="0" x2="547" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#AD9154"/><stop offset="1" stop-color="#0a0907"/></linearGradient>
 <linearGradient id="gb" x1="0" x2="547" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0a0907"/><stop offset="1" stop-color="#AD9154"/></linearGradient>
+<linearGradient id="gc" x1="0" x2="547" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7a6638"/><stop offset=".5" stop-color="#AD9154"/><stop offset="1" stop-color="#7a6638"/></linearGradient>
 <pattern id="ht" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#AD9154" stroke-width="1"/></pattern><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a0907"/><stop offset="1" stop-color="#7a6638"/></linearGradient><radialGradient id="sun"><stop offset="0" stop-color="#AD9154" stop-opacity=".55"/><stop offset="1" stop-color="#AD9154" stop-opacity="0"/></radialGradient><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#AD9154" stop-opacity=".3"/><stop offset="1" stop-color="#AD9154" stop-opacity="0"/></linearGradient><symbol id="mark" viewBox="0 0 547 703"><polygon points="0,0 547,0 274,352" fill="url(#ga)"/><polygon points="274,352 0,703 547,703" fill="url(#gb)"/></symbol></defs></svg>
 
-<div class="mnk" id="mnk" hidden></div>
+<div class="mnk" id="mnk"></div>
 <header><div class="w">
-<button type="button" class="lg lgo" id="mnb" aria-label="القائمة" aria-haspopup="true" aria-expanded="false" aria-controls="mnp"><svg viewBox="0 0 547 703" aria-hidden="true"><use href="#mark"/></svg></button>
+<button type="button" class="lg lgo" id="mnb" aria-label="القائمة" aria-haspopup="true" aria-expanded="false" aria-controls="mnp"><svg viewBox="0 0 547 703" aria-hidden="true"><polygon id="mxa" points="0,0 547,0 274,352 274,352" fill="url(#ga)"/><polygon id="mxb" points="274,352 274,352 547,703 0,703" fill="url(#gb)"/><polygon id="mxc" points="274,352 274,352 274,352 274,352" fill="url(#gc)" opacity="0"/></svg></button>
+<div class="mnp" id="mnp"><div class="mn" id="mn" role="navigation" aria-label="القائمة"><a style="--i:0" href="#" data-n="home"><em></em><span>الرئيسية</span></a><a style="--i:1" href="#services" data-n="services"><em>01</em><span>الخدمات</span></a><a style="--i:2" href="#works" data-n="works"><em>02</em><span>أعمال الطلاب</span></a><a style="--i:3" href="#ai" data-n="ai"><em>03</em><span>الذكاء الاصطناعي</span></a><a style="--i:4" href="#news" data-n="news"><em>04</em><span>الأخبار والكتب</span></a><a style="--i:5" href="#contact" data-n="contact"><em>05</em><span>تواصل</span></a></div></div>
 <div class="hr"><button id="usb" class="lgb thb usb" type="button" data-join hidden aria-label="التسجيل"><svg class="uic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.5 20c.8-4 3.8-6 7.5-6s6.7 2 7.5 6"/></svg><span class="uin" aria-hidden="true"></span></button><button id="thb" class="lgb thb" type="button" aria-label="الوضع الفاتح"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg><svg class="tcn" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17a8.5 8.5 0 0 0 0-17z" fill="currentColor"/></svg><svg class="rd" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 0 0 0 17z" fill="#b4091f" stroke="none"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="#8c8c94" stroke="none"/></svg><svg class="mo" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></button><div class="ls" id="ls"><button id="lgb" class="lgb" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="lgm" aria-label="Language"><span id="lgc">AR</span><svg class="cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button><ul id="lgm" hidden><li><button type="button" data-l="ar" lang="ar" dir="rtl">العربية</button></li><li><button type="button" data-l="en" lang="en" dir="ltr">English</button></li><li><button type="button" data-l="tr" lang="tr" dir="ltr">Türkçe</button></li><li><button type="button" data-l="fr" lang="fr" dir="ltr">Français</button></li><li><button type="button" data-l="ku" lang="ckb" dir="rtl">کوردی</button></li></ul></div></div>
-<div class="mnp" id="mnp" hidden><div class="mn" id="mn" role="navigation" aria-label="القائمة"><a href="#" data-n="home"><em></em><span>الرئيسية</span></a><a href="#services" data-n="services"><em>01</em><span>الخدمات</span></a><a href="#works" data-n="works"><em>02</em><span>أعمال الطلاب</span></a><a href="#ai" data-n="ai"><em>03</em><span>الذكاء الاصطناعي</span></a><a href="#news" data-n="news"><em>04</em><span>الأخبار والكتب</span></a><a href="#contact" data-n="contact"><em>05</em><span>تواصل</span></a></div></div>
 </div></header>
 
 <main>
@@ -1562,12 +1581,24 @@ addEventListener('keydown',function(e){
     if(e.shiftKey&&(document.activeElement===a||document.activeElement===rgs)){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}},true);
 addEventListener('hashchange',function(){if(location.hash==='#join'&&rg.hidden)rgo()});
 addEventListener('online',rgsync);
-/* the X mark is the menu button. The list holds Home and the main pages; "Home" there reloads the home page fresh (no intro replay) */
+/* the X mark is the menu button. Mouse: hover turns the X into three lines and the pages drop out of it as plain links; touch/keyboard: tap or Enter does the same. "Home" reloads the home page fresh (no intro replay) */
 (function(){var b=document.getElementById('mnb'),p=document.getElementById('mnp'),k=document.getElementById('mnk');if(!b||!p||!k)return;
-  function op(o){p.hidden=!o;k.hidden=!o;b.setAttribute('aria-expanded',o?'true':'false');document.documentElement.classList.toggle('mno',o);
-    if(o){var lm=document.getElementById('lgm');if(lm&&!lm.hidden){lm.hidden=true;var lb=document.getElementById('lgb');if(lb)lb.setAttribute('aria-expanded','false')}
-      var a=p.querySelector('a.on')||p.querySelector('a');if(a)a.focus({preventScroll:true})}}
-  b.addEventListener('click',function(e){e.stopPropagation();op(p.hidden)});
+  var D=document.documentElement,pa=document.getElementById('mxa'),pb=document.getElementById('mxb'),pc=document.getElementById('mxc'),
+    A0=[0,0,547,0,274,352,274,352],A1=[0,128,547,128,547,188,0,188],B0=[274,352,274,352,547,703,0,703],B1=[0,515,547,515,547,575,0,575],C0=[274,352,274,352,274,352,274,352],C1=[0,322,547,322,547,382,0,382],
+    calm=matchMedia('(prefers-reduced-motion:reduce)').matches,pr=0,goal=0,raf=0,last=0,on=false,pin=false,lock=false,tO=0,tC=0,sy0=0;
+  function mix(a,c,e){var r=[];for(var i=0;i<8;i++)r.push((a[i]+(c[i]-a[i])*e).toFixed(1));return r.join(' ')}
+  function draw(){var e=pr<.5?4*pr*pr*pr:1-Math.pow(-2*pr+2,3)/2;pa.setAttribute('points',mix(A0,A1,e));pb.setAttribute('points',mix(B0,B1,e));pc.setAttribute('points',mix(C0,C1,e));pc.setAttribute('opacity',Math.max(0,Math.min(1,(e-.2)/.6)).toFixed(2))}
+  function tick(t){var dt=Math.min(64,t-last),s=goal>pr?1:-1;last=t;pr+=s*dt/560;if(s>0?pr>=goal:pr<=goal){pr=goal;raf=0;draw();return}draw();raf=requestAnimationFrame(tick)}
+  function morph(g){goal=g;if(calm){pr=g;draw();return}if(!raf){last=performance.now();raf=requestAnimationFrame(tick)}}
+  function op(o,foc){if(o===on)return;on=o;if(!o)pin=false;b.setAttribute('aria-expanded',o?'true':'false');D.classList.toggle('mno',o);morph(o?1:0);
+    if(o){sy0=window.scrollY||0;var lm=document.getElementById('lgm');if(lm&&!lm.hidden){lm.hidden=true;var lb=document.getElementById('lgb');if(lb)lb.setAttribute('aria-expanded','false')}
+      if(foc){var a=p.querySelector('a.on')||p.querySelector('a');if(a)a.focus({preventScroll:true})}}}
+  function mouse(e){return!e.pointerType||e.pointerType==='mouse'||e.pointerType==='pen'}
+  function enter(e){if(!mouse(e))return;clearTimeout(tC);if(on||lock)return;clearTimeout(tO);tO=setTimeout(function(){op(true,false)},90)}
+  function leave(e){if(!mouse(e))return;clearTimeout(tO);lock=false;if(!on||pin)return;clearTimeout(tC);tC=setTimeout(function(){op(false)},260)}
+  b.addEventListener('pointerenter',enter);p.addEventListener('pointerenter',enter);b.addEventListener('pointerleave',leave);p.addEventListener('pointerleave',leave);
+  b.addEventListener('click',function(e){e.stopPropagation();clearTimeout(tO);clearTimeout(tC);
+    if(on){op(false);lock=e.detail>0&&matchMedia('(hover:hover)').matches}else{pin=true;op(true,true)}});
   p.addEventListener('click',function(e){var a=e.target.closest('a');if(!a)return;
     if(a.dataset.n==='home'){
       if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
@@ -1577,8 +1608,12 @@ addEventListener('online',rgsync);
       try{history.replaceState(null,'',location.pathname+location.search)}catch(x){}
       scrollTo(0,0);location.reload();return}
     op(false)});
-  document.addEventListener('click',function(e){if(!p.hidden&&!e.target.closest('#mnp,#mnb'))op(false)});
-  addEventListener('keydown',function(e){if(p.hidden)return;
+  k.addEventListener('click',function(){op(false)});
+  document.addEventListener('click',function(e){if(on&&!e.target.closest('#mnp,#mnb'))op(false)});
+  function fo(e){var n=e.relatedTarget;if(on&&n&&!n.closest('#mnb,#mnp'))op(false)}
+  b.addEventListener('focusout',fo);p.addEventListener('focusout',fo);
+  addEventListener('scroll',function(){if(on&&Math.abs((window.scrollY||0)-sy0)>40)op(false)},{passive:true});
+  addEventListener('keydown',function(e){if(!on)return;
     if(e.key==='Escape'){op(false);b.focus({preventScroll:true});return}
     if(e.key==='ArrowDown'||e.key==='ArrowUp'){var l=[].slice.call(p.querySelectorAll('a')),i=l.indexOf(document.activeElement);
       if(i<0)i=e.key==='ArrowDown'?-1:0;i=(i+(e.key==='ArrowDown'?1:-1)+l.length)%l.length;l[i].focus({preventScroll:true});e.preventDefault()}});
@@ -1780,6 +1815,6 @@ loadNews(false);
 setTimeout(rvScan,80);
 
 </script>
-<script src="motion.js?v=7" defer></script>
+<script src="motion.js?v=9" defer></script>
 </body>
 </html>

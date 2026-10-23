@@ -26,6 +26,8 @@ html[dir=rtl] #fxp i{transform-origin:100% 50%}
 /* ---------- the pointer is the X Architecture mark ---------- */
 html[data-fxcur],html[data-fxcur] *{cursor:none!important}
 html[data-fxcur] input,html[data-fxcur] textarea,html[data-fxcur] [contenteditable]{cursor:text!important}
+/* the header mark is itself the pointer feedback (it turns into three lines), so the mark-cursor steps aside over it */
+html[data-fxcur] #mnb{cursor:pointer!important}
 #fxl{position:fixed;left:0;top:0;width:19px;height:24.5px;margin:-12.5px 0 0 -9.5px;z-index:100000;pointer-events:none;opacity:0;transition:opacity .25s;will-change:transform}
 #fxl.on{opacity:1}
 #fxl.tx{opacity:0}

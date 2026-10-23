@@ -101,7 +101,7 @@ function pointer(){
 function logoCursor(){
   var c=mk('div','fxl'),q={x:-1e4,y:-1e4,r:0,px:0,first:true},
       HV='a,button,[role=button],summary,label,select,.pb,.lk,.nbtn,.c.cl,.ex figure,.pmg,.tabs button',
-      TX='input,textarea,[contenteditable=""],[contenteditable=true]';
+      TX='input,textarea,[contenteditable=""],[contenteditable=true],#mnb';
   c.innerHTML='<svg viewBox="-20 -20 587 743" aria-hidden="true"><polygon points="0,0 547,0 274,352"/><polygon points="274,352 0,703 547,703"/></svg>';
   document.body.appendChild(c);el.cur=c;el.q=q;
   on(window,'pointermove',function(e){
@@ -136,7 +136,7 @@ function cursorStep(){
 function header(d){
   var h=$('header');if(!h)return;
   var lgm=document.getElementById('lgm'),
-      keep=sy<90||h.contains(document.activeElement)&&document.activeElement!==document.body||(lgm&&!lgm.hidden);
+      keep=sy<90||h.contains(document.activeElement)&&document.activeElement!==document.body||(lgm&&!lgm.hidden)||document.documentElement.classList.contains('mno');
   if(keep)h.classList.remove('fxu');
   else if(dir>0&&Math.abs(d)>0.5)h.classList.add('fxu');
   else if(dir<0)h.classList.remove('fxu');
