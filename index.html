@@ -1254,18 +1254,18 @@ function pmo(s){var i=PGO.indexOf(s);if(i<0)return;PI=i;PM='p';rgev('prog',s);va
 function pgHv(s){Array.prototype.forEach.call(document.querySelectorAll('.pg li'),function(li){var b=li.querySelector('.pb');li.classList.toggle('hv',!!s&&!!b&&b.getAttribute('data-p')===s)})}
 function pmcl(){if(pm.hidden)return;pm.hidden=true;pgHv('');document.body.style.overflow='';pmc.innerHTML='';if(PF&&PF.focus){try{PF.focus({preventScroll:true})}catch(e){}}PF=null}
 function pmg(k){var n=PM==='s'?SVO.length:PGO.length;PI=(PI+k+n)%n;pmv();pms.scrollTop=0}
-/* ===== service windows: a short introduction, what you get, example images, and a way to contact us ===== */
+/* ===== service windows: a short introduction, what you get, optional images (im), and a way to contact us ===== */
 var PM='p',SVO=['design','viz','critique','super'],SVK={'01':'design','02':'viz','03':'critique','04':'super'},
 SVD={
  design:{n:['تصميم معماري','Architectural design'],ic:'<path d="M14 14h68v68H14zM14 42h40M54 14v68M54 62h28M30 42v40"/>',
   who:['لأصحاب المشاريع والعملاء','For project owners and clients'],
   d:['نصمّم مشروعك من الفكرة الأولى حتى المخططات والتسليم، بما يناسب موقعك واحتياجاتك وميزانيتك.','We design your project from the first idea through the drawings to handover, to suit your site, needs and budget.'],
   l:[['فكرة وتصور أولي يوضّح اتجاه المشروع','A concept and first vision that sets the direction of the project'],['مخططات ومقاطع وواجهات واضحة','Clear plans, sections and elevations'],['نموذج ثلاثي الأبعاد ومناظير للمشروع','A 3D model and views of the project'],['تسليم ملفات المشروع كاملة','Handover of the complete project files']],
-  nt:'ملاحظة: لا نصمّم مشاريع الطلاب — نقدّم النقد والإشراف والمتابعة لهم فقط.',im:['w2','w3']},
+  nt:'ملاحظة: لا نصمّم مشاريع الطلاب — نقدّم النقد والإشراف والمتابعة لهم فقط.',im:[]},
  viz:{n:['إظهار معماري','Architectural visualization'],ic:'<path d="M48 12 82 30v36L48 84 14 66V30zM14 30l34 18 34-18M48 48v36"/>',
   who:['للطلاب وأصحاب المشاريع','For students and project owners'],
   d:['نحوّل تصميمك إلى مناظير واقعية بإضاءة وخامات تُبرز فكرة المشروع، للواجهات والفضاءات الداخلية.','We turn your design into realistic views, with lighting and materials that bring out the idea of the project, for façades and interiors.'],
-  l:[['مناظير خارجية للواجهات','Exterior views of the façades'],['مناظير داخلية للفضاءات','Interior views of the spaces'],['إضاءة وخامات تناسب فكرة المشروع','Lighting and materials that suit the project idea'],['صور عالية الجودة جاهزة للعرض','High-quality images ready for presentation']],im:['w1','w7']},
+  l:[['مناظير خارجية للواجهات','Exterior views of the façades'],['مناظير داخلية للفضاءات','Interior views of the spaces'],['إضاءة وخامات تناسب فكرة المشروع','Lighting and materials that suit the project idea'],['صور عالية الجودة جاهزة للعرض','High-quality images ready for presentation']],im:[]},
  critique:{n:['نقد معماري','Architectural critique'],ic:'<path d="M16 80 28 52 68 12l16 16-40 40zM60 20l16 16M16 80l12-4"/>',
   who:['للطلاب','For students'],
   d:['قراءة صريحة لمشروعك — الفكرة والمخططات والإخراج — مع ملاحظات واضحة تساعدك على تطويره قبل التسليم.','A frank reading of your project — the idea, the drawings and the presentation — with clear notes that help you develop it before submission.'],
