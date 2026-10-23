@@ -29,9 +29,12 @@ The **home page** shows only black-background renders: the entries of `IM` liste
 The earlier walk-through 3D museum hall is kept on the git branch `gallery-3d`.
 
 ## Phones (up to 700 px wide)
-The home page is the hub: there is no logo in the header and no bottom bar. The header keeps only the colour mode, the motion toggle and the language (the profile button appears once someone has registered); every section is reached from the home page, and every other page has a "Home" link at the top. The footer carries the brand (logo + name) on the left and text links to Instagram and Telegram on the right (no third-party logos). On wider screens the header and the section links are unchanged.
+The home page is the hub: there is no logo in the header and no bottom bar. The header keeps only the colour mode, the motion toggle and the language (the profile button appears once someone has registered); every section is reached from the home page, and every other page has a "Home" link at the top. The footer carries the brand (logo + name) on the left and two icon buttons on the right for Instagram (a camera) and Telegram (a chat bubble); they are generic pictograms, not the official logos. On wider screens the header and the section links are unchanged.
 
 Contact (Telegram, Instagram, "Contact us") is open to everyone; only the AI studio needs a profile. The home reel of black-background renders is titled "In the X Architecture style", not "Student work".
+
+## Service windows
+Clicking one of the four services (architectural design, visualization, critique, supervision) on the Services page or on the home page opens the same dialog the programs use: a short introduction, what the client gets, example images (design and visualization only) and a button to the contact page. Everything lives in the `SVD` object next to `svr()` in `index.html`: the Arabic and English text, the icon, and `im`, the list of images from `works/` (for example `['w2','w3']`; leave it empty for no images). Texts in the other languages live in the `DT` dictionary, keyed by the English string. The example images are placeholders taken from the site's own works; replace them with your own work when you have it.
 
 ## Themes
 Dark (black + gold, always the default on a fresh visit) → light (white + gold) → mono (white + black) → red (white + deep red + grey). The choice is kept per tab (`sessionStorage` key `xt`).
