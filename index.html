@@ -674,22 +674,22 @@ section{padding:30px 0}
 .g4,.g3,.g2{gap:10px}
 }
 /* footer: the brand line sits bottom-left in gold, level with the header's edge */
-footer .w.fr{direction:ltr;justify-content:flex-start}
+footer .w.fr{direction:ltr;justify-content:space-between;align-items:center}
 footer .fc{text-align:left;color:var(--gold);font-size:.68rem;letter-spacing:.12em}
 @media(max-width:520px){footer .w.fr{padding:0 16px}}
 /* phones: brand (logo + name) on the left, Instagram and Telegram on the right */
-footer .fbr,footer .fs{display:none}
+footer .fbr{display:none}
+footer .fs{display:inline-flex;align-items:center;gap:4px}
+footer .fs a{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;color:var(--gold);transition:color .2s}
+footer .fs a:last-child{margin-right:-11px}
+footer .fs svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+footer .fs a:hover,footer .fs a:focus-visible,footer .fs a:active{color:var(--gold2)}
 @media(max-width:700px){
 footer{padding:34px 0 calc(28px + env(safe-area-inset-bottom,0px))}
 footer .fc{display:none}
 footer .w.fr{justify-content:space-between;flex-wrap:nowrap;gap:14px;padding:0 16px}
 footer .fbr{display:inline-flex;align-items:center;gap:9px;color:var(--gold);font-size:.7rem;letter-spacing:.14em;white-space:nowrap}
 footer .fbr svg{width:15px;height:19px;flex:none}
-footer .fs{display:inline-flex;align-items:center;gap:4px}
-footer .fs a{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;color:var(--soft);transition:color .2s}
-footer .fs a:last-child{margin-right:-11px}
-footer .fs svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-footer .fs a:hover,footer .fs a:focus-visible,footer .fs a:active{color:var(--gold2)}
 }
 /* phones: a way back to the home page from every other page */
 .bkw{display:none}
