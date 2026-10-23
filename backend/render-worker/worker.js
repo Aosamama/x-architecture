@@ -12,6 +12,11 @@
      MODEL        flux2 | sd15                    default flux2
      MAX_TILES    output size in 512px tiles (1-6)  default 6  (6 = up to 1536x1024; 4 = up to 1024x1024)
      ORIGINS      comma list of allowed websites  default https://xarch.site,https://www.xarch.site
+     AUTO_PUBLISH 0 = new "gold on black" renders wait for your approval in admin.html; anything else = they appear on the home page at once (default)
+     GALLERY      off = never publish anything to the home page
+     GALLERY_MAX  how many published renders are kept          default 40
+     HOME_MAX     how many the home page shows (newest first)  default 5
+     APPS_URL     the Apps Script /exec URL whose management key opens the gallery panel (default: the one in config.js)
    Setup in Arabic: backend/render-worker/SETUP.md */
 
 // The design must never change: every preset only changes the scene (light, time of day, weather) or the realism of what is already there.
@@ -30,6 +35,9 @@ const STYLES = {
   massing: 'Render this massing model realistically with plain neutral concrete and soft daylight.' + KEEP,
   custom: 'Edit this image only as the architect asks below, and keep everything else exactly as it is.' + KEEP
 };
+// The signature look of the platform: a black studio scene with warm gold light. Only the scene changes; the building stays as drawn.
+const KEEP_B = ' Keep the building exactly as it is: every shape, proportion, opening, material and the same camera angle, and keep any people. Do not add, move, redraw or restyle any part of the building, and do not add text.';
+STYLES.gold = 'Change only the scene into a dark studio night render: the sky, the ground and everything around the building become pure deep black, with a faintly glossy black ground. Every glass opening and interior light glows with warm gold light, and the ground in front of it carries a soft golden reflection. The building keeps its own neutral grey and white tones.' + KEEP_B;
 const QUALITY = ' Photorealistic, ultra-sharp, high resolution, crisp fine details, clean edges, no blur, no noise.';
 const BAD = /(nude|naked|porn|sex|nsfw|erotic|fetish|gore|blood|corpse|kill|murder|weapon|gun|rifle|terror|bomb|explosive|swastika|isis|عاري|عارية|عراة|جنس|اباحي|إباحي|دم|جثة|قتل|سلاح|بندقية|إرهاب|ارهاب|قنبلة|متفجر)/i;
 const MAX_BYTES = 1.6 * 1024 * 1024;
@@ -97,6 +105,73 @@ async function left(env, k) {
   return Math.max(0, per - used);
 }
 
+/* ---------- home-page gallery: the "gold" renders people agree to show ---------- */
+const GIDX = 'gal:index';
+const APPS_DEFAULT = 'https://script.google.com/macros/s/AKfycbzguN3NRLLDSyKaturRce274lPCNuAxJDNzG80xiy28FxnaqfKe-PpO8RG-ugqwMb_8sQ/exec';
+async function gIndex(env) {
+  try { const a = JSON.parse((await env.LIMITS.get(GIDX)) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; }
+}
+function fromB64(s) { const b = atob(s), a = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return a; }
+function sniff(u) { return u[0] === 0xff && u[1] === 0xd8 ? 'image/jpeg' : u[0] === 0x52 && u[1] === 0x49 ? 'image/webp' : 'image/png'; }
+async function gPublish(env, image, w, h) {
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const status = env.AUTO_PUBLISH === '0' ? 'pending' : 'ok';
+  await env.LIMITS.put('gal:img:' + id, fromB64(image));
+  const idx = await gIndex(env);
+  idx.unshift({ id, t: Date.now(), w, h, s: status });
+  const drop = idx.splice(num(env.GALLERY_MAX, 40));
+  await env.LIMITS.put(GIDX, JSON.stringify(idx));
+  await Promise.all(drop.map(x => env.LIMITS.delete('gal:img:' + x.id)));
+  return status;
+}
+async function hashRaw(s) {
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(s)));
+  return [...new Uint8Array(b)].slice(0, 12).map(x => x.toString(16).padStart(2, '0')).join('');
+}
+// The gallery panel uses the same management key as the statistics page: it is checked against the Apps Script.
+async function isAdmin(req, env, key) {
+  key = String(key || '').slice(0, 200);
+  if (key.length < 8) return false;
+  const ip = req.headers.get('CF-Connecting-IP') || 'x';
+  const kf = 'adf:' + (await hashRaw(ip)) + ':' + day(), kk = 'adm:' + (await hashRaw(key));
+  if (await env.LIMITS.get(kk)) return true;
+  if ((await getN(env, kf)) >= 20) return false;
+  let ok = false;
+  try {
+    const r = await fetch(env.APPS_URL || APPS_DEFAULT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ a: 'stats', key }) });
+    const j = await r.json(); ok = !!(j && j.ok);
+  } catch (e) { ok = false; }
+  if (ok) await env.LIMITS.put(kk, '1', { expirationTtl: 600 }); else await bump(env, kf, 1);
+  return ok;
+}
+async function gallery(req, env, url, h) {
+  const path = url.pathname.replace(/\/+$/, '');
+  if (path === '/gallery' && req.method === 'GET') {
+    const items = (await gIndex(env)).filter(x => x.s === 'ok').slice(0, num(env.HOME_MAX, 5)).map(x => ({ id: x.id, w: x.w, h: x.h }));
+    return json({ ok: true, items }, 200, Object.assign({}, h, { 'Cache-Control': 'public, max-age=60' }));
+  }
+  const m = /^\/gallery\/img\/([a-z0-9]{6,20})$/.exec(path);
+  if (m && req.method === 'GET') {
+    const buf = await env.LIMITS.get('gal:img:' + m[1], 'arrayBuffer');
+    if (!buf) return new Response('not found', { status: 404, headers: h });
+    return new Response(buf, { headers: Object.assign({}, h, { 'Content-Type': sniff(new Uint8Array(buf, 0, 4)), 'Cache-Control': 'public, max-age=86400' }) });
+  }
+  if (path === '/gallery/admin' && req.method === 'POST') {
+    let fd; try { fd = await req.formData(); } catch (e) { return json({ ok: false, error: 'bad' }, 400, h); }
+    if (!(await isAdmin(req, env, fd.get('key')))) return json({ ok: false, error: 'auth' }, 403, h);
+    const act = String(fd.get('act') || 'list'), id = String(fd.get('id') || '');
+    let idx = await gIndex(env);
+    if (act === 'approve' || act === 'delete') {
+      const x = idx.find(y => y.id === id);
+      if (!x) return json({ ok: false, error: 'missing' }, 404, h);
+      if (act === 'approve') x.s = 'ok'; else { idx = idx.filter(y => y.id !== id); await env.LIMITS.delete('gal:img:' + id); }
+      await env.LIMITS.put(GIDX, JSON.stringify(idx));
+    }
+    return json({ ok: true, items: idx, mode: env.AUTO_PUBLISH === '0' ? 'review' : 'auto' }, 200, h);
+  }
+  return json({ ok: false, error: 'bad' }, 404, h);
+}
+
 async function run(env, prompt, bytes, w, h) {
   const model = String(env.MODEL || 'flux2').toLowerCase();
   if (model === 'sd15') {
@@ -123,6 +198,7 @@ export default {
     if (!env.AI || !env.LIMITS) return json({ ok: false, error: 'closed' }, 503, h);
     const url = new URL(req.url);
 
+    if (url.pathname.startsWith('/gallery')) return gallery(req, env, url, h);
     if (req.method === 'GET') {
       const k = await ids(req, env, url.searchParams.get('uid'), url.searchParams.get('email'));
       return json({ ok: true, left: await left(env, k), limit: num(env.DAILY_LIMIT, 2) }, 200, h);
@@ -166,6 +242,11 @@ export default {
       await Promise.all(keys.map(x => bump(env, x, -1)));
       return json({ ok: false, error: 'busy', detail: String(e && e.message || e).slice(0, 120) }, 503, h);
     }
-    return json({ ok: true, image: 'data:' + mime(image) + ';base64,' + image, left: Math.max(0, per - Math.max(await getN(env, k.kU), k.kE ? await getN(env, k.kE) : 0)), limit: per }, 200, h);
+    // the "gold" look may be shown on the home page when the student ticked the box (only the picture, never a name)
+    let published = false;
+    if (style === 'gold' && String(fd.get('pub')) === '1' && env.GALLERY !== 'off') {
+      try { published = await gPublish(env, image, w, hh); } catch (e) { published = false; }
+    }
+    return json({ ok: true, published, image: 'data:' + mime(image) + ';base64,' + image, left: Math.max(0, per - Math.max(await getN(env, k.kU), k.kE ? await getN(env, k.kE) : 0)), limit: per }, 200, h);
   }
 };
