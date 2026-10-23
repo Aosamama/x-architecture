@@ -28,3 +28,15 @@ The earlier walk-through 3D museum hall is kept on the git branch `gallery-3d`.
 
 ## Themes
 Dark (black + gold, always the default on a fresh visit) → light (white + gold) → mono (white + black) → red (white + deep red + grey). The choice is kept per tab (`sessionStorage` key `xt`).
+
+## AI render studio
+The top of the AI page is a render generator: a student uploads a view of the project, picks a style (realistic, night,
+materials, interior, massing) and an optional note, and gets an AI render back with a before/after slider and a download
+button. It is free for registered students, 2 images a day each.
+
+- The page only talks to a small Cloudflare Worker (`backend/render-worker/worker.js`, Workers AI, FLUX.2 klein). The
+  Worker applies the daily limits (per student, per network address, and a global cap that keeps it inside the free
+  quota) and refunds the slot when the model fails. Nothing from the student's image is stored.
+- While `render` in `config.js` is empty the section shows "Coming soon". Setup (Arabic, about 10 minutes):
+  `backend/render-worker/SETUP.md`.
+- The browser downsizes the image to at most 500 px before sending it, so uploads stay small and fast.
