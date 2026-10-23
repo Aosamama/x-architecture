@@ -23,16 +23,23 @@ html[data-fx="1"] ::selection{background:var(--gold);color:var(--ong)}
 #fxp i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));transform:scaleX(0);transform-origin:0 50%;will-change:transform}
 html[dir=rtl] #fxp i{transform-origin:100% 50%}
 
-/* ---------- cursor light ---------- */
-#fxc{position:fixed;left:0;top:0;width:560px;height:560px;border-radius:50%;pointer-events:none;z-index:40;opacity:0;transition:opacity .6s;will-change:transform;mix-blend-mode:screen;background:radial-gradient(closest-side,rgba(var(--gr),.15),rgba(var(--gr),.05) 52%,transparent 74%)}
-#fxc.on{opacity:1}
-html[data-theme=light] #fxc{mix-blend-mode:multiply;background:radial-gradient(closest-side,rgba(var(--gr),.2),rgba(var(--gr),.07) 52%,transparent 74%)}
-html[data-theme=mono] #fxc{display:none}
+/* ---------- the pointer is the X Architecture mark ---------- */
+html[data-fxcur],html[data-fxcur] *{cursor:none!important}
+html[data-fxcur] input,html[data-fxcur] textarea,html[data-fxcur] [contenteditable]{cursor:text!important}
+#fxl{position:fixed;left:0;top:0;width:24px;height:31px;margin:-15.5px 0 0 -12px;z-index:100000;pointer-events:none;opacity:0;transition:opacity .25s;will-change:transform}
+#fxl.on{opacity:1}
+#fxl.tx{opacity:0}
+#fxl svg{width:100%;height:100%;display:block;overflow:visible;transition:transform .5s var(--fxe);filter:drop-shadow(0 0 5px rgba(var(--gr),.5))}
+#fxl polygon{stroke:rgba(var(--bgr),.85);stroke-width:26;paint-order:stroke;stroke-linejoin:round}
+#fxl polygon:first-child{fill:var(--gold2)}
+#fxl polygon:last-child{fill:var(--gold)}
+#fxl.hv svg{transform:scale(1.55) rotate(180deg)}
+#fxl.dn svg{transform:scale(.74)}
+#fxl.hv.dn svg{transform:scale(1.15) rotate(180deg)}
+.fxk{position:fixed;left:0;top:0;width:14px;height:14px;margin:-7px 0 0 -7px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:99999;opacity:0;animation:fxk .75s var(--fxe) forwards}
+@keyframes fxk{from{transform:translate(var(--x),var(--y)) scale(.3);opacity:.95}to{transform:translate(var(--x),var(--y)) scale(5.5);opacity:0}}
 
-/* ---------- blueprint grid behind everything ---------- */
-#fxg{position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(var(--gr),.075) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--gr),.075) 1px,transparent 1px);background-size:96px 96px;-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 38%,#000 18%,transparent 80%);mask-image:radial-gradient(ellipse 80% 70% at 50% 38%,#000 18%,transparent 80%)}
-
-/* ---------- hero: live node mesh + ticker + headline ---------- */
+/* ---------- hero: parametric line ribbons + ticker + headline ---------- */
 #fxn{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(#000 72%,transparent);mask-image:linear-gradient(#000 72%,transparent)}
 html[data-fx="1"] .hero{padding-bottom:64px}
 html[data-fx="1"] .mk{will-change:transform}
@@ -86,4 +93,4 @@ html[data-fx="1"] .b.s:hover::after{transform:translateX(130%);transition:transf
 html[data-fx="1"] header{transition:transform .5s var(--fxe),background .3s}
 html[data-fx="1"] header.fxu{transform:translateY(-102%)}
 
-@media(prefers-reduced-motion:reduce){#fxc,#fxn,#fxm,#fxg,#fxp{display:none!important}}
+@media(prefers-reduced-motion:reduce){#fxl,#fxn,#fxm,#fxp{display:none!important}}
