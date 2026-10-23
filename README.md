@@ -30,7 +30,7 @@ The earlier walk-through 3D museum hall is kept on the git branch `gallery-3d`.
 Dark (black + gold, always the default on a fresh visit) → light (white + gold) → mono (white + black) → red (white + deep red + grey). The choice is kept per tab (`sessionStorage` key `xt`).
 
 ## AI render studio
-The top of the AI page is a render generator: a student uploads a view of the project, picks a style (realistic, night,
+The top of the AI page is **X Architecture AI**, a render generator: a student uploads a view of the project, picks a style (realistic, night,
 materials, interior, massing) and an optional note, and gets an AI render back with a before/after slider and a download
 button. It is free for registered students, 2 images a day each.
 
