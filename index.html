@@ -313,7 +313,10 @@ html.intro #bt{animation:bB 6.5s ease-in-out infinite}
 footer{padding:36px 0 32px}
 footer .w.fr{display:flex;flex-direction:row;direction:ltr;align-items:center;justify-content:space-between;gap:16px}
 footer .fb{display:flex;align-items:center;gap:14px}
-footer .fc{font-size:.8rem;letter-spacing:.14em;color:var(--soft)}
+footer .w.fr{display:grid;grid-template-columns:1fr auto 1fr;justify-items:start}
+footer .fc{font-size:.8rem;letter-spacing:.14em;color:var(--soft);text-align:center;direction:ltr;justify-self:center;white-space:nowrap}
+footer .so{justify-self:end}
+@media(max-width:560px){footer .w.fr{grid-template-columns:1fr 1fr;row-gap:16px}footer .fc{grid-column:1/-1;grid-row:2}}
 footer .so{display:flex;gap:10px}
 .cbx{min-width:0}
 @media(max-width:1100px){.cg{grid-template-columns:1fr}}
@@ -623,7 +626,7 @@ T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener
 <div id="va"><section><div class="w" id="ak"></div></section></div>
 </main>
 
-<footer><div class="w fr"><div class="fb"><span class="lg fl"><svg viewBox="0 0 547 703" aria-label="X Architecture"><use href="#mark"/></svg></span><span class="fc">© X Architecture</span></div><div class="so"><a href="https://instagram.com/x.archiitecture" target="_blank" rel="noopener" aria-label="Instagram"><span>IG</span></a><a href="https://t.me/x_architecture" target="_blank" rel="noopener" aria-label="Telegram"><span>TG</span></a></div></div></footer>
+<footer><div class="w fr"><div class="fb"><span class="lg fl"><svg viewBox="0 0 547 703" aria-label="X Architecture"><use href="#mark"/></svg></span></div><span class="fc">© X Architecture</span><div class="so"><a href="https://instagram.com/x.archiitecture" target="_blank" rel="noopener" aria-label="Instagram"><span>IG</span></a><a href="https://t.me/x_architecture" target="_blank" rel="noopener" aria-label="Telegram"><span>TG</span></a></div></div></footer>
 <div id="pm" class="pm" hidden role="dialog" aria-modal="true" aria-labelledby="pmt"><div class="pms" tabindex="-1"><div class="pmbar"><button id="pmp" class="pmb" type="button"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span class="pmz" id="pmz"></span><button id="pmn" class="pmb" type="button"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><button id="pmx" class="pmb pmx" type="button"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div id="pmc" class="pmco"></div></div></div>
 <div id="rg" class="pm" hidden role="dialog" aria-modal="true" aria-labelledby="rgt"><div class="pms" tabindex="-1"><div class="pmbar"><button id="rgx" class="pmb pmx" type="button"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div id="rgc" class="pmco"></div></div></div>
 <div id="lb" class="lb" hidden role="dialog" aria-modal="true" aria-label="عرض العمل"><button id="lbx" class="lbb lbx" type="button" aria-label="إغلاق">×</button><button id="lbp" class="lbb lbp" type="button" aria-label="السابق">‹</button><img id="lbi" alt=""><button id="lbn" class="lbb lbn" type="button" aria-label="التالي">›</button></div>
