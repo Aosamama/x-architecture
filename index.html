@@ -1022,14 +1022,20 @@ function rsMsg(k){
   var x=m[k]||['المولّد مشغول الآن، أو انتهت الحصة المجانية لليوم. حاول لاحقاً.','The studio is busy right now, or today\'s free quota is used up. Please try again later.'];
   return T(x[0],x[1])}
 function rsOn(){return !!(SITE.render&&SITE.api)}
-function rsDims(w,h){/* same sizing rule as the Worker: up to 6 tiles of 512px, sides in multiples of 64 */
-  var a=Math.min(3,Math.max(1/3,w/h)),best=null,cx,cy;
-  for(cx=1;cx<=3;cx++)for(cy=1;cy<=3;cy++){if(cx*cy>6)continue;
-    var bw=cx*512,bh=cy*512,ow=bw,oh=ow/a;if(oh>bh){oh=bh;ow=oh*a}
-    ow=Math.min(bw,Math.max(256,Math.round(ow/64)*64));oh=Math.min(bh,Math.max(256,Math.round(oh/64)*64));
-    var ar=ow*oh,er=Math.abs(Math.log(ow/oh/a));
-    if(!best||ar>best.a*1.001||(Math.abs(ar-best.a)<=best.a*.001&&er<best.e))best={w:ow,h:oh,a:ar,e:er}}
-  return best.w/best.h}
+function rsFit(src,ar){/* resolves with the image redrawn at aspect ratio ar (same width); falls back to the original data URL on any problem */
+  return new Promise(function(ok){
+    var im=new Image();
+    im.onload=function(){
+      try{
+        var w=im.naturalWidth,h=im.naturalHeight;
+        if(!w||!h||Math.abs(w/h/ar-1)<.005){ok(src);return}
+        var c=document.createElement('canvas');c.width=w;c.height=Math.max(1,Math.round(w/ar));
+        var x=c.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(im,0,0,c.width,c.height);
+        var m=/^data:image\/(png|jpeg|webp)/.exec(src),mt=m?'image/'+m[1]:'image/png',d=c.toDataURL(mt,.95);
+        ok(/^data:image\/(png|jpeg|webp);base64,/.test(d.slice(0,30))?d:src)}
+      catch(e){ok(src)}};
+    im.onerror=function(){ok(src)};
+    im.src=src})}
 function rsSteps(c){
   var st=[['01','ارفع صورتك','Upload your image','سكيتش بخط اليد، أو لقطة من Revit أو SketchUp أو Rhino، أو صورة ماكيت.','A hand sketch, a screenshot from Revit, SketchUp or Rhino, or a photo of a model.'],
     ['02','قل ما تريده','Say what you want','اختر تحويلاً جاهزاً مثل نهار أو ليل أو سكيتش إلى ريندر، أو اكتب وصفك بحرية بالعربية أو الإنجليزية.','Pick a ready transformation such as day, night or sketch to render, or write your own prompt in Arabic or English.'],
@@ -1096,15 +1102,16 @@ function rsGo(){
   if(RS.style==='custom'&&RS.note.trim().length<3){RS.err=rsMsg('empty');var er=document.getElementById('rse');if(er)er.textContent=RS.err;var nn=document.getElementById('rsn');if(nn)nn.focus();return}
   var fd=new FormData();
   fd.append('uid',u.uid);fd.append('email',u.email);fd.append('style',RS.style);fd.append('note',RS.note.trim());fd.append('iw',String(RS.w));fd.append('ih',String(RS.h));fd.append('image',RS.blob,'project.jpg');
-  RS.busy=true;RS.err='';RS.res='';RS.ar=rsDims(RS.w,RS.h);rsDraw();rsView();
+  RS.busy=true;RS.err='';RS.res='';RS.ar=Math.min(3,Math.max(1/3,RS.w/RS.h));rsDraw();rsView();
   var ac=window.AbortController?new AbortController():null,to=setTimeout(function(){if(ac)ac.abort()},120000);
   fetch(SITE.render,{method:'POST',body:fd,signal:ac?ac.signal:undefined}).then(function(r){return r.json().catch(function(){return{ok:false,error:'busy'}})}).then(function(j){
-    clearTimeout(to);RS.busy=false;
-    if(j&&j.ok&&typeof j.image==='string'&&/^data:image\/(png|jpeg|webp);base64,/.test(j.image.slice(0,30))){
-      RS.res=j.image;RS.ext=/^data:image\/jpeg/.test(j.image)?'jpg':/^data:image\/webp/.test(j.image)?'webp':'png';RS.err=''}
-    else RS.err=rsMsg(j&&j.error);
+    clearTimeout(to);
     if(j&&typeof j.left==='number')RS.left=j.left;if(j&&j.limit)RS.limit=j.limit;
-    rsDraw();rsView()
+    if(j&&j.ok&&typeof j.image==='string'&&/^data:image\/(png|jpeg|webp);base64,/.test(j.image.slice(0,30))){
+      /* the model works on sides that are multiples of 64, so the result can be a few % off the original proportions; resample it back so the framing matches the user's image exactly */
+      return rsFit(j.image,RS.ar).then(function(d){
+        RS.busy=false;RS.res=d;RS.ext=/^data:image\/jpeg/.test(d)?'jpg':/^data:image\/webp/.test(d)?'webp':'png';RS.err='';rsDraw();rsView()})}
+    RS.busy=false;RS.err=rsMsg(j&&j.error);rsDraw();rsView()
   }).catch(function(e){clearTimeout(to);RS.busy=false;RS.err=rsMsg(e&&e.name==='AbortError'?'slow':'net');rsDraw()})}
 (function(){
   var ak=document.getElementById('ak');
