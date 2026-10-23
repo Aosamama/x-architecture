@@ -125,17 +125,30 @@ function tokOk_(email, tok) {
 }
 
 /* ---------- sender ----------
-   By default the code is mailed with MailApp, i.e. from the Google account that owns this script.
-   To mail it from the site's own address (for example no-reply@xarch.site) add two Script properties
-   (Project Settings > Script properties): RESEND_API_KEY (a Resend API key) and MAIL_FROM (the address).
-   When both are set the code goes through Resend, and if Resend refuses it nothing is sent from the owner's Gmail. */
+   There are three ways to send the code, checked in this order:
+   1. Resend (Script properties RESEND_API_KEY + MAIL_FROM): the code goes out from the site's own address through Resend.
+   2. A Gmail "Send mail as" address (Script property MAIL_ALIAS, for example info@xarch.site): the script mails through its
+      Gmail, but the message is sent from that address (Gmail relays it through the mailbox's own SMTP server), so the owner's
+      personal address never shows. The address must first be added in Gmail > Settings > Accounts and Import.
+   3. Nothing set: MailApp, i.e. from the Google account that owns this script.
+   With 1 or 2 configured, if the send fails nothing is sent from the owner's personal address. */
 function mailVia_() {
   var p = PropertiesService.getScriptProperties(), k = p.getProperty('RESEND_API_KEY'), f = String(p.getProperty('MAIL_FROM') || '').trim();
   return k && /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/.test(f) ? { key: k, from: f } : null;
 }
+function aliasOf_() {
+  var a = String(PropertiesService.getScriptProperties().getProperty('MAIL_ALIAS') || '').trim();
+  return /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/.test(a) ? a : '';
+}
 function sendMail_(to, subject, text, html) {
   var m = mailVia_();
-  if (!m) { MailApp.sendEmail({ to: to, name: 'X Architecture', noReply: true, subject: subject, body: text, htmlBody: html }); return; }
+  if (!m) {
+    var al = aliasOf_();
+    if (!al) { MailApp.sendEmail({ to: to, name: 'X Architecture', noReply: true, subject: subject, body: text, htmlBody: html }); return; }
+    if (GmailApp.getAliases().indexOf(al) < 0) { Logger.log('MAIL_ALIAS ' + al + ' is not a verified "Send mail as" address of this Gmail account'); throw new Error('alias'); }
+    GmailApp.sendEmail(to, subject, text, { from: al, name: 'X Architecture', htmlBody: html });
+    return;
+  }
   var r = UrlFetchApp.fetch('https://api.resend.com/emails', {
     method: 'post', contentType: 'application/json', muteHttpExceptions: true,
     headers: { Authorization: 'Bearer ' + m.key },
@@ -193,16 +206,18 @@ function vc_(d) {
 }
 
 /* Run this once from the editor (Run > authorizeMail) so Google asks you to allow the script to send mail
-   (and to call Resend, if you use it). Run it again after every change of the sender settings: it only reports them. */
+   (Gmail access if MAIL_ALIAS is used, and Resend if you use that). Run it again after every change of the sender settings: it only reports them. */
 function authorizeMail() {
-  var m = mailVia_();
-  Logger.log('sender: ' + (m ? m.from + ' (through Resend)' : 'the Google account that owns this script (MailApp), mails left today: ' + MailApp.getRemainingDailyQuota()));
+  var m = mailVia_(), al = aliasOf_();
+  if (m) Logger.log('sender: ' + m.from + ' (through Resend)');
+  else if (al) Logger.log('sender: ' + al + ' (Gmail Send-as). Verified Send-as addresses of this account: ' + GmailApp.getAliases().join(', ') + '. Mails left today: ' + MailApp.getRemainingDailyQuota());
+  else Logger.log('sender: the Google account that owns this script (MailApp), mails left today: ' + MailApp.getRemainingDailyQuota());
 }
 /* Sends one test message to the owner of this script, through whatever sender is configured (Run > testMail). */
 function testMail() {
   var to = Session.getEffectiveUser().getEmail();
   sendMail_(to, 'X Architecture — test / تجربة', 'If you can read this, the sender works.\nإذا وصلتك هذه الرسالة فالإرسال يعمل.', '<p>If you can read this, the sender works.</p><p style="direction:rtl">إذا وصلتك هذه الرسالة فالإرسال يعمل.</p>');
-  Logger.log('test message sent to ' + to + (mailVia_() ? ' through Resend' : ' through MailApp'));
+  Logger.log('test message sent to ' + to + (mailVia_() ? ' through Resend' : aliasOf_() ? ' from ' + aliasOf_() + ' (Gmail Send-as)' : ' through MailApp'));
 }
 
 /* ---------- registration (upsert by email) ---------- */
