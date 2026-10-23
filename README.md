@@ -28,6 +28,11 @@ The "Student work" page is one long, frame-free reel (functions `gxBuild()` / `g
 The **home page** shows only black-background renders: the entries of `IM` listed in `HB` (the first one is also on the works page; `works/w11..w14` are home-only, the works page list is `WK`), plus the "Gold on black" renders students agreed to show (served by the AI Worker at `/gallery`, see `backend/render-worker/SETUP.md`; review or delete them from `admin.html`). With 3 or more it uses the same scrolling reel without the parametric hairlines (`gxMake('hgx', …)`), otherwise a simple grid. These pictures follow the site theme with CSS filters only (end of the style block, `.hgq`): black + gold = as they are; white + gold / white + black / white + red = the picture is inverted so the black ground becomes white and the lit parts turn gold / black / red. Students' renders get the same treatment automatically. To put another work on the home page, add its index to `HB`. Colours come from the theme variables, and in RTL languages the reel runs right-to-left.
 The earlier walk-through 3D museum hall is kept on the git branch `gallery-3d`.
 
+## Phones (up to 700 px wide)
+The home page is the hub: there is no logo in the header and no bottom bar. The header keeps only the colour mode, the motion toggle and the language (the profile button appears once someone has registered); every section is reached from the home page, and every other page has a "Home" link at the top. The footer carries the brand (logo + name) on the left and text links to Instagram and Telegram on the right (no third-party logos). On wider screens the header and the section links are unchanged.
+
+Contact (Telegram, Instagram, "Contact us") is open to everyone; only the AI studio needs a profile. The home reel of black-background renders is titled "In the X Architecture style", not "Student work".
+
 ## Themes
 Dark (black + gold, always the default on a fresh visit) → light (white + gold) → mono (white + black) → red (white + deep red + grey). The choice is kept per tab (`sessionStorage` key `xt`).
 
