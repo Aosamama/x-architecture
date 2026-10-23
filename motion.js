@@ -59,7 +59,6 @@ function stop(save){
   $$('.b').forEach(function(n){n.style.transform=''});
   $$('.ex img').forEach(function(n){n.style.removeProperty('--py')});
   $$('.pv i[data-v]').forEach(function(n){n.textContent=n.dataset.v;n.removeAttribute('data-v')});
-  var m=$('.mk');if(m)m.style.transform='';
   var h=$('header');if(h)h.classList.remove('fxu');
   el={};net=null;ptr={x:-1e4,y:-1e4,a:false};cur={x:-1e4,y:-1e4};
   label();
@@ -74,7 +73,6 @@ function loop(){
   cur.x+=(ptr.x-cur.x)*.16;cur.y+=(ptr.y-cur.y)*.16;
   if(el.cur)cursorStep();
   if(net)net.draw();
-  mark();
 }
 function scrolled(){
   sy=window.pageYOffset||0;
@@ -168,7 +166,7 @@ function lines(){
         cy=H*(r.cy+r.a1*Math.sin(TAU*s*r.f1+r.p1)+r.a2*Math.sin(TAU*s*r.f2-r.p2));
         sp=r.sp*H*(.05+.95*Math.pow(Math.abs(Math.sin(Math.PI*s*r.f3+r.p3)),.85));
         Y=cy+u*sp*2+.012*H*u*Math.sin(TAU*s*3+T0);
-        if(A>.3){dx=X-px;dy=Y-py;d2=dx*dx+dy*dy;if(d2<160000)Y+=A*Math.exp(-d2/(2*130*130))*Math.sin(Math.sqrt(d2)/20-ph)}
+        if(A>.3){dx=X-px;dy=Y-py;d2=dx*dx+dy*dy;if(d2<40000)Y+=A*Math.exp(-d2/(2*66*66))*Math.sin(Math.sqrt(d2)/12-ph)}
         if(j)p.lineTo(X,Y);else p.moveTo(X,Y);
       }
     }
@@ -180,7 +178,7 @@ function lines(){
     if(!W||!H)return;
     var now=performance.now(),dt=last?Math.min(50,now-last):16;last=now;
     if((fr++%90)===0){
-      var cs=getComputedStyle(D),g=cs.getPropertyValue('--gr').trim(),k=cs.getPropertyValue('--inkr').trim();
+      var cs=getComputedStyle(D),g=(cs.getPropertyValue('--ar')||cs.getPropertyValue('--gr')).trim(),k=cs.getPropertyValue('--inkr').trim();
       if((g&&g!==gold)||(k&&k!==ink)){gold=g||gold;ink=k||ink;need=true}
     }
     /* pointer energy: the lines only ripple while the pointer is moving over them */
@@ -194,12 +192,12 @@ function lines(){
     if(!need&&E<.004&&k2===key){if(!rest){rest=true}return}
     rest=false;need=false;key=k2;
     x.clearRect(0,0,W,H);
-    var A=E*24,ps=[],i;
+    var A=E*15,ps=[],i;
     for(i=0;i<R.length;i++)ps.push(path(R[i],px,py,A,ph));
     x.lineWidth=1;
     for(i=0;i<R.length;i++){x.strokeStyle='rgba('+ink+','+R[i].al+')';x.stroke(ps[i])}
     if(hl){
-      var rad=190,g2=x.createRadialGradient(px,py,0,px,py,rad);
+      var rad=92,g2=x.createRadialGradient(px,py,0,px,py,rad);
       g2.addColorStop(0,'rgba('+gold+',.9)');
       g2.addColorStop(.45,'rgba('+gold+',.5)');
       g2.addColorStop(1,'rgba('+gold+',0)');
@@ -216,21 +214,6 @@ function lines(){
   size();
   net={draw:draw,size:size};
 }
-var tilt={rx:0,ry:0};
-function mark(){
-  var m=el.mk||(el.mk=$('.mk')),h=el.hero||(el.hero=$('.hero'));
-  if(!m||!h||h.offsetParent===null)return;
-  var tx=0,ty=0;
-  if(FP.matches&&ptr.a){
-    var r=h.getBoundingClientRect();
-    if(r.width){tx=((ptr.x-r.left)/r.width-.5);ty=((ptr.y-r.top)/r.height-.5)}
-    tx=Math.max(-.7,Math.min(.7,tx));ty=Math.max(-.7,Math.min(.7,ty));
-  }
-  tilt.ry+=(tx*14-tilt.ry)*.08;tilt.rx+=(-ty*10-tilt.rx)*.08;
-  var py=Math.min(sy*.16,90);
-  m.style.transform='perspective(1100px) translate3d(0,'+py.toFixed(1)+'px,0) rotateX('+tilt.rx.toFixed(2)+'deg) rotateY('+tilt.ry.toFixed(2)+'deg)';
-}
-
 /* ---------- price count-up ---------- */
 function counts(){
   if(!window.IntersectionObserver)return;

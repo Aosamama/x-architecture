@@ -37,11 +37,13 @@ html[data-fxcur] input,html[data-fxcur] textarea,html[data-fxcur] [contenteditab
 #fxl.dn svg{transform:scale(.74)}
 #fxl.hv.dn svg{transform:scale(1.05) rotate(180deg)}
 .fxk{position:fixed;left:0;top:0;width:14px;height:14px;margin:-7px 0 0 -7px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:99999;opacity:0;animation:fxk .75s var(--fxe) forwards}
-@keyframes fxk{from{transform:translate(var(--x),var(--y)) scale(.3);opacity:.95}to{transform:translate(var(--x),var(--y)) scale(5.5);opacity:0}}
+@keyframes fxk{from{transform:translate(var(--x),var(--y)) scale(.3);opacity:.95}to{transform:translate(var(--x),var(--y)) scale(3.4);opacity:0}}
 
 /* ---------- hero: parametric line ribbons + headline ---------- */
 #fxn{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(#000 72%,transparent);mask-image:linear-gradient(#000 72%,transparent)}
-html[data-fx="1"] .mk{will-change:transform}
+/* the hero mark just breathes: it comes a little closer, then drifts back (no pointer tilt) */
+html[data-fx="1"] .mk{will-change:transform;animation:fxz 7s ease-in-out 3.4s infinite}
+@keyframes fxz{0%,100%{transform:scale(1)}50%{transform:scale(1.075)}}
 html[data-fx="1"].js .hero h1{animation:fxh 1.3s var(--fxe) .25s both}
 @keyframes fxh{
 from{opacity:0;transform:translateY(.45em) skewY(2.2deg);filter:blur(12px);clip-path:inset(0 0 100% 0)}
@@ -73,6 +75,8 @@ html[data-theme=light][data-fx="1"] [data-fxt].fxh{box-shadow:0 22px 50px -26px 
 html[data-fx="1"] [data-fxt]::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;transition:opacity .4s;background:radial-gradient(460px circle at var(--mx,50%) var(--my,50%),rgba(var(--gr),.15),transparent 58%)}
 html[data-fx="1"] [data-fxt].fxh::after{opacity:1}
 html[data-theme=mono][data-fx="1"] [data-fxt]::after{display:none}
+html[data-theme=red][data-fx="1"] [data-fxt]::after{background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(180,9,31,.08),transparent 60%)}
+html[data-theme=red][data-fx="1"] [data-fxt].fxh{box-shadow:0 22px 50px -26px rgba(20,20,24,.34)}
 
 /* student work: scroll parallax inside the frame */
 html[data-fx="1"] .ex img{transform:translate3d(0,var(--py,0px),0) scale(1.15);transition:filter .8s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
