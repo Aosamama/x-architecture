@@ -36,8 +36,13 @@ Contact (Telegram, Instagram, "Contact us") is open to everyone; only the AI stu
 ## Service windows
 Clicking one of the four services (architectural design, visualization, critique, supervision) on the Services page or on the home page opens the same dialog the programs use: a short introduction, what the client gets, example images (design and visualization only) and a button to the contact page. Everything lives in the `SVD` object next to `svr()` in `index.html`: the Arabic and English text, the icon, and `im`, the list of images from `works/` (for example `['w2','w3']`; leave it empty for no images). Texts in the other languages live in the `DT` dictionary, keyed by the English string. The example images are placeholders taken from the site's own works; replace them with your own work when you have it.
 
+## Email confirmation
+Registration checks the address twice. In the browser `rgem()` rejects non-ASCII addresses, bad formats, common typo domains (`gmial.com` and so on, with a "Did you mean…" hint), disposable domains and impossible Gmail names. Then, when the Apps Script is version 2 or newer (`GET /exec` answers `v:2`, see `rgprobe()`), the script mails a 6-digit code (`vs`), the person types it (`vc`) and gets a signed token that is saved with the profile (`tok`) and is required by the `reg` action. If the script is still the old one the site falls back to the strict format check only; if the script cannot be reached an error is shown and nothing is saved. Setup steps are in `backend/SETUP.md` (section 6). The render Worker does not check the token yet; add that before reopening the AI.
+
+The AI studio is paused: `render` in `config.js` is empty, so the AI page, the home sections and the registration texts say "coming soon". To switch it back on put the Worker URL back (`https://xarch-render.osama-architects.workers.dev`) and the copy returns to normal by itself (`rsOn()`).
+
 ## Themes
-Dark (black + gold, always the default on a fresh visit) → light (white + gold) → mono (white + black) → red (white + deep red + grey). The choice is kept per tab (`sessionStorage` key `xt`).
+Dark (black + gold, always the default on a fresh visit) → light (white + gold) → mono (white + black) → red (white + deep red + grey). The choice is kept per tab (`sessionStorage` key `xt`). In the red theme the program icons on the Courses page are tinted red by a CSS filter and show their own colours while pressed, hovered or while their window is open (`pgHv()`).
 
 ## AI render studio
 The top of the AI page is **X Architecture AI**, a render generator: a student uploads a view of the project, picks a style (realistic, night,

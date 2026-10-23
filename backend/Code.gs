@@ -6,6 +6,8 @@
  *   Events  activity of registered users (program views, Telegram / Instagram / contact clicks)
  *
  * Public endpoint (web app, "Anyone"): receives registrations and events.
+ * A registration is only accepted for an e-mail address that has been confirmed: the script mails a
+ * 6-digit code (action 'vs'), checks it (action 'vc') and hands back a signed token that 'reg' requires.
  * Statistics and the user list are returned ONLY when the request carries the
  * secret ADMIN_KEY stored in Project Settings > Script properties.
  *
@@ -14,12 +16,19 @@
 
 var USERS = 'Users', EVENTS = 'Events', TZ = 'Asia/Baghdad';
 var UCOLS = ['uid', 'created', 'updated', 'name', 'email', 'country', 'countryName', 'kind', 'stage',
-             'spec', 'gradYear', 'uni', 'contact', 'interests', 'lang', 'visits', 'last_seen'];
+             'spec', 'gradYear', 'uni', 'contact', 'interests', 'lang', 'visits', 'last_seen', 'verified'];
 var ECOLS = ['time', 'uid', 'type', 'detail'];
 var KINDS = ['student', 'grad', 'other'];
 var STAGES = ['1', '2', '3', '4', '5', 'pg', 'pre'];
 var INTERESTS = ['courses', 'design', 'viz', 'critique', 'super'];
 var ETYPES = ['visit', 'prog', 'tg', 'ig', 'contact'];
+
+var VERSION = 2;                    // the site asks for this to know the script can confirm e-mail addresses
+var VERIFY_REQUIRED = true;         // false = accept registrations without a confirmed address (not recommended)
+var VCODE_TTL = 600;                // a code is valid for 10 minutes
+var VTRIES = 5;                     // wrong guesses allowed per code
+var VPERHOUR = 3;                   // codes per address per hour
+var VKEEP = 400 * 864e5;            // a token stays valid for about 13 months
 
 // Leave empty when the script is bound to the sheet (Extensions > Apps Script).
 // For a standalone script project, put the sheet id (the long part of its URL) here.
@@ -27,6 +36,13 @@ var SHEET_ID = '';
 
 function sheet_(name, cols) {
   var ss = SHEET_ID ? SpreadsheetApp.openById(SHEET_ID) : SpreadsheetApp.getActiveSpreadsheet(), sh = ss.getSheetByName(name);
+  if (sh && sh.getLastColumn() > 0 && sh.getLastColumn() < cols.length) {   // an older sheet: add the new columns at the end
+    var hdr = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
+    for (var i = hdr.length; i < cols.length; i++) {
+      sh.getRange(1, i + 1).setValue(cols[i]).setFontWeight('bold');
+      sh.getRange(1, i + 1, sh.getMaxRows(), 1).setNumberFormat('@');
+    }
+  }
   if (!sh) {
     sh = ss.insertSheet(name);
     sh.getRange(1, 1, sh.getMaxRows(), cols.length).setNumberFormat('@'); // plain text: no formula injection
@@ -48,7 +64,7 @@ function out_(o) {
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
 }
 
-function doGet() { return out_({ ok: true, service: 'xarch' }); }
+function doGet() { return out_({ ok: true, service: 'xarch', v: VERSION }); }
 
 function doPost(e) {
   var res;
@@ -58,6 +74,9 @@ function doPost(e) {
     lock.waitLock(25000);
     try {
       if (d.a === 'reg') res = reg_(d);
+      else if (d.a === 'vs') res = vs_(d);
+      else if (d.a === 'vc') res = vc_(d);
+      else if (d.a === 'vt') res = { ok: true, valid: tokOk_(clean_(d.email, 120).toLowerCase(), String(d.tok || '')) };
       else if (d.a === 'ev') res = ev_(d);
       else if (d.a === 'stats') res = stats_(d);
       else res = { ok: false, err: 'bad request' };
@@ -66,12 +85,102 @@ function doPost(e) {
   return out_(res);
 }
 
+/* ---------- e-mail: strict format, then a code mailed to the address ---------- */
+var TYPOS = { 'gmial.com': 1, 'gmai.com': 1, 'gmail.co': 1, 'gmail.con': 1, 'gamil.com': 1, 'gnail.com': 1, 'gmal.com': 1,
+  'gmail.cm': 1, 'gmil.com': 1, 'gmaill.com': 1, 'hotmial.com': 1, 'hotmal.com': 1, 'hotmail.con': 1, 'hotmail.co': 1,
+  'yaho.com': 1, 'yahooo.com': 1, 'yahoo.con': 1, 'yhoo.com': 1, 'outlok.com': 1, 'outlook.con': 1, 'icloud.con': 1, 'iclould.com': 1 };
+var DISPOSABLE = { 'mailinator.com': 1, 'guerrillamail.com': 1, '10minutemail.com': 1, 'tempmail.com': 1, 'temp-mail.org': 1,
+  'yopmail.com': 1, 'trashmail.com': 1, 'getnada.com': 1, 'sharklasers.com': 1, 'dispostable.com': 1, 'maildrop.cc': 1,
+  'throwawaymail.com': 1, 'fakeinbox.com': 1, 'mohmal.com': 1, 'emailondeck.com': 1, 'tempmailo.com': 1, 'mintemail.com': 1 };
+
+// '' when the address looks real, otherwise 'email' (bad format), 'typo' or 'disposable'
+function emailWhy_(email) {
+  var i = email.lastIndexOf('@');
+  if (i < 1 || email.length > 254) return 'email';
+  var lo = email.slice(0, i), dm = email.slice(i + 1);
+  if (!/^[a-z0-9._%+\-]+$/.test(lo) || lo.length > 64 || lo.charAt(0) === '.' || lo.slice(-1) === '.' || lo.indexOf('..') >= 0) return 'email';
+  if (!/^(?:[a-z0-9](?:[a-z0-9\-]{0,61}[a-z0-9])?\.)+[a-z]{2,24}$/.test(dm)) return 'email';
+  if (TYPOS[dm]) return 'typo';
+  if (DISPOSABLE[dm]) return 'disposable';
+  if (dm === 'gmail.com' || dm === 'googlemail.com') {          // Gmail: 6-30 letters or digits, dots and +tags ignored
+    var g = lo.split('+')[0].replace(/\./g, '');
+    if (g.length < 6 || g.length > 30 || !/^[a-z0-9]+$/.test(g)) return 'email';
+  }
+  return '';
+}
+
+function vkey_() {
+  var p = PropertiesService.getScriptProperties(), k = p.getProperty('TOKEN_KEY');
+  if (!k) { k = Utilities.getUuid() + Utilities.getUuid(); p.setProperty('TOKEN_KEY', k); }
+  return k;
+}
+function b64_(bytes) { return Utilities.base64EncodeWebSafe(bytes).replace(/=+$/, ''); }
+function hmac_(s) { return b64_(Utilities.computeHmacSha256Signature(s, vkey_())); }
+function sha_(s) { return b64_(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, s, Utilities.Charset.UTF_8)); }
+function tok_(email) { var exp = Date.now() + VKEEP; return exp + '.' + hmac_(email + '|' + exp); }
+function tokOk_(email, tok) {
+  var m = /^(\d{13})\.([A-Za-z0-9_-]{20,})$/.exec(String(tok || ''));
+  return !!m && +m[1] > Date.now() && m[2] === hmac_(email + '|' + m[1]);
+}
+
+// step 1: mail a 6-digit code to the address
+function vs_(d) {
+  if (d.hp) return { ok: true };                                // honeypot
+  var email = clean_(d.email, 120).toLowerCase(), why = emailWhy_(email);
+  if (why) return { ok: false, err: why };
+  var cache = CacheService.getScriptCache(), h = sha_(email), kc = 'vc:' + h, ks = 'vs:' + h, kl = 'vl:' + h;
+  var sent = parseInt(cache.get(ks) || '0', 10), last = parseInt(cache.get(kl) || '0', 10);
+  if (sent >= VPERHOUR || (last && Date.now() - last < 25000)) return { ok: false, err: 'wait' };
+  if (MailApp.getRemainingDailyQuota() < 5) return { ok: false, err: 'quota' };
+  var code = String(100000 + (parseInt(Utilities.getUuid().replace(/-/g, '').slice(0, 8), 16) % 900000));
+  try {
+    MailApp.sendEmail({
+      to: email, name: 'X Architecture', noReply: true,
+      subject: 'رمز التأكيد ' + code + ' — X Architecture',
+      body: 'رمز التأكيد الخاص بك: ' + code + '\nصالح لمدة 10 دقائق. إذا لم تطلبه فتجاهل هذه الرسالة.\n\n' +
+            'Your confirmation code: ' + code + '\nValid for 10 minutes. If you did not ask for it, ignore this message.\n\nX Architecture',
+      htmlBody: '<div style="font-family:Arial,sans-serif;max-width:420px;margin:auto;padding:24px;text-align:center">' +
+        '<p style="direction:rtl;font-size:15px;color:#333">رمز التأكيد الخاص بك</p>' +
+        '<p style="font-size:34px;letter-spacing:8px;font-weight:bold;color:#8a7240;margin:6px 0 14px">' + code + '</p>' +
+        '<p style="direction:rtl;font-size:13px;color:#666">صالح لمدة 10 دقائق. إذا لم تطلبه فتجاهل هذه الرسالة.</p>' +
+        '<p style="font-size:13px;color:#666">Your confirmation code. Valid for 10 minutes. If you did not ask for it, ignore this message.</p>' +
+        '<p style="font-size:12px;color:#999;margin-top:18px">X Architecture</p></div>'
+    });
+  } catch (err) { return { ok: false, err: 'send' }; }
+  cache.put(kc, JSON.stringify({ h: sha_(code + '|' + email), n: 0 }), VCODE_TTL);
+  cache.put(ks, String(sent + 1), 3600);
+  cache.put(kl, String(Date.now()), 120);
+  return { ok: true };
+}
+
+// step 2: check the code and hand back a signed token for that address
+function vc_(d) {
+  var email = clean_(d.email, 120).toLowerCase(), code = String(d.code || '').replace(/\D/g, '');
+  if (emailWhy_(email) || code.length !== 6) return { ok: false, err: 'bad' };
+  var cache = CacheService.getScriptCache(), kc = 'vc:' + sha_(email), raw = cache.get(kc);
+  if (!raw) return { ok: false, err: 'expired' };
+  var o = JSON.parse(raw);
+  if (sha_(code + '|' + email) !== o.h) {
+    o.n++;
+    if (o.n >= VTRIES) { cache.remove(kc); return { ok: false, err: 'tries' }; }
+    cache.put(kc, JSON.stringify(o), VCODE_TTL);
+    return { ok: false, err: 'bad' };
+  }
+  cache.remove(kc);
+  return { ok: true, tok: tok_(email) };
+}
+
+/* Run this once from the editor (Run > authorize_) so Google asks you to allow the script to send mail. */
+function authorize_() { Logger.log('mails left today: ' + MailApp.getRemainingDailyQuota()); }
+
 /* ---------- registration (upsert by email) ---------- */
 function reg_(d) {
   if (d.hp) return { ok: true };                         // honeypot: bots fill hidden fields
   var email = clean_(d.email, 120).toLowerCase();
   var name = clean_(d.name, 80);
-  if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, err: 'invalid' };
+  if (!name || emailWhy_(email)) return { ok: false, err: 'invalid' };
+  var verified = tokOk_(email, d.tok);
+  if (VERIFY_REQUIRED && !verified) return { ok: false, err: 'unverified' };
   var kind = pick_(d.kind, KINDS) || 'student';
   var ints = (Array.isArray(d.interests) ? d.interests : []).filter(function (x) { return INTERESTS.indexOf(x) >= 0; });
   var row = {
@@ -82,6 +191,7 @@ function reg_(d) {
     uni: kind === 'other' ? '' : clean_(d.uni, 100), contact: clean_(d.contact, 60),
     interests: ints.join(','), lang: pick_(d.lang, ['ar', 'en', 'tr', 'fr', 'ku'])
   };
+  if (verified) row.verified = now_();
   var sh = sheet_(USERS, UCOLS), last = sh.getLastRow(), at = 0;
   if (last > 1) {
     var f = sh.getRange(2, col_('email'), last - 1, 1).createTextFinder(email).matchEntireCell(true).matchCase(false).findNext();
