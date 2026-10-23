@@ -15,13 +15,20 @@
 
 const STYLES = {
   render: 'Transform this into a photorealistic architectural render. Keep the exact building massing, proportions, openings and camera angle. Natural daylight, soft realistic shadows, realistic materials and glass reflections, people and trees for scale, clean professional architectural visualization.',
+  sketch: 'Turn this hand-drawn architectural sketch into a photorealistic architectural render. Follow the sketch lines exactly for the massing, proportions, openings and camera angle. Add realistic materials, natural daylight, soft shadows, glass reflections, trees and people for scale.',
+  day: 'Re-light this scene as a bright daytime scene with a clear sky and natural sunlight. Keep the exact geometry, materials and camera angle. Photorealistic architectural photography.',
   night: 'Convert this into a photorealistic architectural night render. Keep the exact geometry and camera angle. Warm interior light glowing through the glazing, deep blue-hour sky, subtle exterior lighting, realistic materials.',
   materials: 'Keep the exact building geometry and camera angle. Redesign the materials: board-formed concrete with warm timber details, realistic reflections, soft overcast light, photorealistic architectural photography.',
   interior: 'Transform this into a photorealistic interior render. Keep the layout, proportions and camera angle. Natural oak, linen textiles, soft morning light through large windows, minimal contemporary furniture, high detail.',
-  massing: 'Turn this massing model into a realistic architectural visualization in an urban context. Keep the form and camera angle. Golden hour light, trees, people and street details, shallow depth of field.'
+  sunset: 'Re-light this scene at golden-hour sunset with a warm low sun, long soft shadows and a glowing sky. Keep the exact geometry and camera angle. Photorealistic architectural photography.',
+  massing: 'Turn this massing model into a realistic architectural visualization in an urban context. Keep the form and camera angle. Golden hour light, trees, people and street details, shallow depth of field.',
+  custom: 'Edit this architectural image exactly as the architect asks. Keep the building geometry, proportions and camera angle unless the architect says otherwise. Photorealistic architectural visualization, realistic materials and lighting.'
 };
 const BAD = /(nude|naked|porn|sex|nsfw|erotic|fetish|gore|blood|corpse|kill|murder|weapon|gun|rifle|terror|bomb|explosive|swastika|isis|عاري|عارية|عراة|جنس|اباحي|إباحي|دم|جثة|قتل|سلاح|بندقية|إرهاب|ارهاب|قنبلة|متفجر)/i;
 const MAX_BYTES = 1.6 * 1024 * 1024;
+const NOTE_MAX = 300;
+const ARABIC = /[\u0600-\u06FF]/;
+const clean = s => String(s || '').replace(/[\u0000-\u001f<>{}\[\]]/g, ' ').replace(/\s+/g, ' ').trim();
 
 function day() { return new Date().toISOString().slice(0, 10); }
 function num(v, d) { const n = parseInt(v, 10); return n > 0 ? n : d; }
@@ -46,6 +53,15 @@ async function getN(env, k) { const v = await env.LIMITS.get(k); return v ? pars
 async function bump(env, k, d) { const n = Math.max(0, (await getN(env, k)) + (d || 1)); await env.LIMITS.put(k, String(n), { expirationTtl: 172800 }); return n; }
 function b64(buf) { let s = ''; const a = new Uint8Array(buf), c = 0x8000; for (let i = 0; i < a.length; i += c) s += String.fromCharCode.apply(null, a.subarray(i, i + c)); return btoa(s); }
 function mime(b) { return b.startsWith('/9j/') ? 'image/jpeg' : b.startsWith('UklGR') ? 'image/webp' : 'image/png'; }
+// The image model understands English best, so Arabic prompts are translated first (falls back to the raw text).
+async function english(env, note) {
+  if (!note || !ARABIC.test(note) || !env.AI) return note;
+  try {
+    const out = await env.AI.run('@cf/meta/m2m100-1.2b', { text: note, source_lang: 'arabic', target_lang: 'english' });
+    const t = clean(out && out.translated_text).slice(0, NOTE_MAX);
+    return t || note;
+  } catch (e) { return note; }
+}
 function snap(n) { n = Math.max(256, Math.min(1024, Math.round(n / 64) * 64)); return n; }
 
 async function ids(req, env, uid, email) {
@@ -101,8 +117,9 @@ export default {
     }
     const style = String(fd.get('style') || 'render');
     if (!STYLES[style]) return json({ ok: false, error: 'bad' }, 400, h);
-    const note = String(fd.get('note') || '').replace(/[\u0000-\u001f<>{}\[\]]/g, ' ').trim().slice(0, 160);
+    const note = clean(fd.get('note')).slice(0, NOTE_MAX);
     if (note && BAD.test(note)) return json({ ok: false, error: 'note' }, 400, h);
+    if (style === 'custom' && note.length < 3) return json({ ok: false, error: 'empty' }, 400, h);
     const file = fd.get('image');
     if (!file || typeof file === 'string' || !/^image\/(jpeg|png|webp)$/.test(file.type) || file.size > MAX_BYTES || file.size < 500) return json({ ok: false, error: 'image' }, 400, h);
 
@@ -114,7 +131,9 @@ export default {
 
     const iw = Math.max(1, num(fd.get('iw'), 4)), ih = Math.max(1, num(fd.get('ih'), 3)), asp = Math.min(3, Math.max(1 / 3, iw / ih));
     const w = asp >= 1 ? 1024 : snap(1024 * asp), hh = asp >= 1 ? snap(1024 / asp) : 1024;
-    const prompt = STYLES[style] + (note ? ' The architect also asks for: ' + note + '.' : '');
+    const en = await english(env, note);
+    if (en !== note && BAD.test(en)) return json({ ok: false, error: 'note' }, 400, h);
+    const prompt = STYLES[style] + (en ? ' The architect asks for: ' + en + '.' : '');
 
     // reserve the slot first (narrows the window for parallel requests), give it back if the model fails
     const keys = [k.kU, k.kE, k.kI, k.kG].filter(Boolean);
