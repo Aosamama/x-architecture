@@ -1,0 +1,89 @@
+/* X Architecture — motion layer ("kinetic" theme).
+   Everything below is gated by html[data-fx="1"], which motion.js sets from the header toggle
+   (remembered in localStorage "xm"; off by default for prefers-reduced-motion users).
+   To go back to the classic look for good: delete this file, motion.js and their two tags in index.html.
+   The untouched classic version is also kept on the git branch "classic". */
+
+/* ---------- toggle button ---------- */
+#fxb svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+#fxb .sl{opacity:0;transition:opacity .2s}
+#fxb[aria-pressed=false]{opacity:.62}
+#fxb[aria-pressed=false] .sl{opacity:1}
+#fxb[hidden]{display:none}
+@media(max-width:700px){
+header #fxb{grid-column:1;grid-row:1;justify-self:start;width:auto;padding:8px 2px;margin-inline-start:30px}
+header #usb{margin-inline-start:62px}
+}
+
+html[data-fx="1"]{--fxe:cubic-bezier(.16,.84,.3,1)}
+html[data-fx="1"] ::selection{background:var(--gold);color:var(--ong)}
+
+/* ---------- scroll progress ---------- */
+#fxp{position:fixed;inset:0 0 auto 0;height:2px;z-index:62;pointer-events:none}
+#fxp i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));transform:scaleX(0);transform-origin:0 50%;will-change:transform}
+html[dir=rtl] #fxp i{transform-origin:100% 50%}
+
+/* ---------- cursor light ---------- */
+#fxc{position:fixed;left:0;top:0;width:560px;height:560px;border-radius:50%;pointer-events:none;z-index:40;opacity:0;transition:opacity .6s;will-change:transform;mix-blend-mode:screen;background:radial-gradient(closest-side,rgba(var(--gr),.15),rgba(var(--gr),.05) 52%,transparent 74%)}
+#fxc.on{opacity:1}
+html[data-theme=light] #fxc{mix-blend-mode:multiply;background:radial-gradient(closest-side,rgba(var(--gr),.2),rgba(var(--gr),.07) 52%,transparent 74%)}
+html[data-theme=mono] #fxc{display:none}
+
+/* ---------- blueprint grid behind everything ---------- */
+#fxg{position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(var(--gr),.075) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--gr),.075) 1px,transparent 1px);background-size:96px 96px;-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 38%,#000 18%,transparent 80%);mask-image:radial-gradient(ellipse 80% 70% at 50% 38%,#000 18%,transparent 80%)}
+
+/* ---------- hero: live node mesh + ticker + headline ---------- */
+#fxn{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(#000 72%,transparent);mask-image:linear-gradient(#000 72%,transparent)}
+html[data-fx="1"] .hero{padding-bottom:64px}
+html[data-fx="1"] .mk{will-change:transform}
+html[data-fx="1"].js .hero h1{animation:fxh 1.3s var(--fxe) .25s both}
+@keyframes fxh{
+from{opacity:0;transform:translateY(.45em) skewY(2.2deg);filter:blur(12px);clip-path:inset(0 0 100% 0)}
+55%{filter:blur(0)}
+to{opacity:1;transform:none;filter:blur(0);clip-path:inset(-12% -5% -18% -5%)}}
+html[data-fx="1"] h1 em{background:linear-gradient(100deg,var(--gold) 0%,var(--gold) 38%,var(--gold2) 50%,var(--gold) 62%,var(--gold) 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:fxs 6.5s linear 1.8s infinite}
+@keyframes fxs{from{background-position:130% 0}to{background-position:-130% 0}}
+
+#fxm{position:absolute;inset:auto 0 0 0;z-index:1;border-block:1px solid var(--line);overflow:hidden;direction:ltr;pointer-events:none;background:linear-gradient(transparent,rgba(var(--gr),.05));-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+#fxm .fxr{display:flex;width:max-content;padding:13px 0;will-change:transform}
+#fxm span{display:flex;align-items:center;gap:52px;padding-inline-start:52px;font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--soft);white-space:nowrap}
+#fxm span::after{content:"";width:5px;height:5px;background:var(--gold);transform:rotate(45deg);flex:none}
+
+/* ---------- reveals ---------- */
+html[data-fx="1"].js .rv{transform:translateY(56px) scale(.975);filter:blur(6px);transition:opacity 1s var(--fxe) var(--d,0s),transform 1.15s var(--fxe) var(--d,0s),filter .9s ease var(--d,0s)}
+html[data-fx="1"].js .rv.in{opacity:1;transform:none;filter:none}
+html[data-fx="1"].js .rv[id]{transform:none}
+
+/* section headings: label tracks open, rule draws itself, title is wiped in */
+html[data-fx="1"] .hd{border-bottom-color:transparent}
+html[data-fx="1"] .hd::after{content:"";position:absolute;inset:auto 0 0 0;height:1px;background:linear-gradient(90deg,var(--gold),var(--line) 55%,transparent);transform:scaleX(1);transform-origin:0 50%;transition:transform 1.6s var(--fxe) .25s}
+html[dir=rtl][data-fx="1"] .hd::after{transform-origin:100% 50%;background:linear-gradient(270deg,var(--gold),var(--line) 55%,transparent)}
+html[data-fx="1"] .hd.rv:not(.in)::after{transform:scaleX(0)}
+html[data-fx="1"] .hd small{transition:letter-spacing 1.7s var(--fxe) .2s}
+html[data-fx="1"] .hd.rv:not(.in) small{letter-spacing:.06em}
+html[data-fx="1"] .hd h2{justify-self:start;width:fit-content;max-width:100%;clip-path:inset(-14% -3% -14% -3%);transition:clip-path 1.3s var(--fxe) .15s}
+html[data-fx="1"] .hd.rv:not(.in) h2{clip-path:inset(-14% 104% -14% -3%)}
+html[dir=rtl][data-fx="1"] .hd.rv:not(.in) h2{clip-path:inset(-14% -3% -14% 104%)}
+
+/* ---------- cards: 3D tilt + gold spotlight ---------- */
+html[data-fx="1"] [data-fxt]{position:relative;transition:transform .7s var(--fxe),background .3s,box-shadow .6s;will-change:transform}
+html[data-fx="1"] [data-fxt].fxh{transition:transform .12s linear,background .3s,box-shadow .6s;z-index:3;box-shadow:0 26px 60px -30px rgba(0,0,0,.7)}
+html[data-theme=light][data-fx="1"] [data-fxt].fxh{box-shadow:0 22px 50px -26px rgba(60,48,20,.35)}
+html[data-fx="1"] [data-fxt]::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;transition:opacity .4s;background:radial-gradient(460px circle at var(--mx,50%) var(--my,50%),rgba(var(--gr),.15),transparent 58%)}
+html[data-fx="1"] [data-fxt].fxh::after{opacity:1}
+html[data-theme=mono][data-fx="1"] [data-fxt]::after{display:none}
+
+/* student work: scroll parallax inside the frame */
+html[data-fx="1"] .ex img{transform:translate3d(0,var(--py,0px),0) scale(1.15);transition:filter .8s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+html[data-fx="1"] .ex figure:hover img,html[data-fx="1"] .ex figure:focus-visible img{transform:translate3d(0,var(--py,0px),0) scale(1.22)}
+
+/* ---------- buttons: light sweep (magnet is done in JS) ---------- */
+html[data-fx="1"] .b.s{position:relative;overflow:hidden}
+html[data-fx="1"] .b.s::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent 32%,rgba(255,255,255,.38) 50%,transparent 68%);transform:translateX(-130%)}
+html[data-fx="1"] .b.s:hover::after{transform:translateX(130%);transition:transform .9s var(--fxe)}
+
+/* ---------- header hides on scroll down, returns on scroll up ---------- */
+html[data-fx="1"] header{transition:transform .5s var(--fxe),background .3s}
+html[data-fx="1"] header.fxu{transform:translateY(-102%)}
+
+@media(prefers-reduced-motion:reduce){#fxc,#fxn,#fxm,#fxg,#fxp{display:none!important}}
