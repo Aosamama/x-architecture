@@ -436,9 +436,13 @@ html[data-theme=mono] .pmg:hover img,html[data-theme=mono] .pmg.on img{filter:gr
 .pmq{display:flex;flex-wrap:wrap;align-items:flex-end;gap:18px 34px;margin-top:clamp(22px,3vw,32px)}
 .pmq>div small{display:block;color:var(--soft);font-size:.74rem;margin-bottom:4px}
 .pmq .b{margin-inline-start:auto}
+.pmq .pmct{margin-inline-start:auto;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.pmq .pmct small{margin:0}
+.pmq .pmct span{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.pmq .pmct .b{margin-inline-start:0}
 .pmn2{color:var(--soft);font-size:.9rem}
 @media(max-width:800px){.pmb2.nf .pmo{columns:1}.pmb2{grid-template-columns:minmax(0,1fr)}.pmf{position:static;grid-template-columns:1fr 1fr;order:-1}.pmg{aspect-ratio:1/1}}
-@media(max-width:700px){.pm{padding:0;align-items:flex-end}.pms{max-height:94svh;animation-name:pmu}.pmco{padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))}.pmq .b{margin-inline-start:0}}
+@media(max-width:700px){.pm{padding:0;align-items:flex-end}.pms{max-height:94svh;animation-name:pmu}.pmco{padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))}.pmq .b,.pmq .pmct{margin-inline-start:0}.pmq .pmct{align-items:flex-start;width:100%}.pmq .pmct span{justify-content:flex-start;width:100%;flex-wrap:nowrap}.pmq .pmct .b{flex:1 1 0;min-width:0;padding-inline:10px;text-align:center}}
 @keyframes pmu{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.pms{animation:none}.pmg img{transition:none}}
 
@@ -818,7 +822,6 @@ T.push(setTimeout(fly,2150));o.addEventListener("click",land);o.addEventListener
 <div class="hd"><small>CONTACT</small><h2>تواصل</h2></div>
 <div class="ct">
 <div><h2>ابدأ مشروعك معنا</h2><p>أخبرنا بما تحتاجه، خدمة أو دورة، وسنرتب معك الخطوات التالية.</p></div>
-<div class="bt"><a class="b s" href="https://instagram.com/x.archiitecture" target="_blank" rel="noopener">إنستغرام</a><a class="b" href="https://t.me/x_architecture" target="_blank" rel="noopener">تيليجرام</a></div>
 </div>
 <div class="ci" id="ci" hidden>
 <div class="cr" id="ce" hidden><small>البريد الإلكتروني</small><a></a></div>
@@ -1242,7 +1245,7 @@ function pmr(){
   if(im.length)h+='<div class="pmf">'+im.map(function(a){return '<figure class="pmg'+(a[2]?' g':PCOL[s]?'':' pn')+'"'+(PCOL[s]&&!a[2]?' style="--pc:'+PCOL[s]+'"':'')+'><img src="'+esc(a[0])+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" draggable="false"></figure>'}).join('')+'</div>';
   h+='</div>';
   if(cap)h+='<div class="pmv"><small>'+T('المستوى الذي ستصل إليه','The level you will reach')+'</small><p>'+esc(last)+'</p></div>';
-  h+='<div class="pmq">'+(pr?'<div><small>'+T('الدورات التفاعلية','Live courses')+'</small><span class="pv"><i>'+pr[0]+'</i><u>'+T('ألف د.ع','K IQD')+'</u></span></div><div><small>'+T('الدورات المسجّلة','Recorded courses')+'</small><span class="pv"><i>'+pr[1]+'</i><u>'+T('ألف د.ع','K IQD')+'</u></span></div>':'<p class="pmn2">'+T('تُقدَّم ضمن العروض','Included in the bundle offers')+'</p>')+'<a class="b s" href="#contact" data-x="1" data-gate="contact">'+T('تواصل للاشتراك','Contact us to enroll')+'</a></div>';
+  h+='<div class="pmq">'+(pr?'<div><small>'+T('الدورات التفاعلية','Live courses')+'</small><span class="pv"><i>'+pr[0]+'</i><u>'+T('ألف د.ع','K IQD')+'</u></span></div><div><small>'+T('الدورات المسجّلة','Recorded courses')+'</small><span class="pv"><i>'+pr[1]+'</i><u>'+T('ألف د.ع','K IQD')+'</u></span></div>':'<p class="pmn2">'+T('تُقدَّم ضمن العروض','Included in the bundle offers')+'</p>')+'<div class="pmct"><small>'+T('تواصل للاشتراك','Contact us to enroll')+'</small><span>'+'<a class="b s" href="https://instagram.com/x.archiitecture" target="_blank" rel="noopener">'+T('إنستغرام','Instagram')+'</a>'+'<a class="b s" href="https://t.me/x_architecture" target="_blank" rel="noopener">'+T('تيليجرام','Telegram')+'</a>'+'</span></div></div>';
   pmc.innerHTML=h;pgHv(s);
   document.getElementById('pmz').textContent=(PI+1)+' / '+PGO.length;
   Array.prototype.forEach.call(pmc.querySelectorAll('.pmg img'),function(i){i.addEventListener('error',function(){var f=i.parentNode,p=f.parentNode;p.removeChild(f);if(!p.querySelector('figure')){var b=p.parentNode;b.removeChild(p);b.classList.add('nf')}},{once:true})})
@@ -1280,7 +1283,7 @@ function svr(){
   if(m.im.length)h+='<div class="pmf">'+m.im.map(function(f){return '<figure class="pmg sg"><img src="works/'+f+'.webp" alt="" loading="lazy" decoding="async" draggable="false"></figure>'}).join('')+'</div>';
   h+='</div>';
   if(m.nt)h+='<div class="pmv"><p>'+esc(stx(m.nt))+'</p></div>';
-  h+='<div class="pmq"><p class="pmn2">'+T('أخبرنا بما تحتاجه، خدمة أو دورة، وسنرتب معك الخطوات التالية.','Tell us what you need, a service or a course, and we will arrange the next steps with you.')+'</p><a class="b s" href="#contact" data-x="1" data-gate="contact">'+T('تواصل بخصوص هذه الخدمة','Contact us about this service')+'</a></div>';
+  h+='<div class="pmq"><p class="pmn2">'+T('أخبرنا بما تحتاجه، خدمة أو دورة، وسنرتب معك الخطوات التالية.','Tell us what you need, a service or a course, and we will arrange the next steps with you.')+'</p><div class="pmct"><span>'+'<a class="b s" href="https://instagram.com/x.archiitecture" target="_blank" rel="noopener">'+T('إنستغرام','Instagram')+'</a>'+'<a class="b s" href="https://t.me/x_architecture" target="_blank" rel="noopener">'+T('تيليجرام','Telegram')+'</a>'+'</span></div></div>';
   pmc.innerHTML=h;
   document.getElementById('pmz').textContent=(PI+1)+' / '+SVO.length;
   Array.prototype.forEach.call(pmc.querySelectorAll('.pmg img'),function(i){i.addEventListener('error',function(){var f=i.parentNode,p=f.parentNode;p.removeChild(f);if(!p.querySelector('figure')){var b=p.parentNode;b.removeChild(p);b.classList.add('nf')}},{once:true})})}
@@ -1618,7 +1621,7 @@ function rh(){
     '<p class="note">'+T('إظهارات بخلفية سوداء وإضاءة ذهبية.','Renders on a black background with gold light.')+'</p><div id="hmw"></div></div></section>';
   h+='<section class="hms"><div class="w">'+rhHd('NEWS',T('أحدث الأخبار','Latest news'),'#news',T('كل الأخبار والكتب','All news & books'))+
     '<div class="hn">'+N.slice(0,3).map(ncard).join('')+'</div></div></section>';
-  h+='<section class="hms hcta"><div class="w"><div class="hmi"><h2>'+T('ابدأ مشروعك معنا','Start your project with us')+'</h2><p>'+T('أخبرنا بما تحتاجه، خدمة أو دورة، وسنرتب معك الخطوات التالية.','Tell us what you need, a service or a course, and we will arrange the next steps with you.')+'</p></div><div class="bt hmi"><a class="b s" href="#contact">'+T('تواصل معنا','Contact us')+'</a><a class="b" href="#courses">'+T('الدورات','Courses')+'</a></div></div></section>';
+  h+='<section class="hms hcta"><div class="w"><div class="hmi"><h2>'+T('ابدأ مشروعك معنا','Start your project with us')+'</h2><p>'+T('أخبرنا بما تحتاجه، خدمة أو دورة، وسنرتب معك الخطوات التالية.','Tell us what you need, a service or a course, and we will arrange the next steps with you.')+'</p></div><div class="bt hmi"><a class="b s" href="https://instagram.com/x.archiitecture" target="_blank" rel="noopener">'+T('إنستغرام','Instagram')+'</a><a class="b s" href="https://t.me/x_architecture" target="_blank" rel="noopener">'+T('تيليجرام','Telegram')+'</a><a class="b" href="#courses">'+T('الدورات','Courses')+'</a></div></div></section>';
   el.innerHTML=h;
   Array.prototype.forEach.call(el.querySelectorAll('.ni img'),function(im){im.addEventListener('error',function(){im.parentNode.classList.add('nf');im.remove()},{once:true})});
   hmWorks();hmGal();hmMid();setTimeout(rvScan,30)}
