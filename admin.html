@@ -71,6 +71,13 @@ td.e{direction:ltr;text-align:start}
 .srch{width:min(340px,100%);font:inherit;font-size:.9rem;color:var(--ink);background:rgba(var(--inkr),.06);border:0;border-bottom:1px solid var(--line);padding:9px 12px}
 .top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
 [hidden]{display:none!important}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:14px}
+.gal figure{background:var(--bg3);margin:0;min-width:0}
+.gal img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;background:#000}
+.gal figcaption{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;font-size:.76rem;color:var(--soft)}
+.gal .st{color:var(--gold2)}.gal .st.p{color:var(--err)}
+.gal .bt{padding:5px 12px;font-size:.76rem}
+.gal .bar{display:flex;gap:6px}
 @media(max-width:1000px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.c8,.c6,.c4{grid-column:span 12}}
 @media(max-width:520px){.r{grid-template-columns:minmax(0,7.5em) minmax(0,1fr) 2.8em}}
 </style>
@@ -107,6 +114,7 @@ td.e{direction:ltr;text-align:start}
 <div class="card c6"><h2>التخصصات</h2><div class="rows" id="spec"></div></div>
 <div class="card c6"><h2>ما الذي يهمّهم</h2><div class="rows" id="int"></div></div>
 <div class="card c6"><h2>البرامج الأكثر مشاهدة</h2><div class="rows" id="prog"></div></div>
+<div class="card c12" id="gcard"><div class="top"><h2>معرض الصفحة الرئيسية <small id="gcnt"></small></h2><button class="bt g" id="grf" type="button">تحديث</button></div><p class="sub" id="gmode"></p><p class="empty" id="gmsg"></p><div class="gal" id="gal"></div></div>
 <div class="card c12"><div class="top"><h2>المسجّلون <small id="cnt"></small></h2><input class="srch" id="sq" type="search" placeholder="بحث بالاسم أو البريد أو الجامعة…" aria-label="بحث"></div><div class="tw"><table><thead><tr><th>الاسم</th><th>البريد</th><th>الدولة</th><th>الصفة</th><th>الجامعة</th><th>التخصص</th><th>تواصل</th><th>الاهتمامات</th><th>التسجيل</th></tr></thead><tbody id="ut"></tbody></table></div></div>
 </div>
 </section>
@@ -157,7 +165,33 @@ function tbl(){
     var st=x.kind==='student'?(KIND.student+(x.stage?' · '+(STAGE[x.stage]||x.stage):'')):x.kind==='grad'?(KIND.grad+(x.gradYear?' · '+x.gradYear:'')):KIND.other;
     return'<tr><td>'+esc(x.name)+'</td><td class="e">'+esc(x.email)+'</td><td>'+esc(cname(x.country,x.countryName))+'</td><td>'+esc(st)+'</td><td>'+esc(x.uni)+'</td><td>'+esc(x.spec)+'</td><td class="e">'+esc(x.contact)+'</td><td>'+esc((x.interests||'').split(',').filter(Boolean).map(function(i){return INT[i]||i}).join('، '))+'</td><td class="e">'+esc((x.created||'').slice(0,10))+'</td></tr>'}).join('')||'<tr><td colspan="9" class="empty">لا توجد نتائج.</td></tr>'}
 $('sq').addEventListener('input',function(){if(D)tbl()});
-function show(){$('gate').hidden=true;$('dash').hidden=false;['rf','ex','out'].forEach(function(i){$(i).hidden=false});render()}
+/* ---- home-page gallery: renders students agreed to show (kept by the AI Worker) ---- */
+var GW=((window.XCFG&&XCFG.render)||'').replace(/\/+$/,''),GK='';
+function gpost(act,id){
+  var fd=new FormData();fd.set('key',GK);fd.set('act',act);if(id)fd.set('id',id);
+  return fetch(GW+'/gallery/admin',{method:'POST',body:fd}).then(function(r){return r.json()})}
+function gdraw(j){
+  var g=$('gal'),items=(j&&j.items)||[];
+  $('gcnt').textContent=items.length?'('+items.length+')':'';
+  $('gmode').textContent=j.mode==='review'?'الوضع الحالي: مراجعة. الصور الجديدة تنتظر اعتمادك قبل ظهورها.':'الوضع الحالي: نشر تلقائي. الصور تظهر فور إنشائها، احذف ما لا يناسب.';
+  $('gmsg').textContent=items.length?'':'لا توجد صور منشورة بعد.';
+  g.innerHTML=items.map(function(x){
+    var d=new Date(x.t),ds=isNaN(d)?'':d.toLocaleDateString('ar',{day:'numeric',month:'short'})+' '+d.toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'});
+    return '<figure><img loading="lazy" alt="" src="'+GW+'/gallery/img/'+esc(x.id)+'"><figcaption><span class="st'+(x.s==='ok'?'':' p')+'">'+(x.s==='ok'?'ظاهرة':'بانتظار المراجعة')+' · '+ds+'</span><span class="bar">'+(x.s==='ok'?'':'<button class="bt" type="button" data-a="approve" data-id="'+esc(x.id)+'">اعتماد</button>')+'<button class="bt g" type="button" data-a="delete" data-id="'+esc(x.id)+'">حذف</button></span></figcaption></figure>'}).join('')}
+function gload(){
+  if(!GW){$('gmsg').textContent='لم يُضبط رابط الذكاء الاصطناعي (render) في config.js.';return}
+  try{GK=sessionStorage.getItem('xk')||$('key').value.trim()}catch(e){GK=$('key').value.trim()}
+  $('gmsg').textContent='جارٍ التحميل…';
+  gpost('list').then(function(j){
+    if(!j||!j.ok){$('gmsg').textContent=j&&j.error==='auth'?'تعذّر التحقق من المفتاح لدى خادم الصور.':'تعذّر تحميل المعرض.';return}
+    gdraw(j)}).catch(function(){$('gmsg').textContent='تعذّر الاتصال بخادم الصور.'})}
+$('gal').addEventListener('click',function(e){
+  var b=e.target.closest&&e.target.closest('button[data-a]');if(!b)return;
+  if(b.dataset.a==='delete'&&!b.dataset.sure){b.dataset.sure='1';b.textContent='تأكيد الحذف';setTimeout(function(){if(b.isConnected){delete b.dataset.sure;b.textContent='حذف'}},3500);return}
+  b.disabled=true;
+  gpost(b.dataset.a,b.dataset.id).then(function(j){if(j&&j.ok)gdraw(j);else{b.disabled=false;$('gmsg').textContent='تعذّر تنفيذ الطلب.'}}).catch(function(){b.disabled=false;$('gmsg').textContent='تعذّر الاتصال بخادم الصور.'})});
+$('grf').addEventListener('click',gload);
+function show(){$('gate').hidden=true;$('dash').hidden=false;['rf','ex','out'].forEach(function(i){$(i).hidden=false});render();$('gcard').hidden=DEMO;if(!DEMO)gload()}
 function msg(t){$('msg').textContent=t||''}
 function load(){
   var key=$('key').value.trim(),api=API||$('api').value.trim();
