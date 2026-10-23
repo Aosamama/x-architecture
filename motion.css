@@ -26,22 +26,21 @@ html[dir=rtl] #fxp i{transform-origin:100% 50%}
 /* ---------- the pointer is the X Architecture mark ---------- */
 html[data-fxcur],html[data-fxcur] *{cursor:none!important}
 html[data-fxcur] input,html[data-fxcur] textarea,html[data-fxcur] [contenteditable]{cursor:text!important}
-#fxl{position:fixed;left:0;top:0;width:24px;height:31px;margin:-15.5px 0 0 -12px;z-index:100000;pointer-events:none;opacity:0;transition:opacity .25s;will-change:transform}
+#fxl{position:fixed;left:0;top:0;width:19px;height:24.5px;margin:-12.5px 0 0 -9.5px;z-index:100000;pointer-events:none;opacity:0;transition:opacity .25s;will-change:transform}
 #fxl.on{opacity:1}
 #fxl.tx{opacity:0}
 #fxl svg{width:100%;height:100%;display:block;overflow:visible;transition:transform .5s var(--fxe);filter:drop-shadow(0 0 5px rgba(var(--gr),.5))}
 #fxl polygon{stroke:rgba(var(--bgr),.85);stroke-width:26;paint-order:stroke;stroke-linejoin:round}
 #fxl polygon:first-child{fill:var(--gold2)}
 #fxl polygon:last-child{fill:var(--gold)}
-#fxl.hv svg{transform:scale(1.55) rotate(180deg)}
+#fxl.hv svg{transform:scale(1.35) rotate(180deg)}
 #fxl.dn svg{transform:scale(.74)}
-#fxl.hv.dn svg{transform:scale(1.15) rotate(180deg)}
+#fxl.hv.dn svg{transform:scale(1.05) rotate(180deg)}
 .fxk{position:fixed;left:0;top:0;width:14px;height:14px;margin:-7px 0 0 -7px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:99999;opacity:0;animation:fxk .75s var(--fxe) forwards}
 @keyframes fxk{from{transform:translate(var(--x),var(--y)) scale(.3);opacity:.95}to{transform:translate(var(--x),var(--y)) scale(5.5);opacity:0}}
 
-/* ---------- hero: parametric line ribbons + ticker + headline ---------- */
+/* ---------- hero: parametric line ribbons + headline ---------- */
 #fxn{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(#000 72%,transparent);mask-image:linear-gradient(#000 72%,transparent)}
-html[data-fx="1"] .hero{padding-bottom:64px}
 html[data-fx="1"] .mk{will-change:transform}
 html[data-fx="1"].js .hero h1{animation:fxh 1.3s var(--fxe) .25s both}
 @keyframes fxh{
@@ -50,11 +49,6 @@ from{opacity:0;transform:translateY(.45em) skewY(2.2deg);filter:blur(12px);clip-
 to{opacity:1;transform:none;filter:blur(0);clip-path:inset(-12% -5% -18% -5%)}}
 html[data-fx="1"] h1 em{background:linear-gradient(100deg,var(--gold) 0%,var(--gold) 38%,var(--gold2) 50%,var(--gold) 62%,var(--gold) 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:fxs 6.5s linear 1.8s infinite}
 @keyframes fxs{from{background-position:130% 0}to{background-position:-130% 0}}
-
-#fxm{position:absolute;inset:auto 0 0 0;z-index:1;border-block:1px solid var(--line);overflow:hidden;direction:ltr;pointer-events:none;background:linear-gradient(transparent,rgba(var(--gr),.05));-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
-#fxm .fxr{display:flex;width:max-content;padding:13px 0;will-change:transform}
-#fxm span{display:flex;align-items:center;gap:52px;padding-inline-start:52px;font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--soft);white-space:nowrap}
-#fxm span::after{content:"";width:5px;height:5px;background:var(--gold);transform:rotate(45deg);flex:none}
 
 /* ---------- reveals ---------- */
 html[data-fx="1"].js .rv{transform:translateY(56px) scale(.975);filter:blur(6px);transition:opacity 1s var(--fxe) var(--d,0s),transform 1.15s var(--fxe) var(--d,0s),filter .9s ease var(--d,0s)}
@@ -93,4 +87,13 @@ html[data-fx="1"] .b.s:hover::after{transform:translateX(130%);transition:transf
 html[data-fx="1"] header{transition:transform .5s var(--fxe),background .3s}
 html[data-fx="1"] header.fxu{transform:translateY(-102%)}
 
-@media(prefers-reduced-motion:reduce){#fxl,#fxn,#fxm,#fxp{display:none!important}}
+/* phones: keep the motion layer quiet */
+@media(max-width:700px){
+#fxn{display:none}
+html[data-fx="1"].js .rv{transform:translateY(20px);filter:none;transition:opacity .7s ease var(--d,0s),transform .8s var(--fxe) var(--d,0s)}
+html[data-fx="1"] .hd h2{clip-path:none;transition:none}
+html[data-fx="1"] .hd small{transition:none}
+html[data-fx="1"] h1 em{animation:none}
+}
+
+@media(prefers-reduced-motion:reduce){#fxl,#fxn,#fxp{display:none!important}}
