@@ -170,8 +170,8 @@ function vc_(d) {
   return { ok: true, tok: tok_(email) };
 }
 
-/* Run this once from the editor (Run > authorize_) so Google asks you to allow the script to send mail. */
-function authorize_() { Logger.log('mails left today: ' + MailApp.getRemainingDailyQuota()); }
+/* Run this once from the editor (Run > authorizeMail) so Google asks you to allow the script to send mail. */
+function authorizeMail() { Logger.log('mails left today: ' + MailApp.getRemainingDailyQuota()); }
 
 /* ---------- registration (upsert by email) ---------- */
 function reg_(d) {

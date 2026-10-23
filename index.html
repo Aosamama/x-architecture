@@ -680,8 +680,8 @@ footer .fc{text-align:left;color:var(--gold);font-size:.68rem;letter-spacing:.12
 /* phones: brand (logo + name) on the left, Instagram and Telegram on the right */
 footer .fbr{display:none}
 footer .fs{display:inline-flex;align-items:center;gap:8px}
-footer .fs a{min-width:44px;height:44px;box-sizing:border-box;padding:0 12px;display:inline-flex;align-items:center;justify-content:center;color:var(--gold);font-size:.7rem;letter-spacing:.1em;white-space:nowrap;border:1px solid currentColor;transition:color .2s,background .2s,border-color .2s;-webkit-tap-highlight-color:transparent}
-html[dir=rtl] footer .fs a{letter-spacing:0;font-size:.78rem}
+footer .fs a{min-width:40px;height:38px;box-sizing:border-box;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;color:var(--gold);font-size:.6rem;letter-spacing:.09em;white-space:nowrap;border:1px solid currentColor;transition:color .2s,background .2s,border-color .2s;-webkit-tap-highlight-color:transparent}
+html[dir=rtl] footer .fs a{letter-spacing:0;font-size:.68rem}
 footer .fs a:hover,footer .fs a:focus-visible,footer .fs a:active{color:var(--gold2);background:rgba(var(--gr),.1)}
 @media(max-width:700px){
 footer{padding:34px 0 calc(28px + env(safe-area-inset-bottom,0px))}
@@ -1610,10 +1610,8 @@ function rh(){
   if(ar)N=N.filter(function(n){return n.c||n.ta}).concat(N.filter(function(n){return!(n.c||n.ta)}));
   h+='<section class="hms"><div class="w">'+rhHd('WHAT WE DO',T('ما نقدّمه','What we do'),'#services',T('كل الخدمات','All services'))+
     '<div class="hsv">'+SV.map(function(x){return '<a class="hmi" href="#'+(x[0]==='05'?'courses':'services')+'"'+(SVK[x[0]]?' data-sv="'+SVK[x[0]]+'" aria-haspopup="dialog"':'')+'><em>'+x[0]+'</em><h3>'+T(x[1],x[2])+'</h3><p>'+T(x[3],x[4])+'</p></a>'}).join('')+'</div></div></section>';
-  h+='<section class="hms"><div class="w">'+rhHd('AI RENDER STUDIO','X Architecture AI','#render',rsOn()?T('جرّب الآن','Try it now'):T('قريباً','Coming soon'),1)+
-    '<p class="note">'+(rsOn()?T('ارفع صورة مشروعك، اختر تحويلاً أو اكتب وصفك، واحصل على صورة مُظهَرة بالذكاء الاصطناعي. مجاني للمسجّلين: صورتان كل يوم.','Upload an image of your project, pick a transformation or write your own, and get an AI-rendered image back. Free for registered students: two images a day.'):T('نجهّز الآن X Architecture AI، وسيُفتح قريباً للمسجّلين في المنصة.','We are getting X Architecture AI ready. It will open soon for registered students.'))+'</p>'+rsSteps('hmi')+'</div></section>';
   h+='<section class="hms"><div class="w">'+rhHd('RENDER STYLE',T('بأسلوب X Architecture','In the X Architecture style'),'#works',T('أعمال الطلاب','Student work'))+
-    '<p class="note">'+(rsOn()?T('إظهارات بخلفية سوداء وإضاءة ذهبية. حوّل مشروعك إلى هذا الأسلوب من X Architecture AI فتظهر هنا.','Renders on a black background with gold light. Turn your project into this look with X Architecture AI and it appears here.')+' <a class="lk" href="#render">'+T('جرّب الآن','Try it now')+'</a>':T('إظهارات بخلفية سوداء وإضاءة ذهبية.','Renders on a black background with gold light.'))+'</p><div id="hmw"></div></div></section>';
+    '<p class="note">'+T('إظهارات بخلفية سوداء وإضاءة ذهبية.','Renders on a black background with gold light.')+'</p><div id="hmw"></div></div></section>';
   h+='<section class="hms"><div class="w">'+rhHd('NEWS',T('أحدث الأخبار','Latest news'),'#news',T('كل الأخبار والكتب','All news & books'))+
     '<div class="hn">'+N.slice(0,3).map(ncard).join('')+'</div></div></section>';
   h+='<section class="hms hcta"><div class="w"><div class="hmi"><h2>'+T('ابدأ مشروعك معنا','Start your project with us')+'</h2><p>'+T('أخبرنا بما تحتاجه، خدمة أو دورة، وسنرتب معك الخطوات التالية.','Tell us what you need, a service or a course, and we will arrange the next steps with you.')+'</p></div><div class="bt hmi"><a class="b s" href="#contact">'+T('تواصل معنا','Contact us')+'</a><a class="b" href="#courses">'+T('الدورات','Courses')+'</a></div></div></section>';

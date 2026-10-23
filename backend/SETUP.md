@@ -44,7 +44,7 @@ window.XCFG = { api: 'https://script.google.com/macros/s/XXXXXXXX/exec' };
 
 **للتفعيل (مرة واحدة، لأن الموقع لا يستطيع تحديث السكربت بنفسك):**
 1. في Apps Script افتح الملف `Code.gs` والصق محتوى `backend/Code.gs` الجديد كاملاً، ثم **Save**.
-2. اختر الدالة `authorize_` من القائمة بجانب زر Run، واضغط **Run**، ووافق على الصلاحيات (إضافة إرسال البريد). يكفي مرة واحدة.
+2. اختر الدالة `authorizeMail` من القائمة بجانب زر Run، واضغط **Run**، ووافق على الصلاحيات (إضافة إرسال البريد). يكفي مرة واحدة.
 3. **Deploy ← Manage deployments ← Edit (القلم) ← Version: New version ← Deploy**. الرابط يبقى نفسه.
 4. للتأكد: افتح رابط `/exec` في المتصفح، يجب أن ترى `{"ok":true,"service":"xarch","v":2}`.
 
