@@ -10,21 +10,27 @@
      IP_LIMIT     images per network address/day  default 6   (shared mobile networks need more than 2)
      GLOBAL_CAP   images for everyone per day     default 55  (one ~1.5 MP image costs ~160 of the 10,000 free neurons/day)
      MODEL        flux2 | sd15                    default flux2
+     MAX_TILES    output size in 512px tiles (1-6)  default 6  (6 = up to 1536x1024; 4 = up to 1024x1024)
      ORIGINS      comma list of allowed websites  default https://xarch.site,https://www.xarch.site
    Setup in Arabic: backend/render-worker/SETUP.md */
 
+// The design must never change: every preset only changes the scene (light, time of day, weather) or the realism of what is already there.
+const KEEP = ' Keep the design exactly as it is: the same building and every shape, proportion, opening, material, object, plant, person, vehicle and the same camera angle. Do not add, remove, move, redraw or restyle anything, and do not add text.';
 const STYLES = {
-  render: 'Transform this into a photorealistic architectural render. Keep the exact building massing, proportions, openings and camera angle. Natural daylight, soft realistic shadows, realistic materials and glass reflections, people and trees for scale, clean professional architectural visualization.',
-  sketch: 'Turn this hand-drawn architectural sketch into a photorealistic architectural render. Follow the sketch lines exactly for the massing, proportions, openings and camera angle. Add realistic materials, natural daylight, soft shadows, glass reflections, trees and people for scale.',
-  day: 'Re-light this scene as a bright daytime scene with a clear sky and natural sunlight. Keep the exact geometry, materials and camera angle. Photorealistic architectural photography.',
-  night: 'Convert this into a photorealistic architectural night render. Keep the exact geometry and camera angle. Warm interior light glowing through the glazing, deep blue-hour sky, subtle exterior lighting, realistic materials.',
-  materials: 'Keep the exact building geometry and camera angle. Redesign the materials: board-formed concrete with warm timber details, realistic reflections, soft overcast light, photorealistic architectural photography.',
-  interior: 'Transform this into a photorealistic interior render. Keep the layout, proportions and camera angle. Natural oak, linen textiles, soft morning light through large windows, minimal contemporary furniture, high detail.',
-  sunset: 'Re-light this scene at golden-hour sunset with a warm low sun, long soft shadows and a glowing sky. Keep the exact geometry and camera angle. Photorealistic architectural photography.',
-  massing: 'Turn this massing model into a realistic architectural visualization in an urban context. Keep the form and camera angle. Golden hour light, trees, people and street details, shallow depth of field.',
-  custom: 'Edit this architectural image exactly as the architect asks. Keep the building geometry, proportions and camera angle unless the architect says otherwise. Photorealistic architectural visualization, realistic materials and lighting.'
+  day: 'Change only the time of day to a bright daytime scene with a clear blue sky and natural sunlight.' + KEEP,
+  night: 'Change only the time of day to night: a deep blue night sky, with warm light glowing from the windows and existing lamps.' + KEEP,
+  sunset: 'Change only the lighting to golden-hour sunset: a warm low sun, long soft shadows and a glowing orange sky.' + KEEP,
+  dust: 'Change only the atmosphere to a dusty sandstorm day: a warm orange-brown dust haze in the air, reduced visibility, a dusty hazy sky and soft diffused sunlight.' + KEEP,
+  overcast: 'Change only the weather to an overcast cloudy day: a soft grey cloudy sky and gentle diffused light with soft shadows.' + KEEP,
+  rain: 'Change only the weather to a rainy day: a grey rainy sky, wet reflective ground and soft diffused light.' + KEEP,
+  render: 'Turn this view into a photorealistic photograph of the very same design. Only improve the realism of the existing materials, lighting and shadows.' + KEEP,
+  sketch: 'Turn this hand-drawn architectural sketch into a photorealistic render. Follow the sketch lines exactly for the massing, proportions and openings, and draw nothing that is not in the sketch.' + KEEP,
+  materials: 'Change only the surface materials of the building as the architect asks. If nothing is specified, keep the same materials and only make their texture more realistic.' + KEEP,
+  interior: 'Turn this interior view into a photorealistic photograph of the very same room. Only improve the realism of the existing materials and natural light.' + KEEP,
+  massing: 'Render this massing model realistically with plain neutral concrete and soft daylight.' + KEEP,
+  custom: 'Edit this image only as the architect asks below, and keep everything else exactly as it is.' + KEEP
 };
-const QUALITY = ' Ultra-sharp, high resolution, crisp fine details, clean edges, no blur, no noise, no distortion.';
+const QUALITY = ' Photorealistic, ultra-sharp, high resolution, crisp fine details, clean edges, no blur, no noise.';
 const BAD = /(nude|naked|porn|sex|nsfw|erotic|fetish|gore|blood|corpse|kill|murder|weapon|gun|rifle|terror|bomb|explosive|swastika|isis|عاري|عارية|عراة|جنس|اباحي|إباحي|دم|جثة|قتل|سلاح|بندقية|إرهاب|ارهاب|قنبلة|متفجر)/i;
 const MAX_BYTES = 1.6 * 1024 * 1024;
 const NOTE_MAX = 300;
@@ -65,10 +71,10 @@ async function english(env, note) {
 }
 // Output size: as many pixels as 6 tiles of 512x512 allow (about 1.5 MP, up to 1536x1024), keeping the picture's shape.
 // The model bills per 512x512 tile, so the box is chosen from whole tiles and the sides are multiples of 64.
-function dims(asp) {
+function dims(asp, maxTiles) {
   let best = null;
   for (let cx = 1; cx <= 3; cx++) for (let cy = 1; cy <= 3; cy++) {
-    if (cx * cy > 6) continue;
+    if (cx * cy > maxTiles) continue;
     const bw = cx * 512, bh = cy * 512;
     let w = bw, h = w / asp;
     if (h > bh) { h = bh; w = h * asp; }
@@ -146,10 +152,10 @@ export default {
     if ((await getN(env, k.kG)) >= num(env.GLOBAL_CAP, 55)) return json({ ok: false, error: 'busy' }, 503, h);
 
     const iw = Math.max(1, num(fd.get('iw'), 4)), ih = Math.max(1, num(fd.get('ih'), 3)), asp = Math.min(3, Math.max(1 / 3, iw / ih));
-    const [w, hh] = dims(asp);
+    const [w, hh] = dims(asp, Math.min(6, num(env.MAX_TILES, 6)));
     const en = await english(env, note);
     if (en !== note && BAD.test(en)) return json({ ok: false, error: 'note' }, 400, h);
-    const prompt = STYLES[style] + (en ? ' The architect asks for: ' + en + '.' : '') + QUALITY;
+    const prompt = STYLES[style] + (en ? ' The architect asks for: ' + en + '. Change nothing else.' : '') + QUALITY;
 
     // reserve the slot first (narrows the window for parallel requests), give it back if the model fails
     const keys = [k.kU, k.kE, k.kI, k.kG].filter(Boolean);
