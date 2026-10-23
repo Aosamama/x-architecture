@@ -44,10 +44,11 @@ function start(save){
   sy=lastY=window.pageYOffset||0;vel=0;dirty=true;
   progress();pointer();lines();counts();
   if(FP.matches)hover();
-  on(window,'scroll',function(){dirty=true},{passive:true});
-  on(window,'resize',resize);on(window,'hashchange',function(){dirty=true;setTimeout(function(){dirty=true},400)});
+  on(window,'scroll',function(){dirty=true;wake()},{passive:true});
+  on(window,'resize',resize);on(window,'hashchange',function(){dirty=true;wake();setTimeout(function(){dirty=true;wake()},400)});
+  if(window.MutationObserver){var mo=new MutationObserver(function(){if(net)net.touch();wake()});mo.observe(D,{attributes:true,attributeFilter:['data-theme']});offs.push(function(){mo.disconnect()})}
   on(document.documentElement,'mouseleave',function(){ptr.a=false;if(el.cur)el.cur.classList.remove('on')});
-  label();loop();
+  label();wake();
 }
 function stop(save){
   if(!live)return;
@@ -65,14 +66,23 @@ function stop(save){
 }
 
 /* ---------- main loop ---------- */
+/* The loop only runs while something moves (scroll, pointer, hairlines easing out) and goes to sleep ~0.5s after it stops,
+   so an idle page costs no CPU/GPU at all (matters on weak machines, power saving, and browsers without hardware acceleration). wake() restarts it. */
+var calm=0;
+function wake(){calm=0;if(live&&!raf)raf=requestAnimationFrame(loop)}
 function loop(){
+  raf=0;
   if(!live)return;
-  raf=requestAnimationFrame(loop);
+  var q=el.q,busy=dirty||Math.abs(vel)>.02;
   if(dirty){dirty=false;scrolled()}
   vel*=.9;
   cur.x+=(ptr.x-cur.x)*.16;cur.y+=(ptr.y-cur.y)*.16;
   if(el.cur)cursorStep();
-  if(net)net.draw();
+  if(net){net.draw();if(net.busy())busy=true}
+  if(Math.abs(ptr.x-cur.x)>.3||Math.abs(ptr.y-cur.y)>.3)busy=true;
+  if(q&&(Math.abs(ptr.x-q.x)>.3||Math.abs(ptr.y-q.y)>.3||Math.abs(q.r)>.1))busy=true;
+  calm=busy?0:calm+1;
+  if(calm<30)raf=requestAnimationFrame(loop);
 }
 function scrolled(){
   sy=window.pageYOffset||0;
@@ -84,7 +94,7 @@ function scrolled(){
   header(d);
   figs();
 }
-function resize(){if(net)net.size();dirty=true}
+function resize(){if(net)net.size();dirty=true;wake()}
 
 /* ---------- scroll progress + pointer tracking ---------- */
 function progress(){var b=mk('div','fxp');b.appendChild(document.createElement('i'));document.body.appendChild(b);el.bar=b}
@@ -93,6 +103,7 @@ function pointer(){
     if(e.pointerType==='touch')return;
     ptr.x=e.clientX;ptr.y=e.clientY;ptr.a=true;ptr.t=Date.now();
     if(cur.x<-1e3){cur.x=ptr.x;cur.y=ptr.y}
+    wake();
   },{passive:true});
   if(FP.matches)logoCursor();
 }
@@ -175,7 +186,7 @@ function lines(){
   function draw(){
     if(!vis)return;
     if(h.clientWidth!==W||h.clientHeight!==H)size();
-    if(!W||!H)return;
+    if(!W||!H){rest=true;return}
     var now=performance.now(),dt=last?Math.min(50,now-last):16;last=now;
     if((fr++%90)===0){
       var cs=getComputedStyle(D),g=(cs.getPropertyValue('--ar')||cs.getPropertyValue('--gr')).trim(),k=cs.getPropertyValue('--inkr').trim();
@@ -208,11 +219,12 @@ function lines(){
   on(window,'pointerdown',function(e){
     if(e.pointerType!=='touch')return;
     ptr.x=cur.x=e.clientX;ptr.y=cur.y=e.clientY;ptr.a=true;ptr.t=Date.now();lx=ptr.x;ly=ptr.y;E=1.1;
+    wake();
   },{passive:true});
   var io=null;
-  if(window.IntersectionObserver){io=new IntersectionObserver(function(es){vis=es[es.length-1].isIntersecting;if(vis)need=true});io.observe(h);offs.push(function(){io.disconnect()})}
+  if(window.IntersectionObserver){io=new IntersectionObserver(function(es){vis=es[es.length-1].isIntersecting;if(vis){need=true;wake()}});io.observe(h);offs.push(function(){io.disconnect()})}
   size();
-  net={draw:draw,size:size};
+  net={draw:draw,size:size,busy:function(){return vis&&!rest},touch:function(){need=true;fr=0}};
 }
 /* ---------- price count-up ---------- */
 function counts(){

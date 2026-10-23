@@ -60,3 +60,9 @@ button. It is free for registered students, 2 images a day each.
 - While `render` in `config.js` is empty the section shows "Coming soon". Setup (Arabic, about 10 minutes):
   `backend/render-worker/SETUP.md`.
 - The browser downsizes the image to at most 500 px before sending it, so uploads stay small and fast.
+
+
+## Speed (why the site stays light)
+- `index.html` carries no pictures: the lightbox uses the same `works/*.webp` files as the galleries (it used to embed 10 JPEGs as base64, ~2.8 MB). The page went from 3 MB to ~0.4 MB.
+- Fonts are self-hosted (`fonts/`: TeX Gyre Adventor for Latin, Tajawal Arabic subset for Arabic/Kurdish, both free licences). Nothing waits for Google Fonts before the first paint.
+- No endless animation: the hero glow, the breathing X, the floating triangles, the headline shimmer and the background glow play a few cycles (under a minute) and then rest. The motion layer's loop (`motion.js`, `wake()`) only runs while something moves and sleeps ~0.5 s after, so an idle page uses no CPU/GPU. This matters most on weak machines, power-saving modes and browsers without graphics acceleration (e.g. Edge with "Use graphics acceleration" off).
