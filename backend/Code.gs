@@ -21,8 +21,12 @@ var STAGES = ['1', '2', '3', '4', '5', 'pg', 'pre'];
 var INTERESTS = ['courses', 'design', 'viz', 'critique', 'super'];
 var ETYPES = ['visit', 'prog', 'tg', 'ig', 'contact'];
 
+// Leave empty when the script is bound to the sheet (Extensions > Apps Script).
+// For a standalone script project, put the sheet id (the long part of its URL) here.
+var SHEET_ID = '';
+
 function sheet_(name, cols) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet(), sh = ss.getSheetByName(name);
+  var ss = SHEET_ID ? SpreadsheetApp.openById(SHEET_ID) : SpreadsheetApp.getActiveSpreadsheet(), sh = ss.getSheetByName(name);
   if (!sh) {
     sh = ss.insertSheet(name);
     sh.getRange(1, 1, sh.getMaxRows(), cols.length).setNumberFormat('@'); // plain text: no formula injection
