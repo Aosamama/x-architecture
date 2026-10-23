@@ -28,6 +28,7 @@ var VERIFY_REQUIRED = true;         // false = accept registrations without a co
 var VCODE_TTL = 600;                // a code is valid for 10 minutes
 var VTRIES = 5;                     // wrong guesses allowed per code
 var VPERHOUR = 3;                   // codes per address per hour
+var VDAILY = 90;                   // codes per day when mailing through Resend (its free plan allows 100 a day)
 var VKEEP = 400 * 864e5;            // a token stays valid for about 13 months
 
 // Leave empty when the script is bound to the sheet (Extensions > Apps Script).
@@ -123,6 +124,27 @@ function tokOk_(email, tok) {
   return !!m && +m[1] > Date.now() && m[2] === hmac_(email + '|' + m[1]);
 }
 
+/* ---------- sender ----------
+   By default the code is mailed with MailApp, i.e. from the Google account that owns this script.
+   To mail it from the site's own address (for example no-reply@xarch.site) add two Script properties
+   (Project Settings > Script properties): RESEND_API_KEY (a Resend API key) and MAIL_FROM (the address).
+   When both are set the code goes through Resend, and if Resend refuses it nothing is sent from the owner's Gmail. */
+function mailVia_() {
+  var p = PropertiesService.getScriptProperties(), k = p.getProperty('RESEND_API_KEY'), f = String(p.getProperty('MAIL_FROM') || '').trim();
+  return k && /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/.test(f) ? { key: k, from: f } : null;
+}
+function sendMail_(to, subject, text, html) {
+  var m = mailVia_();
+  if (!m) { MailApp.sendEmail({ to: to, name: 'X Architecture', noReply: true, subject: subject, body: text, htmlBody: html }); return; }
+  var r = UrlFetchApp.fetch('https://api.resend.com/emails', {
+    method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+    headers: { Authorization: 'Bearer ' + m.key },
+    payload: JSON.stringify({ from: 'X Architecture <' + m.from + '>', to: [to], subject: subject, text: text, html: html })
+  });
+  var c = r.getResponseCode();
+  if (c < 200 || c > 299) { Logger.log('Resend ' + c + ' ' + String(r.getContentText()).slice(0, 300)); throw new Error('resend ' + c); }
+}
+
 // step 1: mail a 6-digit code to the address
 function vs_(d) {
   if (d.hp) return { ok: true };                                // honeypot
@@ -131,24 +153,24 @@ function vs_(d) {
   var cache = CacheService.getScriptCache(), h = sha_(email), kc = 'vc:' + h, ks = 'vs:' + h, kl = 'vl:' + h;
   var sent = parseInt(cache.get(ks) || '0', 10), last = parseInt(cache.get(kl) || '0', 10);
   if (sent >= VPERHOUR || (last && Date.now() - last < 25000)) return { ok: false, err: 'wait' };
-  if (MailApp.getRemainingDailyQuota() < 5) return { ok: false, err: 'quota' };
+  var api = !!mailVia_(), kd = 'vd:' + Utilities.formatDate(new Date(), TZ, 'yyyyMMdd'), today = parseInt(cache.get(kd) || '0', 10);
+  if (api ? today >= VDAILY : MailApp.getRemainingDailyQuota() < 5) return { ok: false, err: 'quota' };
   var code = String(100000 + (parseInt(Utilities.getUuid().replace(/-/g, '').slice(0, 8), 16) % 900000));
   try {
-    MailApp.sendEmail({
-      to: email, name: 'X Architecture', noReply: true,
-      subject: 'رمز التأكيد ' + code + ' — X Architecture',
-      body: 'رمز التأكيد الخاص بك: ' + code + '\nصالح لمدة 10 دقائق. إذا لم تطلبه فتجاهل هذه الرسالة.\n\n' +
-            'Your confirmation code: ' + code + '\nValid for 10 minutes. If you did not ask for it, ignore this message.\n\nX Architecture',
-      htmlBody: '<div style="font-family:Arial,sans-serif;max-width:420px;margin:auto;padding:24px;text-align:center">' +
+    sendMail_(email,
+      'رمز التأكيد ' + code + ' — X Architecture',
+      'رمز التأكيد الخاص بك: ' + code + '\nصالح لمدة 10 دقائق. إذا لم تطلبه فتجاهل هذه الرسالة.\n\n' +
+      'Your confirmation code: ' + code + '\nValid for 10 minutes. If you did not ask for it, ignore this message.\n\nX Architecture',
+      '<div style="font-family:Arial,sans-serif;max-width:420px;margin:auto;padding:24px;text-align:center">' +
         '<p style="direction:rtl;font-size:15px;color:#333">رمز التأكيد الخاص بك</p>' +
         '<p style="font-size:34px;letter-spacing:8px;font-weight:bold;color:#8a7240;margin:6px 0 14px">' + code + '</p>' +
         '<p style="direction:rtl;font-size:13px;color:#666">صالح لمدة 10 دقائق. إذا لم تطلبه فتجاهل هذه الرسالة.</p>' +
         '<p style="font-size:13px;color:#666">Your confirmation code. Valid for 10 minutes. If you did not ask for it, ignore this message.</p>' +
-        '<p style="font-size:12px;color:#999;margin-top:18px">X Architecture</p></div>'
-    });
+        '<p style="font-size:12px;color:#999;margin-top:18px">X Architecture</p></div>');
   } catch (err) { return { ok: false, err: 'send' }; }
   cache.put(kc, JSON.stringify({ h: sha_(code + '|' + email), n: 0 }), VCODE_TTL);
   cache.put(ks, String(sent + 1), 3600);
+  if (api) cache.put(kd, String(today + 1), 90000);
   cache.put(kl, String(Date.now()), 120);
   return { ok: true };
 }
@@ -170,8 +192,18 @@ function vc_(d) {
   return { ok: true, tok: tok_(email) };
 }
 
-/* Run this once from the editor (Run > authorizeMail) so Google asks you to allow the script to send mail. */
-function authorizeMail() { Logger.log('mails left today: ' + MailApp.getRemainingDailyQuota()); }
+/* Run this once from the editor (Run > authorizeMail) so Google asks you to allow the script to send mail
+   (and to call Resend, if you use it). Run it again after every change of the sender settings: it only reports them. */
+function authorizeMail() {
+  var m = mailVia_();
+  Logger.log('sender: ' + (m ? m.from + ' (through Resend)' : 'the Google account that owns this script (MailApp), mails left today: ' + MailApp.getRemainingDailyQuota()));
+}
+/* Sends one test message to the owner of this script, through whatever sender is configured (Run > testMail). */
+function testMail() {
+  var to = Session.getEffectiveUser().getEmail();
+  sendMail_(to, 'X Architecture — test / تجربة', 'If you can read this, the sender works.\nإذا وصلتك هذه الرسالة فالإرسال يعمل.', '<p>If you can read this, the sender works.</p><p style="direction:rtl">إذا وصلتك هذه الرسالة فالإرسال يعمل.</p>');
+  Logger.log('test message sent to ' + to + (mailVia_() ? ' through Resend' : ' through MailApp'));
+}
 
 /* ---------- registration (upsert by email) ---------- */
 function reg_(d) {
