@@ -23,7 +23,8 @@ To go back to the classic look for everyone: delete `motion.css`, `motion.js` an
 The untouched classic version is also kept on the git branch `classic`.
 
 ## Student works gallery
-The "Student work" page is a walk-through museum hall built with CSS 3D (see the `/* ===== student works */` block in `index.html`, functions `gxBuild()` / `gxInit()`). Scrolling walks down the hall, the mouse looks around, clicking a work opens the full-size image from `IM`. The frames use the lighter `works/w1..w9.webp` files; the full-size originals stay inside `index.html` for the lightbox. Colours come from the active theme variables.
+The "Student work" page is one long, frame-free reel (functions `gxBuild()` / `gxInit()` in `index.html`): scrolling slides the works sideways over the same parametric hairlines as the hero; the work that reaches the centre turns from B&W to colour; clicking opens the full-size image from `IM` in the lightbox. Frames use `works/w1..w9.webp` (1700px); the full-size originals stay inside `index.html` for the lightbox. Colours come from the theme variables, and in RTL languages the reel runs right-to-left.
+The earlier walk-through 3D museum hall is kept on the git branch `gallery-3d`.
 
 ## Themes
 Dark (black + gold, always the default on a fresh visit) → light (white + gold) → mono (white + black) → red (white + deep red + grey). The choice is kept per tab (`sessionStorage` key `xt`).
