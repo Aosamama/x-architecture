@@ -946,11 +946,14 @@ var IM=[
 "works/w15.webp",
 "works/w16.webp",
 "works/w17.webp",
-"works/w18.webp"];
-var IP=["50% 50%","50% 50%","50% 50%","50% 50%","50% 50%","50% 55%","50% 60%","50% 50%","50% 100%","50% 50%","50% 50%","50% 50%","50% 50%","50% 100%","50% 50%","50% 50%","50% 50%","50% 50%"];
-var IK=["","","","","","w","","","p","","","","","p","","","",""];
+"works/w18.webp",
+"works/w19.webp",
+"works/w20.webp",
+"works/w21.webp"];
+var IP=["50% 50%","50% 50%","50% 50%","50% 50%","50% 50%","50% 55%","50% 60%","50% 50%","50% 100%","50% 50%","50% 50%","50% 50%","50% 50%","50% 100%","50% 50%","50% 50%","50% 50%","50% 50%","50% 50%","50% 50%","50% 50%"];
+var IK=["","","","","","w","","","p","","","","","p","","","","","","",""];
 var WK=[0,5,6,7,8,9,10,11,12,13];/* entries of IM shown on the Student work page; entries 1-4 (black-background renders) live on the home page only */
-var WF=["w10","w11","w12","w13","w14","w1","w2","w3","w4","w5","w6","w7","w8","w9","w15","w16","w17","w18"];/* file names in works/, in display order: the newest work comes first */
+var WF=["w10","w11","w12","w13","w14","w1","w2","w3","w4","w5","w6","w7","w8","w9","w15","w16","w17","w18","w19","w20","w21"];/* file names in works/, in display order: the newest work comes first */
 var PR=[["من سكيتش إلى ريندر","Sketch to render","Photorealistic architectural render of a modern building based on this hand sketch, keep the massing and proportions, natural daylight, soft shadows, realistic materials, people for scale, eye-level view, 35mm lens"],
 ["من نهار إلى ليل","Day to night","Convert this architectural render to a night scene, warm interior light glowing through the glazing, blue hour sky, subtle exterior lighting, keep the geometry and materials unchanged"],
 ["تغيير الخامات","Change materials","Keep the exact building geometry and camera angle, change the facade to board-formed concrete with warm timber details, realistic reflections, soft overcast light"],
@@ -1626,7 +1629,7 @@ function rh(){
   Array.prototype.forEach.call(el.querySelectorAll('.ni img'),function(im){im.addEventListener('error',function(){im.parentNode.classList.add('nf');im.remove()},{once:true})});
   hmWorks();hmGal();hmMid();setTimeout(rvScan,30)}
 /* The home page shows only black-background renders: the platform's own work first, then the "gold" renders students agreed to show (kept by the Worker) */
-var GAL=null,GALP=0,HB=[0,1,2,3,4,14,15,16,17];/* HB: entries of IM (same order as works/) that are black-background renders and belong on the home page */
+var GAL=null,GALP=0,HB=[0,1,2,3,4,14,15,16,17,18,19,20];/* HB: entries of IM (same order as works/) that are black-background renders and belong on the home page */
 function hmWorks(){
   var el=document.getElementById('hmw');if(!el)return;
   var base=SITE.render?SITE.render.replace(/\/+$/,''):'',it=HB.map(function(i){return {s:'works/'+WF[i]+'.webp',k:IK[i],p:IP[i],o:i,h:'#works'}});
