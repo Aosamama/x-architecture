@@ -44,14 +44,14 @@ html[data-fxcur] #mnb{cursor:pointer!important}
 /* ---------- hero: parametric line ribbons + headline ---------- */
 #fxn{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(transparent,#000 24%,#000 70%,transparent);mask-image:linear-gradient(transparent,#000 24%,#000 70%,transparent)}
 /* the hero mark just breathes: it comes a little closer, then drifts back (no pointer tilt) */
-html[data-fx="1"] .mk{will-change:transform;animation:fxz 7s ease-in-out 3.4s 3}
+html[data-fx="1"] .mk{will-change:transform;animation:fxz 7s ease-in-out 3.4s infinite}
 @keyframes fxz{0%,100%{transform:scale(1)}50%{transform:scale(1.075)}}
 html[data-fx="1"].js .hero h1{animation:fxh 1.3s var(--fxe) .25s both}
 @keyframes fxh{
 from{opacity:0;transform:translateY(.45em) skewY(2.2deg);filter:blur(12px);clip-path:inset(0 0 100% 0)}
 55%{filter:blur(0)}
 to{opacity:1;transform:none;filter:blur(0);clip-path:inset(-12% -5% -18% -5%)}}
-html[data-fx="1"] h1 em{background:linear-gradient(100deg,var(--gold) 0%,var(--gold) 38%,var(--gold2) 50%,var(--gold) 62%,var(--gold) 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:fxs 6.5s linear 1.8s 2 forwards}
+html[data-fx="1"] h1 em{background:linear-gradient(100deg,var(--gold) 0%,var(--gold) 38%,var(--gold2) 50%,var(--gold) 62%,var(--gold) 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:fxs 6.5s linear 1.8s infinite}
 @keyframes fxs{from{background-position:130% 0}to{background-position:-130% 0}}
 
 /* ---------- reveals ---------- */
@@ -103,3 +103,5 @@ html[data-fx="1"] h1 em{animation:none}
 }
 
 @media(prefers-reduced-motion:reduce){#fxl,#fxn,#fxp{display:none!important}}
+/* the hero loops pause while the hero is scrolled out of view (set by the small observer in index.html) */
+html.hoff .mk,html.hoff .mk svg,html.hoff #tp,html.hoff #bt,html.hoff h1 em{animation-play-state:paused!important}

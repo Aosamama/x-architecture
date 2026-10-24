@@ -141,7 +141,7 @@ section{padding:clamp(46px,6vw,96px) 0}
 .fg b{color:var(--gold);font-weight:400;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}
 @media(max-width:520px){.g4,.g3,.g2{gap:12px;background:none;border:0}.c{border:1px solid var(--line)}.btn,.b{width:100%;text-align:center}.bt{flex-direction:column}}
 .mk{flex-direction:column;align-items:center;gap:clamp(14px,2.4vw,26px)}
-.mk svg{width:min(340px,70%);overflow:visible;animation:glow 5s ease-in-out 1.9s 3}
+.mk svg{width:min(340px,70%);overflow:visible;animation:glow 5s ease-in-out 1.9s infinite}
 #tp,#bt{transform-box:fill-box}
 #tp{transform-origin:50% 100%;animation:grow 1.6s cubic-bezier(.16,.84,.3,1) both}
 #bt{transform-origin:50% 0;animation:grow 1.6s cubic-bezier(.16,.84,.3,1) .18s both}
@@ -251,11 +251,11 @@ html[dir=rtl] .gqh::after{background:linear-gradient(270deg,var(--gold),transpar
 .mk svg{overflow:visible}
 #glow{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
 #glow::before,#glow::after{content:"";position:absolute;width:62vmax;height:62vmax;border-radius:50%;background:radial-gradient(closest-side,rgba(var(--gr),.16),rgba(var(--gr),.05) 55%,transparent)}
-#glow::before{top:-24vmax;inset-inline-end:-14vmax;animation:drift 20s ease-in-out 2 alternate forwards}
-#glow::after{bottom:-34vmax;inset-inline-start:-18vmax;opacity:.6;animation:drift 26s ease-in-out 2 alternate-reverse forwards}
+#glow::before{top:-24vmax;inset-inline-end:-14vmax;animation:drift 20s ease-in-out infinite alternate}
+#glow::after{bottom:-34vmax;inset-inline-start:-18vmax;opacity:.6;animation:drift 26s ease-in-out infinite alternate-reverse}
 @keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(-9vmax,7vmax) scale(1.18)}}
-#tp{animation:grow 1.6s cubic-bezier(.16,.84,.3,1) both,bT 6.5s ease-in-out 1.9s 3}
-#bt{animation:grow 1.6s cubic-bezier(.16,.84,.3,1) .18s both,bB 6.5s ease-in-out 2.1s 3}
+#tp{animation:grow 1.6s cubic-bezier(.16,.84,.3,1) both,bT 6.5s ease-in-out 1.9s infinite}
+#bt{animation:grow 1.6s cubic-bezier(.16,.84,.3,1) .18s both,bB 6.5s ease-in-out 2.1s infinite}
 @keyframes bT{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
 @keyframes bB{0%,100%{transform:translateY(0)}50%{transform:translateY(18px)}}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -344,8 +344,8 @@ html.introd #intro{animation:iout .5s ease 1.2s forwards}
 @keyframes ifd{to{opacity:0}}
 @keyframes ifi{to{opacity:1}}
 html.intro:not(.introd) .hero .eb,html.intro:not(.introd) .hero h1,html.intro:not(.introd) .hero .lede,html.intro:not(.introd) .hero .bt,html.intro:not(.introd) #tp,html.intro:not(.introd) #bt,html.intro:not(.introd) .mk svg{animation-play-state:paused}
-html.intro #tp{animation:bT 6.5s ease-in-out 3}
-html.intro #bt{animation:bB 6.5s ease-in-out 3}
+html.intro #tp{animation:bT 6.5s ease-in-out infinite}
+html.intro #bt{animation:bB 6.5s ease-in-out infinite}
 .js.intro .mk{opacity:0}
 .js.intro.introd .mk{opacity:1}
 .hero .eb{font-size:clamp(1.1rem,2.1vw,1.8rem);letter-spacing:.28em;margin-bottom:22px;font-weight:500}
@@ -784,7 +784,7 @@ html.xw #mnb svg{opacity:0}
 #xfl.go{transition:transform 1.15s cubic-bezier(.65,0,.25,1)}
 #xfl svg{display:block;width:100%;height:100%}
 </style>
-<link rel="stylesheet" href="motion.css?v=10">
+<link rel="stylesheet" href="motion.css?v=11">
 </head>
 <body>
 <div id="glow" aria-hidden="true"></div>
@@ -1855,6 +1855,7 @@ loadNews(false);
 setTimeout(rvScan,80);
 
 </script>
-<script src="motion.js?v=10" defer></script>
+<script src="motion.js?v=11" defer></script>
+<script>/* pause the endless hero loops while the hero is off screen (nobody sees them) */(function(){var h=document.querySelector(".hero");if(!h||!window.IntersectionObserver)return;new IntersectionObserver(function(es){document.documentElement.classList.toggle("hoff",!es[es.length-1].isIntersecting)}).observe(h)})()</script>
 </body>
 </html>

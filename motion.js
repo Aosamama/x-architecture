@@ -48,12 +48,12 @@ function start(save){
   on(window,'resize',resize);on(window,'hashchange',function(){dirty=true;wake();setTimeout(function(){dirty=true;wake()},400)});
   if(window.MutationObserver){var mo=new MutationObserver(function(){if(net)net.touch();wake()});mo.observe(D,{attributes:true,attributeFilter:['data-theme']});offs.push(function(){mo.disconnect()})}
   on(document.documentElement,'mouseleave',function(){ptr.a=false;if(el.cur)el.cur.classList.remove('on')});
-  label();wake();
+  label();raf=0;wake();
 }
 function stop(save){
   if(!live)return;
   live=false;D.removeAttribute('data-fx');if(save)remember(false);
-  cancelAnimationFrame(raf);
+  cancelAnimationFrame(raf);raf=0;calm=0;
   offs.forEach(function(f){try{f()}catch(e){}});offs=[];
   $$('[data-fxe]').forEach(function(n){if(n.parentNode)n.parentNode.removeChild(n)});
   $$('[data-fxt]').forEach(function(n){n.removeAttribute('data-fxt');n.classList.remove('fxh');n.style.transform='';n.style.removeProperty('--mx');n.style.removeProperty('--my')});
