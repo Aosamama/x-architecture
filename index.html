@@ -205,29 +205,36 @@ html[data-theme=light] .hf .hxi.mid img,html[data-theme=light] .hf .hxi:hover im
 html[data-theme=mono] .hf .hxi img,html[data-theme=mono] .hf .hxi.mid img,html[data-theme=mono] .hf .hxi:hover img,html[data-theme=mono] .hf .hxi:focus-visible img,html[data-theme=mono] .hw img,html[data-theme=mono] .hw a:hover img,html[data-theme=mono] .hw a:focus-visible img,html[data-theme=mono] .hw a:active img,html[data-theme=mono] .hw a.mid img{filter:contrast(1.2) invert(1) hue-rotate(180deg) saturate(0) brightness(1.03)}
 html[data-theme=red] .hf .hxi img,html[data-theme=red] .hw img{filter:invert(1) hue-rotate(128deg) saturate(0) contrast(1.06) brightness(1.08)}
 html[data-theme=red] .hf .hxi.mid img,html[data-theme=red] .hf .hxi:hover img,html[data-theme=red] .hf .hxi:focus-visible img,html[data-theme=red] .hw a:hover img,html[data-theme=red] .hw a:focus-visible img,html[data-theme=red] .hw a:active img,html[data-theme=red] .hw a.mid img{filter:contrast(1.25) invert(1) hue-rotate(128deg) saturate(1.5) brightness(1.03)}
-/* home page works: the focus reel. The page pins the stage while you scroll; each work slides to the middle, stays there whole (never cropped) and turns to colour; the strip of thumbnails under it shows all of them and jumps to one */
-.hf{position:relative;margin:8px calc(50% - 50vw) 0;height:calc(var(--gh,3000px) + var(--sh,100vh))}
-.hfs{position:sticky;top:0;height:var(--sh,100vh);overflow:hidden;background:var(--bg);display:flex;flex-direction:column;justify-content:center;gap:clamp(16px,3vh,30px);padding:78px 0 26px;box-sizing:border-box}
-.hfr{position:relative;flex:none;direction:ltr}
-.hfq{display:flex;align-items:center;direction:ltr;will-change:transform}
-.hfp{flex:none;margin:0;will-change:transform,opacity}
-.hf .hfp img{transform:none}
-html:not([data-theme=light]):not([data-theme=mono]):not([data-theme=red]) .hf .hxi{background:var(--bg)}
-.hfd{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:0 clamp(18px,4vw,60px)}
+/* home page works: a strip in the normal flow of the page, nothing is pinned, so the visitor scrolls past it freely. One work fills the stage, whole and large (16:9, never cropped); swipe / drag / arrows / thumbnails move between them and the one in the middle turns to colour */
+.hf{position:relative;margin:0 calc(50% - 50vw);padding:40px 0 44px}
+/* a band of the page colour sits behind the strip (its top and bottom fade out) so the pictures' black ground meets it seamlessly, with no box showing against the page glow */
+.hf::before{content:"";position:absolute;inset:0;background:var(--bg);pointer-events:none;-webkit-mask-image:linear-gradient(180deg,transparent,#000 40px,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(180deg,transparent,#000 40px,#000 calc(100% - 44px),transparent)}
+.hfq,.hfd,.hfx{position:relative}
+.hfq{display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;cursor:grab}
+.hfq::-webkit-scrollbar{display:none}
+.hfq.dg{scroll-snap-type:none;cursor:grabbing}
+.hfq.dg .hfp{cursor:grabbing}
+.hfl{flex:0 0 100%;display:flex;justify-content:center;scroll-snap-align:center}
+.hfp{flex:none;margin:0}
+/* no opacity / transform / isolation on the frame itself: the picture's dark ground is blended straight into the page (and its gold glow), so no box shows; dimming is done on the img */
+.hf .hxi{background:none;isolation:auto}
+.hf .hfp img{transform:none;opacity:.4;transition:filter .8s ease,opacity .6s}
+.hf .hfp.mid img{opacity:1}
+.hfd{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:clamp(14px,2.4vh,24px) clamp(18px,4vw,60px) 0}
 .hfn{display:flex;align-items:baseline;gap:12px;direction:ltr;color:var(--gold)}
 .hfn b{font-weight:200;font-size:clamp(38px,4.6vw,66px);line-height:1;letter-spacing:.02em;font-variant-numeric:tabular-nums}
 .hfn span{font-size:.82rem;letter-spacing:.3em;color:var(--soft)}
-.hfh{margin:0;display:flex;align-items:center;gap:14px;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--soft);white-space:nowrap;transition:opacity .6s}
-.hfh::after{content:"";width:46px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);transform-origin:0 50%;animation:gqh 1.9s ease-in-out infinite}
-.hfx{--c:12;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;width:min(1100px,calc(100% - clamp(36px,8vw,120px)));margin:0 auto}
-.hfi{flex:none;width:calc((100% - (var(--c) - 1)*8px)/var(--c));margin:0;padding:0;border:0;font:inherit;cursor:pointer;opacity:.5;transition:opacity .5s}
+.hfa{display:flex;gap:10px;direction:ltr}
+.hfa button{width:46px;height:46px;display:grid;place-items:center;padding:0;border:1px solid var(--line);background:none;color:var(--gold);cursor:pointer;transition:border-color .3s,opacity .3s}
+.hfa button:hover:not(:disabled){border-color:var(--gold)}
+.hfa button:disabled{opacity:.3;cursor:default}
+.hfa svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5}
+.hfx{--c:12;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;width:min(1100px,calc(100% - clamp(36px,8vw,120px)));margin:clamp(14px,2.4vh,24px) auto 0}
+.hfi{flex:none;width:calc((100% - (var(--c) - 1)*8px)/var(--c));margin:0;padding:0;border:0;font:inherit;cursor:pointer}
+.hf .hfi img{opacity:.5;transition:filter .8s ease,opacity .5s}
 .hfi::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 1px var(--line);pointer-events:none;transition:box-shadow .5s}
-.hfi.on{opacity:1}
+.hf .hfi.on img,.hf .hfi:hover img{opacity:1}
 .hfi.on::after{box-shadow:inset 0 0 0 2px var(--gold)}
-.hfi:hover{opacity:1}
-.hfm{position:absolute;inset:auto 0 0 0;height:2px;background:var(--line);pointer-events:none}
-.hfm i{display:block;height:100%;background:var(--gold);transform-origin:0 50%;transform:scaleX(0)}
-@media(max-width:699px){.hfs{padding-top:70px}.hfx{gap:8px}}
 .gqc{position:absolute;inset-inline-start:clamp(18px,4vw,60px);bottom:clamp(14px,3.5vh,40px);color:var(--gold);pointer-events:none}
 .gqc div{display:flex;align-items:baseline;gap:14px;direction:ltr}
 .gqc b{font-weight:200;font-size:clamp(52px,7.4vw,118px);line-height:1;letter-spacing:.02em;font-variant-numeric:tabular-nums}
@@ -1051,76 +1058,72 @@ function gxMake(id,items,label){
   }
   return h+'</div><div class="gqc" aria-hidden="true"><div><b>01</b><span>/ '+(n<10?'0':'')+n+'</span></div></div><p class="gqh">'+T('مرّر للاستعراض','Scroll to explore')+'</p><div class="gqm" aria-hidden="true"><i></i></div></div></div>';
 }
-/* home page: the focus reel. Scrolling slides one work at a time to the middle of a pinned stage, whole and large; a strip of thumbnails under it lists them all (click to jump) */
+/* home page: a horizontal strip in the normal flow of the page (nothing is pinned). One work fills the stage, whole and large; swipe / drag / arrows / arrow keys / the thumbnail strip move between them */
 function hfMake(it,label){
-  var n=it.length,rt=document.documentElement.dir==='rtl',k,i,x,
-  h='<div class="hf" id="hf"><div class="hfs"><div class="hfr" role="group" aria-label="'+esc(label)+'"><div class="hfq">';
+  var n=it.length,rt=document.documentElement.dir==='rtl',k,x,
+  h='<div class="hf" id="hf" role="group" aria-label="'+esc(label)+'"><div class="hfq">';
   for(k=0;k<n;k++){
-    i=rt?n-1-k:k;x=it[i];
-    h+='<figure class="hxi hfp" tabindex="0" role="button" '+(x.o>=0?'data-o="'+x.o+'"':'data-u="'+esc(x.s)+'"')+' aria-label="'+T('عرض الإظهار ','View render ')+(i+1)+'"><img src="'+x.s+'" alt="'+T('إظهار ','Render ')+(i+1)+'" style="object-position:'+x.p+'"'+(i<2?'':' loading="lazy"')+' decoding="async" draggable="false"></figure>';
+    x=it[k];
+    h+='<div class="hfl"><figure class="hxi hfp" tabindex="0" role="button" '+(x.o>=0?'data-o="'+x.o+'"':'data-u="'+esc(x.s)+'"')+' aria-label="'+T('عرض الإظهار ','View render ')+(k+1)+'"><img src="'+x.s+'" alt="'+T('إظهار ','Render ')+(k+1)+'" style="object-position:'+x.p+'"'+(k<2?'':' loading="lazy"')+' decoding="async" draggable="false"></figure></div>';
   }
-  h+='</div></div><div class="hfd"><div class="hfn" aria-hidden="true"><b>01</b><span>/ '+(n<10?'0':'')+n+'</span></div><p class="hfh">'+T('مرّر للاستعراض','Scroll to explore')+'</p></div><div class="hfx">';
-  for(i=0;i<n;i++){x=it[i];h+='<button type="button" class="hxi hfi" aria-label="'+T('إظهار ','Render ')+(i+1)+'"><img src="'+(x.t||x.s)+'" alt="" loading="lazy" decoding="async" draggable="false"></button>'}
-  return h+'</div><div class="hfm" aria-hidden="true"><i></i></div></div></div>';
+  h+='</div><div class="hfd"><div class="hfn" aria-hidden="true"><b>01</b><span>/ '+(n<10?'0':'')+n+'</span></div><div class="hfa">'
+    +'<button type="button" data-d="-1" aria-label="'+(rt?T('التالي','Next'):T('السابق','Previous'))+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>'
+    +'<button type="button" data-d="1" aria-label="'+(rt?T('السابق','Previous'):T('التالي','Next'))+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div></div><div class="hfx">';
+  for(k=0;k<n;k++){x=it[k];h+='<button type="button" class="hxi hfi" aria-label="'+T('إظهار ','Render ')+(k+1)+'"><img src="'+(x.t||x.s)+'" alt="" loading="lazy" decoding="async" draggable="false"></button>'}
+  return h+'</div></div>';
 }
 function hfInit(){
   if(GXS.hf){GXS.hf.off();delete GXS.hf}
   var hf=document.getElementById('hf');if(!hf)return;
-  var rail=hf.querySelector('.hfr'),q=hf.querySelector('.hfq'),fr=[].slice.call(q.children),th=[].slice.call(hf.querySelectorAll('.hfi')),
-      dd=hf.querySelector('.hfd'),xx=hf.querySelector('.hfx'),cb=hf.querySelector('.hfn b'),pb=hf.querySelector('.hfm i'),gh=hf.querySelector('.hfh'),
-      n=fr.length,rt=document.documentElement.dir==='rtl',rm=matchMedia('(prefers-reduced-motion:reduce)').matches,
-      W=0,VH=0,fw=0,gap=0,sLen=1,ps=0,act=-1,live=false,raf=0,tm=0,io=null;
-  function od(k){return rt?n-1-k:k}/* position in the strip (left to right) <-> work number */
-  function ease(t){return t*t*t*(t*(t*6-15)+10)}
-  /* scroll progress -> which work is in the middle: each one holds still for a while, then the next slides in */
-  function at(p){var f=p*(n-1),i=Math.min(n-2,Math.floor(f)),u=f-i;return i+(u<.3?0:u>.7?1:ease((u-.3)/.4))}
-  function layout(){
-    W=hf.clientWidth;VH=window.innerHeight;if(!W||!VH)return;
-    var ph=W<700,c=ph?4:W<900?6:12,fh,av,k;
-    xx.style.setProperty('--c',Math.min(n,c));
-    av=VH-(ph?70:78)-26-dd.offsetHeight-xx.offsetHeight-2*Math.min(30,Math.max(16,VH*.03));
-    fw=Math.min(W*(ph?.92:.84),Math.max(140,av)*16/9,1240);fh=fw*9/16;gap=fw*.12;
-    rail.style.height=fh+'px';q.style.width=(n*fw+(n-1)*gap)+'px';
-    for(k=0;k<n;k++){fr[k].style.width=fw.toFixed(1)+'px';fr[k].style.height=fh.toFixed(1)+'px';fr[k].style.marginRight=(k<n-1?gap:0).toFixed(1)+'px'}
-    sLen=Math.round(Math.max(300,Math.min(540,VH*.55))*(n-1));
-    hf.style.setProperty('--sh',VH+'px');hf.style.setProperty('--gh',sLen+'px');
-    step(true);
+  var q=hf.querySelector('.hfq'),sl=[].slice.call(q.children),fr=sl.map(function(l){return l.firstChild}),th=[].slice.call(hf.querySelectorAll('.hfi')),
+      ar=[].slice.call(hf.querySelectorAll('.hfa button')),cb=hf.querySelector('.hfn b'),n=sl.length,
+      rt=document.documentElement.dir==='rtl',rm=matchMedia('(prefers-reduced-motion:reduce)').matches,
+      act=-1,raf=0,tm=0,dn=false,mv=0,sx=0,sl0=0,i0=0,W=0;
+  function size(){
+    W=hf.clientWidth;if(!W)return;
+    var VH=window.innerHeight,ph=W<700,fw=Math.min(W*(ph?.94:.9),Math.max(150,VH*(ph?.5:.62))*16/9,1240),fh=fw*9/16,k;
+    for(k=0;k<n;k++){fr[k].style.width=fw.toFixed(1)+'px';fr[k].style.height=fh.toFixed(1)+'px'}
+    hf.querySelector('.hfx').style.setProperty('--c',Math.min(n,ph?4:W<900?6:12));
   }
-  function step(force){
-    var r=hf.getBoundingClientRect(),p=sLen>0?Math.max(0,Math.min(1,-r.top/sLen)):0,e=rm?1:.16,v,x,k,d,best=0,bd=99,mv;
-    if(force===true&&!live)ps=p;
-    ps+=(p-ps)*e;if(Math.abs(p-ps)<.0004)ps=p;
-    v=at(ps);v=rt?n-1-v:v;
-    x=W/2-(v*(fw+gap)+fw/2);
-    q.style.transform='translate3d('+x.toFixed(1)+'px,0,0)';
-    for(k=0;k<n;k++){
-      d=Math.abs(k-v);if(d<bd){bd=d;best=k}
-      d=Math.min(1,d);
-      fr[k].style.transform='scale('+(1-.1*d).toFixed(3)+')';fr[k].style.opacity=(1-.65*d).toFixed(3);
-    }
-    if(best!==act){
-      if(act>=0){fr[act].classList.remove('mid');th[od(act)].classList.remove('on','mid');th[od(act)].removeAttribute('aria-current')}
-      act=best;fr[act].classList.add('mid');th[od(act)].classList.add('on','mid');th[od(act)].setAttribute('aria-current','true');
-      cb.textContent=(od(act)<9?'0':'')+(od(act)+1);
-    }
-    pb.style.transform='scaleX('+ps.toFixed(4)+')';
-    gh.style.opacity=ps<.02?1:0;
-    return Math.abs(p-ps)>.0004;
+  function cur(){/* the slide nearest to the middle of the strip */
+    var r=q.getBoundingClientRect(),m=r.left+r.width/2,best=0,bd=1e9,k,b,d;
+    for(k=0;k<n;k++){b=sl[k].getBoundingClientRect();d=Math.abs(b.left+b.width/2-m);if(d<bd){bd=d;best=k}}
+    return best;
   }
-  function loop(){raf=0;if(!live)return;if(step())raf=requestAnimationFrame(loop)}
-  function kick(){if(live&&!raf)raf=requestAnimationFrame(loop)}
-  function go(i){/* scroll so work number i sits in the middle */
-    var y=hf.getBoundingClientRect().top+window.pageYOffset+(n>1?i/(n-1):0)*sLen;
-    window.scrollTo({top:y,behavior:rm?'auto':'smooth'});
+  function mark(i){
+    if(i===act)return;
+    if(act>=0){fr[act].classList.remove('mid');th[act].classList.remove('on','mid');th[act].removeAttribute('aria-current')}
+    act=i;fr[i].classList.add('mid');th[i].classList.add('on','mid');th[i].setAttribute('aria-current','true');
+    cb.textContent=(i<9?'0':'')+(i+1);
+    ar.forEach(function(b){var t=i+(rt?-1:1)*(+b.dataset.d);b.disabled=t<0||t>n-1});
   }
-  function fi(e){var f=e.target.closest&&e.target.closest('.hfp');if(!f||!f.matches(':focus-visible'))return;go(od(fr.indexOf(f)))}
-  function rz(){clearTimeout(tm);tm=setTimeout(function(){if(hf.clientWidth!==W||Math.abs(window.innerHeight-VH)>120)layout()},120)}
+  function go(i,now){
+    i=Math.max(0,Math.min(n-1,i));
+    var r=q.getBoundingClientRect(),b=sl[i].getBoundingClientRect();
+    q.scrollBy({left:(b.left+b.width/2)-(r.left+r.width/2),behavior:(now||rm)?'instant':'smooth'});
+  }
+  function onScroll(){if(raf)return;raf=requestAnimationFrame(function(){raf=0;mark(cur())})}
+  function key(e){
+    if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
+    e.preventDefault();go(act+(rt?-1:1)*(e.key==='ArrowRight'?1:-1));
+  }
+  function rz(){clearTimeout(tm);tm=setTimeout(function(){if(hf.clientWidth!==W){size();go(act<0?0:act,true)}},120)}
+  function pd(e){if(e.pointerType!=='mouse'||e.button!==0)return;dn=true;mv=0;sx=e.clientX;sl0=q.scrollLeft;i0=act}
+  function pm(e){if(!dn)return;var dx=e.clientX-sx;if(!mv&&Math.abs(dx)>6){mv=1;q.classList.add('dg')}if(mv)q.scrollLeft=sl0-dx}
+  function pu(e){
+    if(!dn)return;dn=false;
+    if(mv){var dx=e.clientX-sx;q.classList.remove('dg');go(Math.abs(dx)>50?i0+(rt?-1:1)*(dx<0?1:-1):cur())}
+    setTimeout(function(){mv=0},0);
+  }
+  q.addEventListener('scroll',onScroll,{passive:true});
+  q.addEventListener('pointerdown',pd);addEventListener('pointermove',pm);addEventListener('pointerup',pu);
+  q.addEventListener('click',function(e){if(mv){e.preventDefault();e.stopPropagation()}},true);
+  hf.addEventListener('keydown',key);
+  ar.forEach(function(b){b.addEventListener('click',function(){go(act+(rt?-1:1)*(+b.dataset.d))})});
   th.forEach(function(b,i){b.addEventListener('click',function(){go(i)})});
-  rail.addEventListener('focusin',fi);
-  addEventListener('scroll',kick,{passive:true});addEventListener('resize',rz);
-  if(window.IntersectionObserver){io=new IntersectionObserver(function(es){live=es[es.length-1].isIntersecting;if(live){if(!W||hf.clientWidth!==W)layout();kick()}},{rootMargin:'200px 0px'});io.observe(hf)}else{live=true}
-  GXS.hf={off:function(){live=false;cancelAnimationFrame(raf);clearTimeout(tm);removeEventListener('scroll',kick);removeEventListener('resize',rz);if(io)io.disconnect()}};
-  layout();if(!window.IntersectionObserver)kick();
+  addEventListener('resize',rz);
+  GXS.hf={off:function(){clearTimeout(tm);cancelAnimationFrame(raf);removeEventListener('resize',rz);removeEventListener('pointermove',pm);removeEventListener('pointerup',pu)}};
+  size();mark(0);
 }
 function gxBuild(){
   var a=WK.map(function(i){return {s:'works/'+WF[i]+'.webp',k:IK[i],p:IP[i],o:i}});
@@ -1809,7 +1812,7 @@ function rh(){
     '<div id="hmw"></div></div></section>';
   h+='<section class="hms"><div class="w">'+rhHd('NEWS',T('أحدث الأخبار','Latest news'),'#news',T('كل الأخبار والكتب','All news & books'))+
     '<div class="hn">'+N.slice(0,3).map(ncard).join('')+'</div></div></section>';
-  h+='<section class="hms hcta"><div class="w"><div class="hmi"><h2>'+T('ابدأ مشروعك معنا','Start your project with us')+'</h2><p>'+T('أخبرنا بما تحتاجه، خدمة أو دورة، وسنرتب معك الخطوات التالية.','Tell us what you need, a service or a course, and we will arrange the next steps with you.')+'</p></div><div class="bt hmi"><a class="b s" href="mailto:info@xarch.site" data-gate>'+T('راسلنا','Email us')+'</a><a class="b" href="#courses">'+T('الدورات','Courses')+'</a></div></div></section>';
+  h+='<section class="hms hcta"><div class="w"><div class="hmi"><h2>'+T('ابدأ مشروعك معنا','Start your project with us')+'</h2><p>'+T('أخبرنا بما تحتاجه، خدمة أو دورة، وسنرتب معك الخطوات التالية.','Tell us what you need, a service or a course, and we will arrange the next steps with you.')+'</p></div><div class="bt hmi"><a class="b s" href="https://t.me/x_architecture" target="_blank" rel="noopener">'+T('تواصل معنا','Contact us')+'</a><a class="b" href="#courses">'+T('الدورات','Courses')+'</a></div></div></section>';
   el.innerHTML=h;
   Array.prototype.forEach.call(el.querySelectorAll('.ni img'),function(im){im.addEventListener('error',function(){im.parentNode.classList.add('nf');im.remove()},{once:true})});
   hmWorks();hmGal();hmMid();setTimeout(rvScan,30);
