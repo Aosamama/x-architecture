@@ -24,6 +24,7 @@ var INTERESTS = ['courses', 'design', 'viz', 'critique', 'super'];
 var ETYPES = ['visit', 'prog', 'tg', 'ig', 'contact'];
 
 var VERSION = 2;                    // the site asks for this to know the script can confirm e-mail addresses
+var COMMUNITY = 1;                  // 1 = this script also runs the Community section (see the bottom of the file)
 var VERIFY_REQUIRED = true;         // false = accept registrations without a confirmed address (not recommended)
 var VCODE_TTL = 600;                // a code is valid for 10 minutes
 var VTRIES = 5;                     // wrong guesses allowed per code
@@ -65,7 +66,16 @@ function out_(o) {
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
 }
 
-function doGet() { return out_({ ok: true, service: 'xarch', v: VERSION }); }
+function raw_(str) { return ContentService.createTextOutput(str).setMimeType(ContentService.MimeType.JSON); }
+
+function doGet(e) {
+  var a = e && e.parameter && e.parameter.a;
+  try {
+    if (a === 'cfeed') return raw_(cfeed_());
+    if (a === 'cget') return raw_(cget1_(clean_(e.parameter.id, 30)));
+  } catch (err) { return out_({ ok: false, err: String(err) }); }
+  return out_({ ok: true, service: 'xarch', v: VERSION, c: COMMUNITY });
+}
 
 function doPost(e) {
   var res;
@@ -80,6 +90,15 @@ function doPost(e) {
       else if (d.a === 'vt') res = { ok: true, valid: tokOk_(clean_(d.email, 120).toLowerCase(), String(d.tok || '')) };
       else if (d.a === 'ev') res = ev_(d);
       else if (d.a === 'stats') res = stats_(d);
+      else if (d.a === 'cpost') res = cpost_(d);
+      else if (d.a === 'cimg') res = cimg_(d);
+      else if (d.a === 'clike') res = clike_(d);
+      else if (d.a === 'cdel') res = cdel_(d);
+      else if (d.a === 'crep') res = crep_(d);
+      else if (d.a === 'cmine') res = cmine_(d);
+      else if (d.a === 'cbsave') res = cbsave_(d);
+      else if (d.a === 'cadm') res = cadm_(d);
+      else if (d.a === 'cmod') res = cmod_(d);
       else res = { ok: false, err: 'bad request' };
     } finally { lock.releaseLock(); }
   } catch (err) { res = { ok: false, err: String(err) }; }
@@ -348,4 +367,322 @@ function makeAdminKey() {
   for (var i = 0; i < 28; i++) k += chars.charAt(Math.floor(Math.random() * chars.length));
   PropertiesService.getScriptProperties().setProperty('ADMIN_KEY', k);
   Logger.log('ADMIN_KEY = ' + k);
+}
+
+/* =====================================================================================================
+   COMMUNITY: posts (projects and published boards), hearts, reports, every member's private board.
+   Tabs created automatically: Posts, Likes, Images, Boards, Reports.
+   Pictures are kept in a Drive folder named CFOLDER (created on the first upload), shared "anyone with the link".
+   Run authorizeCommunity once from the editor, then publish a NEW VERSION of the web app (see backend/SETUP.md, part 8).
+   ===================================================================================================== */
+var POSTS = 'Posts', BOARDS = 'Boards', LIKES = 'Likes', IMGS = 'Images', REPORTS = 'Reports';
+var PCOLS = ['id', 'created', 'updated', 'status', 'kind', 'ak', 'email', 'name', 'uni', 'title', 'text', 'tags', 'sw', 'imgs', 'board', 'likes', 'reports'];
+var BCOLS = ['ak', 'email', 'updated', 'json'];
+var LCOLS = ['k', 'pid', 'ak', 't'];
+var ICOLS = ['id', 'created', 'ak', 'kind', 'bytes'];
+var RCOLS = ['time', 'pid', 'ak', 'why'];
+var CMOD = 'pre';                    // 'pre': a new post shows only after you approve it (admin page). 'post': it shows at once, and is hidden when 3 people report it
+var CFOLDER = 'XArch Community';
+var CFEED = 150;                     // newest posts sent to the site
+var CIMG_MAX = 1400000;              // biggest picture accepted (base64 characters, about 1 MB)
+var CBOARD_MAX = 45000;              // biggest board (characters of JSON; a sheet cell holds 50000)
+var SWL = ['Revit', 'AutoCAD', 'Rhino', 'SketchUp', '3ds Max', 'Blender', 'Lumion', 'Enscape', 'D5 Render', 'Twinmotion', 'V-Ray', 'Corona', 'Grasshopper', 'Photoshop', 'Illustrator', 'InDesign', 'ArchiCAD', 'Hand'];
+
+function ak_(email) { return hmac_('ak|' + email).slice(0, 12); }
+function rid_() { return Utilities.getUuid().replace(/-/g, '').slice(0, 10); }
+function text_(v, n) {               // like clean_ but keeps line breaks
+  return String(v == null ? '' : v).replace(/\r/g, '').replace(/[\u0000-\u0009\u000b-\u001f\u007f]/g, ' ').replace(/[ \t]+/g, ' ')
+    .replace(/ ?\n ?/g, '\n').replace(/\n{3,}/g, '\n\n').trim().slice(0, n || 1500);
+}
+function nof_(v) { return String(v).replace(/^[=+\-@\s]+/, ''); }       // a cell must never start like a formula
+function rows_(sh, cols) {
+  var last = sh.getLastRow();
+  return last > 1 ? sh.getRange(2, 1, last - 1, cols.length).getValues() : [];
+}
+function obj_(r, cols) { var o = {}; cols.forEach(function (c, i) { o[c] = r[i]; }); return o; }
+function ci_(cols, name) { return cols.indexOf(name) + 1; }
+function jarr_(v) { try { var a = JSON.parse(v || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+
+/* cache helpers for strings above the 100 KB limit of one cache entry */
+function cput_(key, str, ttl) {
+  var cache = CacheService.getScriptCache(), n = Math.ceil(str.length / 90000) || 1, o = {};
+  for (var i = 0; i < n; i++) o[key + '#' + i] = str.slice(i * 90000, (i + 1) * 90000);
+  o[key + '#n'] = String(n);
+  cache.putAll(o, ttl);
+}
+function cget_(key) {
+  var cache = CacheService.getScriptCache(), n = parseInt(cache.get(key + '#n') || '0', 10);
+  if (!n) return '';
+  var ks = [], i;
+  for (i = 0; i < n; i++) ks.push(key + '#' + i);
+  var got = cache.getAll(ks), s = '';
+  for (i = 0; i < n; i++) { if (got[ks[i]] == null) return ''; s += got[ks[i]]; }
+  return s;
+}
+function cdrop_(key) {
+  var cache = CacheService.getScriptCache(), n = parseInt(cache.get(key + '#n') || '0', 10), ks = [key + '#n'];
+  for (var i = 0; i < n; i++) ks.push(key + '#' + i);
+  cache.removeAll(ks);
+}
+function lim_(key, max, ttl) {        // true while the counter is under max
+  var cache = CacheService.getScriptCache(), n = parseInt(cache.get(key) || '0', 10);
+  if (n >= max) return false;
+  cache.put(key, String(n + 1), ttl);
+  return true;
+}
+
+/* who is asking: a signed token for an address that is registered */
+function who_(d) {
+  var email = clean_(d.email, 120).toLowerCase();
+  if (emailWhy_(email) || !tokOk_(email, String(d.tok || ''))) return null;
+  var cache = CacheService.getScriptCache(), ck = 'cu:' + sha_(email), c = cache.get(ck), u = null;
+  if (c) { try { u = JSON.parse(c); } catch (e) { u = null; } }
+  if (!u) {
+    var sh = sheet_(USERS, UCOLS), last = sh.getLastRow();
+    if (last < 2) return null;
+    var em = sh.getRange(2, col_('email'), last - 1, 1).getValues();
+    for (var i = 0; i < em.length; i++) {
+      if (String(em[i][0]).toLowerCase() === email) {
+        var r = sh.getRange(i + 2, 1, 1, UCOLS.length).getValues()[0];
+        u = { n: String(r[UCOLS.indexOf('name')]), u: String(r[UCOLS.indexOf('uni')]), s: String(r[UCOLS.indexOf('stage')]) };
+        break;
+      }
+    }
+    if (!u) return null;
+    cache.put(ck, JSON.stringify(u), 3600);
+  }
+  return { email: email, ak: ak_(email), name: u.n, uni: u.u, stage: u.s };
+}
+
+function folder_() {
+  var it = DriveApp.getFoldersByName(CFOLDER);
+  return it.hasNext() ? it.next() : DriveApp.createFolder(CFOLDER);
+}
+/* Run once from the editor: Google asks you to allow Drive access for the pictures. */
+function authorizeCommunity() {
+  var f = folder_();
+  Logger.log('Drive folder ready: ' + f.getName() + ' (' + f.getUrl() + '). Now publish a NEW VERSION of the web app.');
+}
+
+var IDRE = /^[A-Za-z0-9_-]{8,64}$/;
+
+// a picture sent by a member (a JPEG already shrunk by the browser)
+function cimg_(d) {
+  var u = who_(d); if (!u) return { ok: false, err: 'auth' };
+  if (!lim_('im:' + u.ak, 60, 86400)) return { ok: false, err: 'limit' };
+  var b64 = String(d.data || '').replace(/^data:image\/jpeg;base64,/, '');
+  if (!b64 || b64.length > CIMG_MAX || !/^[A-Za-z0-9+\/=]+$/.test(b64)) return { ok: false, err: 'big' };
+  var bytes = Utilities.base64Decode(b64);
+  if (bytes.length < 200 || bytes[0] !== -1 || bytes[1] !== -40) return { ok: false, err: 'type' };    // not a JPEG
+  var kind = d.k === 'b' ? 'board' : 'post';
+  var f = folder_().createFile(Utilities.newBlob(bytes, 'image/jpeg', rid_() + '.jpg'));
+  f.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  var id = f.getId();
+  sheet_(IMGS, ICOLS).appendRow([id, now_(), u.ak, kind, String(bytes.length)]);
+  return { ok: true, id: id };
+}
+
+function mineImgs_(ak) {
+  var m = {}; rows_(sheet_(IMGS, ICOLS), ICOLS).forEach(function (r) { if (r[2] === ak) m[String(r[0])] = 1; });
+  return m;
+}
+
+function pub_(p) {
+  var o = {
+    id: p.id, t: Date.parse(p.created) || 0, k: p.kind, a: p.ak, n: p.name, u: p.uni, ti: p.title, tx: p.text,
+    tg: jarr_(p.tags), sw: jarr_(p.sw), im: jarr_(p.imgs), lk: parseInt(p.likes, 10) || 0
+  };
+  if (p.kind === 'b') {                       // the list carries only a small preview of a published board
+    var b = {}; try { b = JSON.parse(p.board || '{}'); } catch (e) { b = {}; }
+    var cs = Array.isArray(b.cards) ? b.cards : [];
+    o.nc = cs.length;
+    o.im = cs.filter(function (c) { return c && c.t === 'i' && IDRE.test(String(c.src || '')); }).slice(0, 4).map(function (c) { return c.src; });
+  }
+  return o;
+}
+
+function cfeed_() {
+  var c = cget_('cfeed'); if (c) return c;
+  var rows = rows_(sheet_(POSTS, PCOLS), PCOLS), out = [];
+  for (var i = rows.length - 1; i >= 0 && out.length < CFEED; i--) {
+    var p = obj_(rows[i], PCOLS);
+    if (p.status === 'live') out.push(pub_(p));
+  }
+  var s = JSON.stringify({ ok: true, posts: out, t: Date.now() });
+  cput_('cfeed', s, 90);
+  return s;
+}
+
+// one post in full (a board comes with all its cards)
+function cget1_(id) {
+  if (!IDRE.test(id)) return JSON.stringify({ ok: false, err: 'bad' });
+  var rows = rows_(sheet_(POSTS, PCOLS), PCOLS);
+  for (var i = rows.length - 1; i >= 0; i--) {
+    if (String(rows[i][0]) === id) {
+      var p = obj_(rows[i], PCOLS);
+      if (p.status !== 'live') return JSON.stringify({ ok: false, err: 'gone' });
+      var o = pub_(p);
+      if (p.kind === 'b') { try { o.bd = JSON.parse(p.board); } catch (e) { o.bd = { cards: [] }; } }
+      return JSON.stringify({ ok: true, post: o });
+    }
+  }
+  return JSON.stringify({ ok: false, err: 'gone' });
+}
+
+function postRow_(id) {                        // { row, p } of a post, or null
+  var sh = sheet_(POSTS, PCOLS), last = sh.getLastRow();
+  if (last < 2) return null;
+  var ids = sh.getRange(2, 1, last - 1, 1).getValues();
+  for (var i = ids.length - 1; i >= 0; i--) if (String(ids[i][0]) === id) {
+    return { sh: sh, row: i + 2, p: obj_(sh.getRange(i + 2, 1, 1, PCOLS.length).getValues()[0], PCOLS) };
+  }
+  return null;
+}
+function setCell_(pr, col, v) { pr.sh.getRange(pr.row, ci_(PCOLS, col)).setValue(v); pr.p[col] = v; }
+
+var LINKRE = /https?:\/\/|www\./gi;
+
+function cpost_(d) {
+  var u = who_(d); if (!u) return { ok: false, err: 'auth' };
+  var kind = d.k === 'b' ? 'b' : 'p', title = nof_(clean_(d.ti, 90)), text = nof_(text_(d.tx, 1500));
+  if (!title) return { ok: false, err: 'title' };
+  if ((text.match(LINKRE) || []).length > 3 || (title.match(LINKRE) || []).length) return { ok: false, err: 'links' };
+  if (!d.ok) return { ok: false, err: 'consent' };
+  var tags = (Array.isArray(d.tg) ? d.tg : []).map(function (x) { return clean_(x, 24); }).filter(Boolean).slice(0, 6);
+  var sw = (Array.isArray(d.sw) ? d.sw : []).filter(function (x) { return SWL.indexOf(x) >= 0; }).slice(0, 8);
+  var imgs = [], board = '';
+  if (kind === 'p') {
+    var mine = mineImgs_(u.ak);
+    imgs = (Array.isArray(d.im) ? d.im : []).filter(function (x) { return mine[x]; }).slice(0, 6);
+    if (!imgs.length) return { ok: false, err: 'noimg' };
+  } else {
+    var b = d.bd && typeof d.bd === 'object' ? d.bd : null;
+    if (!b || !Array.isArray(b.cards) || !b.cards.length) return { ok: false, err: 'empty' };
+    board = JSON.stringify({ cards: b.cards.slice(0, 80) });
+    if (board.length > CBOARD_MAX) return { ok: false, err: 'bigboard' };
+    imgs = [];
+  }
+  if (!lim_('pl:' + u.ak, 1, 40)) return { ok: false, err: 'wait' };
+  if (!lim_('pd:' + u.ak, 6, 86400)) return { ok: false, err: 'limit' };
+  var id = rid_(), t = now_(), status = CMOD === 'pre' ? 'pending' : 'live';
+  var name = nof_(clean_(d.nm, 60)) || u.name;
+  sheet_(POSTS, PCOLS).appendRow([id, t, t, status, kind, u.ak, u.email, name, u.uni, title, text, JSON.stringify(tags), JSON.stringify(sw), JSON.stringify(imgs), board, '0', '0']);
+  cdrop_('cfeed');
+  if (status === 'pending') notify_();
+  return { ok: true, id: id, status: status };
+}
+
+function notify_() {                           // at most one e-mail every 30 minutes
+  try {
+    if (!lim_('nt', 1, 1800)) return;
+    var to = Session.getEffectiveUser().getEmail(), n = 0;
+    rows_(sheet_(POSTS, PCOLS), PCOLS).forEach(function (r) { if (r[3] === 'pending') n++; });
+    sendMail_(to, 'منشورات بانتظار الموافقة — X Architecture', 'عدد المنشورات التي تنتظر موافقتك: ' + n + '\nافتح admin.html ثم تبويب المجتمع.', '<p style="direction:rtl">عدد المنشورات التي تنتظر موافقتك: <b>' + n + '</b></p><p style="direction:rtl">افتح admin.html ثم تبويب المجتمع.</p>');
+  } catch (e) { Logger.log('notify ' + e); }
+}
+
+function clike_(d) {
+  var u = who_(d); if (!u) return { ok: false, err: 'auth' };
+  var id = clean_(d.id, 30), pr = IDRE.test(id) ? postRow_(id) : null;
+  if (!pr || pr.p.status !== 'live') return { ok: false, err: 'gone' };
+  if (!lim_('lk:' + u.ak, 120, 3600)) return { ok: false, err: 'limit' };
+  var sh = sheet_(LIKES, LCOLS), key = id + '|' + u.ak, last = sh.getLastRow(), at = 0;
+  if (last > 1) {
+    var ks = sh.getRange(2, 1, last - 1, 1).getValues();
+    for (var i = 0; i < ks.length; i++) if (String(ks[i][0]) === key) { at = i + 2; break; }
+  }
+  var n = parseInt(pr.p.likes, 10) || 0, on;
+  if (at) { sh.deleteRow(at); n = Math.max(0, n - 1); on = false; }
+  else { sh.appendRow([key, id, u.ak, now_()]); n++; on = true; }
+  setCell_(pr, 'likes', String(n));
+  return { ok: true, on: on, n: n };
+}
+
+function cdel_(d) {
+  var u = who_(d); if (!u) return { ok: false, err: 'auth' };
+  var pr = postRow_(clean_(d.id, 30));
+  if (!pr || pr.p.ak !== u.ak) return { ok: false, err: 'gone' };
+  setCell_(pr, 'status', 'deleted'); setCell_(pr, 'updated', now_());
+  cdrop_('cfeed');
+  return { ok: true };
+}
+
+function crep_(d) {
+  var u = who_(d); if (!u) return { ok: false, err: 'auth' };
+  var pr = postRow_(clean_(d.id, 30));
+  if (!pr || pr.p.status === 'deleted') return { ok: false, err: 'gone' };
+  if (!lim_('rp:' + u.ak, 10, 86400)) return { ok: false, err: 'limit' };
+  var sh = sheet_(REPORTS, RCOLS);
+  var dup = rows_(sh, RCOLS).some(function (r) { return r[1] === pr.p.id && r[2] === u.ak; });
+  if (!dup) {
+    sh.appendRow([now_(), pr.p.id, u.ak, clean_(d.why, 120)]);
+    var n = (parseInt(pr.p.reports, 10) || 0) + 1;
+    setCell_(pr, 'reports', String(n));
+    if (n >= 3 && pr.p.status === 'live') { setCell_(pr, 'status', 'hidden'); cdrop_('cfeed'); }
+  }
+  return { ok: true };
+}
+
+// my posts (every state), the posts I hearted, my board
+function cmine_(d) {
+  var u = who_(d); if (!u) return { ok: false, err: 'auth' };
+  var posts = [];
+  rows_(sheet_(POSTS, PCOLS), PCOLS).forEach(function (r) {
+    var p = obj_(r, PCOLS);
+    if (p.ak === u.ak && p.status !== 'deleted') { var o = pub_(p); o.s = p.status; posts.push(o); }
+  });
+  posts.reverse();
+  var liked = [];
+  rows_(sheet_(LIKES, LCOLS), LCOLS).forEach(function (r) { if (r[2] === u.ak) liked.push(String(r[1])); });
+  var board = null;
+  rows_(sheet_(BOARDS, BCOLS), BCOLS).forEach(function (r) {
+    if (r[0] === u.ak) { try { board = { u: parseInt(r[2], 10) || 0, b: JSON.parse(r[3]) }; } catch (e) { board = null; } }
+  });
+  return { ok: true, ak: u.ak, name: u.name, posts: posts, liked: liked, board: board };
+}
+
+function cbsave_(d) {
+  var u = who_(d); if (!u) return { ok: false, err: 'auth' };
+  var b = d.b;
+  if (!b || typeof b !== 'object' || !Array.isArray(b.cards)) return { ok: false, err: 'bad' };
+  if (!lim_('bs:' + u.ak, 240, 3600)) return { ok: false, err: 'limit' };
+  var cards = b.cards.slice(0, 80), json = JSON.stringify({ v: 1, cards: cards });
+  if (json.length > CBOARD_MAX) return { ok: false, err: 'bigboard' };
+  var sh = sheet_(BOARDS, BCOLS), rows = rows_(sh, BCOLS), at = 0, ts = String(Date.now());
+  for (var i = 0; i < rows.length; i++) if (rows[i][0] === u.ak) { at = i + 2; break; }
+  if (at) { sh.getRange(at, 3, 1, 2).setValues([[ts, json]]); }
+  else sh.appendRow([u.ak, u.email, ts, json]);
+  return { ok: true, u: +ts };
+}
+
+/* ---------- moderation (admin key required) ---------- */
+function admOk_(d) {
+  var key = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY');
+  if (!key) return { ok: false, err: 'ADMIN_KEY is not set in Script properties' };
+  if (String(d.key || '') !== key) { Utilities.sleep(800); return { ok: false, err: 'wrong key' }; }
+  return null;
+}
+function cadm_(d) {
+  var bad = admOk_(d); if (bad) return bad;
+  var out = [], counts = { pending: 0, live: 0, hidden: 0, deleted: 0 };
+  var rows = rows_(sheet_(POSTS, PCOLS), PCOLS);
+  rows.forEach(function (r) { var p = obj_(r, PCOLS); if (counts[p.status] != null) counts[p.status]++; });
+  for (var i = rows.length - 1; i >= 0 && out.length < 200; i--) {
+    var p = obj_(rows[i], PCOLS);
+    if (p.status === 'pending' || p.status === 'hidden' || (p.status === 'live' && (parseInt(p.reports, 10) || 0) > 0)) {
+      var o = pub_(p); o.s = p.status; o.em = p.email; o.rp = parseInt(p.reports, 10) || 0; o.cr = p.created;
+      if (p.kind === 'b') { try { o.bd = JSON.parse(p.board); } catch (e) { o.bd = { cards: [] }; } }
+      out.push(o);
+    }
+  }
+  return { ok: true, counts: counts, posts: out };
+}
+function cmod_(d) {
+  var bad = admOk_(d); if (bad) return bad;
+  var st = ['live', 'hidden', 'deleted'].indexOf(d.s) >= 0 ? d.s : '', pr = IDRE.test(String(d.id)) ? postRow_(String(d.id)) : null;
+  if (!st || !pr) return { ok: false, err: 'bad' };
+  setCell_(pr, 'status', st); setCell_(pr, 'updated', now_());
+  if (st === 'live') setCell_(pr, 'reports', '0');
+  cdrop_('cfeed');
+  return { ok: true };
 }

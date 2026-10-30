@@ -78,6 +78,16 @@ td.e{direction:ltr;text-align:start}
 .gal .st{color:var(--gold2)}.gal .st.p{color:var(--err)}
 .gal .bt{padding:5px 12px;font-size:.76rem}
 .gal .bar{display:flex;gap:6px}
+.cmq{display:grid;gap:12px;margin-top:14px}
+.cmq article{background:var(--bg3);padding:14px 16px;min-width:0}
+.cmq h3{font-size:.95rem;font-weight:500;margin-bottom:4px}
+.cmq .mt{color:var(--soft);font-size:.78rem;margin-bottom:8px}
+.cmq .mt b{color:var(--gold2);font-weight:500}
+.cmq p{font-size:.86rem;white-space:pre-wrap;overflow-wrap:anywhere;margin:6px 0}
+.cmq .im{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.cmq .im img{width:96px;height:72px;object-fit:cover;background:#000}
+.cmq .nt{background:rgba(var(--gr),.12);padding:6px 8px;font-size:.76rem;max-width:150px;overflow-wrap:anywhere}
+.cmq .bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 @media(max-width:1000px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.c8,.c6,.c4{grid-column:span 12}}
 @media(max-width:520px){.r{grid-template-columns:minmax(0,7.5em) minmax(0,1fr) 2.8em}}
 </style>
@@ -115,6 +125,7 @@ td.e{direction:ltr;text-align:start}
 <div class="card c6"><h2>ما الذي يهمّهم</h2><div class="rows" id="int"></div></div>
 <div class="card c6"><h2>البرامج الأكثر مشاهدة</h2><div class="rows" id="prog"></div></div>
 <div class="card c12" id="gcard"><div class="top"><h2>معرض الصفحة الرئيسية <small id="gcnt"></small></h2><button class="bt g" id="grf" type="button">تحديث</button></div><p class="sub" id="gmode"></p><p class="empty" id="gmsg"></p><div class="gal" id="gal"></div></div>
+<div class="card c12" id="ccard"><div class="top"><h2>المجتمع <small id="ccnt"></small></h2><button class="bt g" id="crf" type="button">تحديث</button></div><p class="sub" id="cmode"></p><p class="empty" id="cmsg"></p><div class="cmq" id="cq"></div></div>
 <div class="card c12"><div class="top"><h2>المسجّلون <small id="cnt"></small></h2><input class="srch" id="sq" type="search" placeholder="بحث بالاسم أو البريد أو الجامعة…" aria-label="بحث"></div><div class="tw"><table><thead><tr><th>الاسم</th><th>البريد</th><th>الدولة</th><th>الصفة</th><th>الجامعة</th><th>التخصص</th><th>تواصل</th><th>الاهتمامات</th><th>التسجيل</th></tr></thead><tbody id="ut"></tbody></table></div></div>
 </div>
 </section>
@@ -191,7 +202,34 @@ $('gal').addEventListener('click',function(e){
   b.disabled=true;
   gpost(b.dataset.a,b.dataset.id).then(function(j){if(j&&j.ok)gdraw(j);else{b.disabled=false;$('gmsg').textContent='تعذّر تنفيذ الطلب.'}}).catch(function(){b.disabled=false;$('gmsg').textContent='تعذّر الاتصال بخادم الصور.'})});
 $('grf').addEventListener('click',gload);
-function show(){$('gate').hidden=true;$('dash').hidden=false;['rf','ex','out'].forEach(function(i){$(i).hidden=false});render();$('gcard').hidden=DEMO;if(!DEMO)gload()}
+/* ---- community moderation: posts waiting for approval, hidden or reported ---- */
+var CK='',CAPI='';
+function cimg(id){return'https://lh3.googleusercontent.com/d/'+encodeURIComponent(id)+'=w400'}
+function ccall(o){o.key=CK;return fetch(CAPI,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(o)}).then(function(r){return r.json()})}
+var CST={pending:'بانتظار الموافقة',hidden:'مخفي',live:'منشور (عليه بلاغات)'};
+function cdraw(j){
+  var c=j.counts||{},list=j.posts||[];
+  $('ccnt').textContent='('+(c.pending||0)+' بانتظار · '+(c.live||0)+' منشور · '+(c.hidden||0)+' مخفي)';
+  $('cmode').textContent='اعتمد المنشور ليظهر للجميع، أو أخفِه. المنشورات المخفية والمبلَّغ عنها تظهر هنا أيضاً.';
+  $('cmsg').textContent=list.length?'':'لا يوجد ما ينتظر المراجعة.';
+  $('cq').innerHTML=list.map(function(p){
+    var ims=(p.k==='b'?((p.bd&&p.bd.cards)||[]).map(function(x){return x.t==='i'?'<img loading="lazy" alt="" src="'+cimg(x.src)+'">':x.t==='n'?'<span class="nt">'+esc(x.tx||'')+'</span>':''}):(p.im||[]).map(function(i){return'<img loading="lazy" alt="" src="'+cimg(i)+'">'})).join('');
+    return'<article data-id="'+esc(p.id)+'"><h3>'+esc(p.ti)+(p.k==='b'?' · لوحة':'')+'</h3><div class="mt"><b>'+esc(CST[p.s]||p.s)+'</b> · '+esc(p.n)+' · <span dir="ltr">'+esc(p.em)+'</span> · '+esc((p.cr||'').slice(0,16).replace('T',' '))+(p.rp?' · بلاغات: '+p.rp:'')+'</div>'+(p.tx?'<p>'+esc(p.tx)+'</p>':'')+'<div class="im">'+ims+'</div><div class="mt">'+esc((p.tg||[]).concat(p.sw||[]).join(' · '))+'</div><div class="bar">'+(p.s==='live'?'':'<button class="bt" type="button" data-s="live">اعتماد</button>')+(p.s==='hidden'?'':'<button class="bt g" type="button" data-s="hidden">إخفاء</button>')+'<button class="bt g" type="button" data-s="deleted">حذف</button></div></article>'}).join('')}
+function cload(){
+  CK=$('key').value.trim();try{CK=sessionStorage.getItem('xk')||CK}catch(e){}
+  CAPI=API||(function(){try{return sessionStorage.getItem('xa')}catch(e){return''}})()||$('api').value.trim();
+  if(!CAPI){$('cmsg').textContent='لا يوجد رابط خادم.';return}
+  $('cmsg').textContent='جارٍ التحميل…';
+  ccall({a:'cadm'}).then(function(j){
+    if(!j||!j.ok){$('cmsg').textContent=(j&&j.err==='bad request')?'نسخة السكربت قديمة: الصق Code.gs الجديد وانشر إصداراً جديداً (راجع SETUP.md، الجزء 8).':'تعذّر تحميل المجتمع: '+(j&&j.err||'خطأ');$('cq').innerHTML='';return}
+    cdraw(j)}).catch(function(){$('cmsg').textContent='تعذّر الاتصال بالخادم.'})}
+$('cq').addEventListener('click',function(e){
+  var b=e.target.closest&&e.target.closest('button[data-s]');if(!b)return;var art=b.closest('article');
+  if(b.dataset.s==='deleted'&&!b.dataset.sure){b.dataset.sure='1';b.textContent='تأكيد الحذف';setTimeout(function(){if(b.isConnected){delete b.dataset.sure;b.textContent='حذف'}},3500);return}
+  b.disabled=true;
+  ccall({a:'cmod',id:art.dataset.id,s:b.dataset.s}).then(function(j){if(j&&j.ok)cload();else{b.disabled=false;$('cmsg').textContent='تعذّر تنفيذ الطلب.'}}).catch(function(){b.disabled=false;$('cmsg').textContent='تعذّر الاتصال بالخادم.'})});
+$('crf').addEventListener('click',cload);
+function show(){$('gate').hidden=true;$('dash').hidden=false;['rf','ex','out'].forEach(function(i){$(i).hidden=false});render();$('gcard').hidden=DEMO;$('ccard').hidden=DEMO;if(!DEMO){gload();cload()}}
 function msg(t){$('msg').textContent=t||''}
 function load(){
   var key=$('key').value.trim(),api=API||$('api').value.trim();
