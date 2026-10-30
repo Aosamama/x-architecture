@@ -65,3 +65,13 @@ button. It is free for registered students, 2 images a day each.
 - `index.html` carries no pictures: the lightbox uses the same `works/*.webp` files as the galleries (it used to embed 10 JPEGs as base64, ~2.8 MB). The page went from 3 MB to ~0.4 MB.
 - Fonts are self-hosted (`fonts/`: TeX Gyre Adventor for Latin, Tajawal Arabic subset for Arabic/Kurdish, both free licences). Nothing waits for Google Fonts before the first paint.
 - The hero loops are endless again, as designed: the hero glow, the breathing X, the floating triangles, the headline shimmer and the background glow never stop. To keep that cheap they pause while the hero is scrolled out of view (`html.hoff`, set by a small IntersectionObserver at the end of `index.html`; the rule is in `motion.css`) and the browser pauses them in a hidden tab. The motion layer's loop (`motion.js`, `wake()`) only runs while the pointer/scroll/hairlines move and sleeps ~0.5 s after. If a weak machine (or Edge with "Use graphics acceleration" off) still struggles, the header button turns all motion effects off.
+
+
+## Student comments (`reviews.json`)
+- The "What our students say" section sits under the student works (`#works`). It shows two endless rows moving in opposite directions, in the theme colours, and pauses on hover.
+- It reads `reviews.json`. Each item: `t` = the comment (required), `n` = student name or first name (optional), `c` = course or level (optional). Real comments only, with the student's permission.
+- While `items` is empty the section is not rendered at all.
+
+## Contact
+- One username for every platform: `xstudio4arch` (Instagram, Telegram, WhatsApp, YouTube, Behance, Linktree).
+- WhatsApp opens `https://wa.me/xstudio4arch` and replaces the email on the site (footer, contact page and the course / contact windows). WhatsApp username links are still rolling out; if the link does not open a chat for some visitors, add the phone number to `SITE` in `index.html` and use `https://wa.me/<number>`.

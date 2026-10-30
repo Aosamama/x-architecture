@@ -1,0 +1,4 @@
+{
+ "note": "Real student comments only. Each item: t = the comment (required), n = student name or first name (optional), c = course or level (optional, e.g. \"Revit\" or \"المرحلة الثانية\"). The section stays hidden while items is empty.",
+ "items": []
+}
