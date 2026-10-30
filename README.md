@@ -3,8 +3,8 @@
 منصة معمارية للطلاب — موقع ثابت (HTML واحد) منشور عبر GitHub Pages.
 
 - الموقع: https://xarch.site/
-- تليجرام: https://t.me/x_architecture
-- انستغرام: @x.archiitecture
+- تليجرام: https://t.me/xstudio4arch
+- انستغرام: @xstudio4arch
 
 ## الأخبار (تتحدّث تلقائياً)
 
@@ -44,7 +44,7 @@ Clicking one of the four services (architectural design, visualization, critique
 ## Email confirmation
 Registration checks the address twice. In the browser `rgem()` rejects non-ASCII addresses, bad formats, common typo domains (`gmial.com` and so on, with a "Did you mean…" hint), disposable domains and impossible Gmail names. Then, when the Apps Script is version 2 or newer (`GET /exec` answers `v:2`, see `rgprobe()`), the script mails a 6-digit code (`vs`), the person types it (`vc`) and gets a signed token that is saved with the profile (`tok`) and is required by the `reg` action. If the script is still the old one the site falls back to the strict format check only; if the script cannot be reached an error is shown and nothing is saved. Setup steps are in `backend/SETUP.md` (section 6). By default the code is mailed from the Google account that owns the script (Apps Script cannot change the sender); to mail it from the site's own address (for example `no-reply@xarch.site`) the script can send through Resend once the two Script properties `RESEND_API_KEY` and `MAIL_FROM` exist (`sendMail_()` in `Code.gs`; steps and DNS records in `backend/SETUP.md`, section 7), or from a mailbox on the domain (for example Namecheap Private Email) through a Gmail "Send mail as" address, with the Script property `MAIL_ALIAS` (section 8; no third-party service, and the owner's personal address never shows). The render Worker does not check the token yet; add that before reopening the AI.
 
-The AI studio is paused: `render` in `config.js` is empty, so the AI page and the registration texts say "coming soon". The home page has no AI section: it runs services, the "Selected work" strip (no style claim and no note under the heading), news, then the contact call to action (its main button says "Contact us" and opens Telegram, `t.me/x_architecture`, in a new tab; the old "Email us" mailto button is gone from the home page, the footer still has the email icon). To switch it back on put the Worker URL back (`https://xarch-render.osama-architects.workers.dev`) and the copy returns to normal by itself (`rsOn()`).
+The AI studio is paused: `render` in `config.js` is empty, so the AI page and the registration texts say "coming soon". The home page has no AI section: it runs services, the "Selected work" strip (no style claim and no note under the heading), news, then the contact call to action (its main button says "Contact us" and opens Telegram, `t.me/xstudio4arch`, in a new tab; the old "Email us" mailto button is gone from the home page, the footer still has the email icon). To switch it back on put the Worker URL back (`https://xarch-render.osama-architects.workers.dev`) and the copy returns to normal by itself (`rsOn()`).
 
 ## Themes
 Dark (black + gold, always the default on a fresh visit) → light (white + gold) → mono (white + black) → red (white + deep red + grey). The choice is kept per tab (`sessionStorage` key `xt`). In the red theme the program icons on the Courses page are tinted red by a CSS filter and show their own colours while pressed, hovered or while their window is open (`pgHv()`).
