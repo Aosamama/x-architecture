@@ -947,6 +947,41 @@ html.xw #mnb svg{opacity:0}
 .pkv .pen{display:none!important}
 }
 .pkv .top{fill:var(--gold);fill-opacity:.14}
+/* ---- second pass: outcome, today card, tabs, cards, habits ---- */
+.pkot{display:flex;gap:10px;align-items:baseline;margin:14px 0 0;color:var(--soft);font-size:.92rem;line-height:1.7}
+.pkot b{flex:none;font-weight:400;color:var(--gold)}
+.pkto{margin-top:18px;padding:16px 18px;border:1px solid var(--gold);background:rgba(var(--gr),.08);position:relative}
+.pkto::before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:3px;background:var(--gold)}
+.pkth{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
+.pkth span{display:inline-flex;align-items:center;gap:8px;color:var(--gold2);font-size:.82rem}
+.pkth svg{width:18px;height:18px}
+.pkth em{font-style:normal;font-size:.7rem;border:1px solid var(--gold);color:var(--gold2);padding:1px 9px;line-height:1.7}
+.pkto p{margin:0;font-size:1.05rem;line-height:1.7;color:var(--ink)}
+.pktb{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:10px;overflow-x:auto}
+.pktb button{background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;color:var(--soft);font:inherit;font-size:.88rem;padding:10px 14px;cursor:pointer;white-space:nowrap;transition:color .2s,border-color .2s}
+.pktb button:hover{color:var(--gold2)}
+.pktb button.on{color:var(--gold2);border-bottom-color:var(--gold)}
+.pktb button:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.pkpn{display:none}.pkpn.on{display:block}
+.pksr small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:26px}
+.pkcd{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);background:var(--bg2);padding:14px 16px;color:var(--soft);font-size:.88rem;line-height:1.7}
+.pkcd>svg{flex:none;width:21px;height:21px;color:var(--gold);margin-top:2px}
+.pkcd h4{margin:0 0 3px;font-size:.8rem;font-weight:400;color:var(--gold)}
+.pkcd p{margin:0}
+.pkcd a{display:inline-block;margin-top:8px;color:var(--gold2);text-decoration:none;font-size:.8rem}
+.pkcd a:hover{color:var(--ink)}
+.pkav.pkcd{border:1px dashed rgba(var(--gr),.55);background:none}
+.pkaf{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:22px 0 0;color:var(--soft);font-size:.85rem}
+.pkaf b{font-weight:400;border:1px solid var(--line);padding:3px 12px;color:var(--ink)}
+.pkhs{margin-top:54px}
+.pkhb{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.pkhb>div{border:1px solid var(--line);background:var(--bg2);padding:18px 16px;display:flex;flex-direction:column;gap:12px;transition:border-color .25s}
+.pkhb>div:hover{border-color:var(--gold)}
+.pkhb svg{width:26px;height:26px;color:var(--gold)}
+.pkhb p{margin:0;font-size:.9rem;line-height:1.75;color:var(--ink)}
+@media(max-width:860px){.pkhb{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.pk2{grid-template-columns:minmax(0,1fr)}.pkhb>div{padding:14px 13px}.pkhb p{font-size:.84rem}}
 </style>
 <link rel="stylesheet" href="motion.css?v=11">
 </head>
@@ -1436,20 +1471,31 @@ function pkv5(){var h='<svg viewBox="0 0 320 220" aria-hidden="true"><rect class
  [[176,70,-.4],[191,48,-1.6],[206,96,-2.6]].forEach(function(k){h+='<circle class="fg kn" cx="50" cy="'+k[0]+'" r="4.2" style="--d:'+k[1]+'px;animation-delay:'+k[2]+'s"/>'});
  return h+'<text class="tx" x="196" y="179">u</text><text class="tx" x="196" y="194">v</text><text class="tx" x="196" y="209">n</text></svg>'}
 var PKV=[pkv1,pkv2,pkv3,pkv4,pkv5];
+var PKX=[
+{o:['مسقط ومقطع وواجهة لبيتك، باليد وبـ AutoCAD.','A plan, section and elevation of your home, by hand and in AutoCAD.'],t:['ارسم مسقط غرفتك بقلم وورقة بمقياس 1:50.','Draw your room’s plan on paper at 1:50.'],pf:['صورة مسقطك اليدوي بجانب نسخة AutoCAD.','A photo of your hand plan beside the AutoCAD version.']},
+{o:['نموذج ثلاثي الأبعاد لمسقطك، ولوحة ملوّنة.','A 3D model of your plan and one coloured board.'],t:['افتح SketchUp وارفع جداراً واحداً من مسقطك.','Open SketchUp and extrude one wall of your plan.'],pf:['لقطتان من النموذج: مسقط ومنظور.','Two views of the model: a plan and a perspective.']},
+{o:['مشروع كامل: فكرة ومخططات ومقاطع على لوحة واحدة.','A complete project: idea, drawings and sections on one sheet.'],t:['اكتب فكرة مشروعك بجملة واحدة على ورقة.','Write your project idea in one sentence on paper.'],pf:['السكيتشات الثلاثة والفكرة المختارة، مع سبب الاختيار.','The three sketches and the chosen idea, with the reason.']},
+{o:['ثلاث لقطات إظهار واضحة بإضاءة مدروسة.','Three clear renders with considered light.'],t:['اختر لقطة من مشروعك وأضئها بالشمس فقط.','Pick one view of your project and light it with the sun only.'],pf:['أفضل لقطة قبل الإضاءة وبعدها.','Your best view before and after lighting.']},
+{o:['مشروع تخرّج كامل، وPortfolio جاهز للتقديم.','A full graduation project and a portfolio ready to send.'],t:['اكتب سؤال مشروعك بسطر وعلّقه أمام مكتبك.','Write your project question in one line and pin it above your desk.'],pf:['صفحة لكل مرحلة: بحث، فكرة، تطوير، نتيجة.','One page per phase: research, concept, development, result.']}];
+var PKH=[['خطّط عكسياً من يوم التسليم.','Plan backwards from the deadline.','clock'],['اعرض شغلك مبكراً، حتى لو لم يكتمل.','Show your work early, even if unfinished.','eye'],['احفظ كل مشروع من أول يوم: سكيتشات ولقطات ونماذج.','Archive every project from day one: sketches, screenshots, models.','file'],['نم وارتح؛ التصميم لا يحتاج سهراً دائماً.','Sleep and rest; design doesn’t need constant all-nighters.','sun']];
 function pkpanel(i){
-  var d=PK[i],me=pkus(),h='',B=BK[i]||[],F=FB[i]||[];
+  var d=PK[i],x=PKX[i],me=pkus(),h='',B=BK[i]||[],F=FB[i]||[];
   h+='<div class="pkv">'+PKV[i]()+'<span class="pkvn">0'+(i+1)+'</span><span class="pkvt">'+d.tg+'</span></div><div class="pkb">';
   h+='<div class="pkh"><small>'+esc(T(SN[i],SNE[i]))+(me===i?' · '+esc(T('مرحلتك','Your year')):'')+'</small><h3>'+esc(T(d.g[0],d.g[1]))+'</h3></div>';
+  h+='<p class="pkot"><b>'+esc(T('الناتج','Outcome'))+'</b><span>'+esc(T(x.o[0],x.o[1]))+'</span></p>';
+  h+='<div class="pkto"><div class="pkth"><span>'+pkic('clock')+esc(T('ابدأ اليوم','Start today'))+'</span><em>'+esc(T('خطوة صغيرة','A small step'))+'</em></div><p>'+esc(T(x.t[0],x.t[1]))+'</p></div>';
   h+='<div class="pkg"><i id="pkgb"></i><span id="pkgt"></span></div>';
   h+=pkq('route',T('خطواتك','Your steps'))+'<ul class="pks">'+d.st.map(function(s,k){return '<li><button type="button" class="pkk" data-k="'+k+'" aria-pressed="false"><span class="pkx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>'+pkic(s[2],'pki')+'<span class="pkw">'+esc(T(s[0],s[1]))+'</span></button></li>'}).join('')+'</ul>';
-  h+=pkq('cube',T('برامج هذه المرحلة','Software for this stage'))+'<div class="pkchs">'+d.pr.map(function(p){return '<button type="button" class="pb pkch" data-p="'+p+'">'+esc(p==='computer'?T('تعليم الحاسوب','Computer basics'):PGM[p].n)+'</button>'}).join('')+'</div>';
   h+=pkq('book',T('أين تتعلّم','Where to learn'));
-  h+='<div class="pkgl">'+esc(T('من الشركات المنتجة','From the software makers'))+'</div>'+PKO[i].map(function(o){return pksr(o[0],T(o[2],o[3]),o[1],T('رسمي','Official'),true)}).join('');
-  h+='<div class="pkgl">'+esc(T('كتب وملفات','Books and files'))+'</div>'
-   +B.slice(0,1).map(function(b){var u=b[3]||'https://openlibrary.org/search?q='+encodeURIComponent((b[0]+' '+b[1]).replace(/’/g,"'"));return pksr(b[0],b[1],u,b[3]?T('مجاني','Free'):T('استعارة','Borrow'),true)}).join('')
-   +F.slice(0,1).map(function(c){return pksr(c[0],(L!=='ar'&&SRCE[c[1]]||c[1]),c[4],T('مجاني','Free'),true)}).join('');
-  h+='<a class="pkmore" href="#books" data-bk="'+i+'">'+esc(T('كل كتب هذه المرحلة ←','All books for this year →'))+'</a>';
-  h+=pkq('warn',T('تجنّب','Avoid'))+'<div class="pkav">'+pkic('warn')+'<span>'+esc(T(d.av[0],d.av[1]))+'</span></div>';
+  h+='<div class="pktb" role="tablist">'+[['برامج','Software'],['مصادر رسمية','Official'],['كتب وملفات','Books & files']].map(function(t,k){return '<button type="button" role="tab" data-t="'+k+'" aria-selected="'+(k?'false':'true')+'" class="'+(k?'':'on')+'">'+esc(T(t[0],t[1]))+'</button>'}).join('')+'</div>';
+  h+='<div class="pkpn on" data-t="0"><div class="pkchs">'+d.pr.map(function(p){return '<button type="button" class="pb pkch" data-p="'+p+'">'+esc(p==='computer'?T('تعليم الحاسوب','Computer basics'):PGM[p].n)+'</button>'}).join('')+'</div></div>';
+  h+='<div class="pkpn" data-t="1">'+PKO[i].map(function(o){return pksr(o[0],T(o[2],o[3]),o[1],T('رسمي','Official'),true)}).join('')+'</div>';
+  h+='<div class="pkpn" data-t="2">'+B.map(function(b,k){var u=b[3]||'https://openlibrary.org/search?q='+encodeURIComponent((b[0]+' '+b[1]).replace(/’/g,"'"));return pksr(b[0],b[1]+' — '+T(b[2],BKE[i][k]),u,b[3]?T('مجاني','Free'):T('استعارة','Borrow'),true)}).join('')
+   +F.map(function(c){return pksr(c[0],(L!=='ar'&&SRCE[c[1]]||c[1]),c[4],T('مجاني','Free'),true)}).join('')
+   +'<a class="pkmore" href="#books" data-bk="'+i+'">'+esc(T('كل كتب هذه المرحلة ←','All books for this year →'))+'</a></div>';
+  h+='<div class="pk2"><div class="pkcd pkav">'+pkic('warn')+'<div><h4>'+esc(T('تجنّب','Avoid'))+'</h4><p>'+esc(T(d.av[0],d.av[1]))+'</p></div></div>'
+   +'<div class="pkcd">'+pkic('file')+'<div><h4>'+esc(T('احفظه في Portfolio','Keep for your portfolio'))+'</h4><p>'+esc(T(x.pf[0],x.pf[1]))+'</p><a href="#services">'+esc(T('اطلب نقداً لعملك ←','Ask for a critique →'))+'</a></div></div></div>';
+  if(i===4)h+='<p class="pkaf"><span>'+esc(T('بعد التخرّج','After graduating'))+'</span><b>Portfolio</b><b>'+esc(T('تدريب عملي','Hands-on training'))+'</b><b>'+esc(T('دراسات عليا','Postgraduate study'))+'</b></p>';
   h+='<div class="pknv"><button type="button" class="lk" data-go="-1"'+(i===0?' disabled':'')+'>'+esc(T('→ المرحلة السابقة','← Previous year'))+'</button><button type="button" class="lk" data-go="1"'+(i===4?' disabled':'')+'>'+esc(T('المرحلة التالية ←','Next year →'))+'</button></div></div>';
   return h}
 function pkupd(){
@@ -1481,12 +1527,14 @@ function rp(){
    +[0,1,2,3,4].map(function(i){return '<button type="button" class="pkn" data-i="'+i+'"><span class="pko"><span class="pkd"><em>'+(i+1)+'</em><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span></span><small>'+esc(T(PK[i].n[0],PK[i].n[1]))+'</small></button>'}).join('')
    +'</div><p class="pkov"><span>'+esc(T('تقدّمك','Your progress'))+'</span><i id="pkoi"></i><b id="pkob"></b></p>'
    +'<div class="pkp" id="pkp"></div>'
+   +'<div class="pkhs">'+pkq('sun',T('عادات تنفعك في كل مرحلة','Habits that help in every year'))+'<div class="pkhb">'+PKH.map(function(k){return '<div>'+pkic(k[2])+'<p>'+esc(T(k[0],k[1]))+'</p></div>'}).join('')+'</div></div>'
    +'<div class="pkfo"><p>'+esc(T('هذا مسار مقترح، وقد تختلف المناهج من جامعة إلى أخرى. يُحفظ تقدّمك على جهازك فقط.','This is a suggested path; curricula differ between universities. Your progress is saved on this device only.'))+'</p><a href="#services">'+esc(T('كورسات المنصة ←','Platform courses →'))+'</a><a href="#contact">'+esc(T('اسأل عن مرحلتك ←','Ask about your year →'))+'</a><button type="button" class="pkrs">'+esc(T('إعادة ضبط التقدّم','Reset progress'))+'</button></div>';
   PKE.innerHTML=h;pks(PKS,true)}
 if(PKE){
   pkld();
   PKE.addEventListener('click',function(e){
     var t=e.target,n=t.closest('.pkn');if(n){pks(+n.dataset.i);return}
+    var tt=t.closest('.pktb button');if(tt){var bb=tt.parentNode,pn=PKE.querySelectorAll('.pkpn');Array.prototype.forEach.call(bb.children,function(c){var on=c===tt;c.classList.toggle('on',on);c.setAttribute('aria-selected',on?'true':'false')});Array.prototype.forEach.call(pn,function(q){q.classList.toggle('on',q.dataset.t===tt.dataset.t)});return}
     var k=t.closest('.pkk');if(k){pkt(+k.dataset.k);return}
     var g=t.closest('[data-go]');if(g){pks(PKS+ +g.dataset.go);var r=document.getElementById('pkr');if(r&&r.scrollIntoView)r.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});return}
     var b=t.closest('[data-bk]');if(b){rb(+b.dataset.bk);return}
