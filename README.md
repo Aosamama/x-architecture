@@ -3,8 +3,7 @@
 منصة معمارية للطلاب — موقع ثابت (HTML واحد) منشور عبر GitHub Pages.
 
 - الموقع: https://xarch.site/
-- تليجرام: https://t.me/xstudio4arch
-- انستغرام: @xstudio4arch
+- اليوزر الموحد على كل منصات التواصل: @xstudio4arch
 
 ## الأخبار (تتحدّث تلقائياً)
 
