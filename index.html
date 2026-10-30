@@ -984,7 +984,8 @@ html.xw #mnb svg{opacity:0}
 @media(max-width:560px){.pk2{grid-template-columns:minmax(0,1fr)}.pkhb>div{padding:14px 13px}.pkhb p{font-size:.84rem}}
 /* ===== library ===== */
 #vl{display:none}.rl #vl{display:block}.rl #vh{display:none}
-.sfq{position:relative;display:flex;align-items:center;gap:12px;max-width:520px;border-bottom:1px solid var(--line);margin:0 0 clamp(26px,4vw,44px);color:var(--soft);transition:border-color .25s}
+.sfbar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px 24px;margin:0 0 clamp(26px,4vw,44px)}
+.sfq{position:relative;display:flex;align-items:center;gap:12px;flex:1 1 300px;max-width:520px;border-bottom:1px solid var(--line);color:var(--soft);transition:border-color .25s}
 .sfq:focus-within{border-color:var(--gold);color:var(--gold)}
 .sfq .pkic{flex:0 0 20px;width:20px;height:20px}
 .sfq input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--ink);font:inherit;font-size:.95rem;padding:13px 0;-webkit-appearance:none;appearance:none}
@@ -1103,6 +1104,23 @@ html[dir=rtl] .sfk{text-align:right}
   .sfdn .sfpg:last-child,.sfdp .sfpg:first-child,.sfpg{animation:sffd .01s both}
   .sfbk{transition:none}.sfb:hover .sfbk,.sfb:focus-visible .sfbk{transform:none}
 }
+
+.sfch{display:inline-flex;align-items:center;gap:9px;background:none;border:1px solid var(--line);color:var(--soft);font:inherit;font-size:.82rem;padding:10px 16px;min-height:44px;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.sfch .pkic{width:16px;height:16px}
+.sfch:hover{border-color:var(--gold);color:var(--gold)}
+.sfch.on{background:var(--gold);border-color:var(--gold);color:var(--ong)}
+.sfch:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.sfa{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;margin-top:6px}
+.sfdl{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--ong);border:1px solid var(--gold);padding:9px 18px;min-height:42px;font-size:.86rem;line-height:1;transition:background .2s,border-color .2s}
+.sfdl .pkic{width:17px;height:17px}
+.sfdl:hover{background:var(--gold2);border-color:var(--gold2)}
+.sfdl:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.sfsz{font-weight:400;font-size:.72rem;letter-spacing:.06em;direction:ltr;opacity:.78}
+.sfa .sfo{margin:0}
+.sfrb{position:absolute;z-index:3;top:0;inset-inline-end:6%;width:26px;height:36px;display:grid;place-items:start center;padding-top:7px;background:#AD9154;color:#0a0a0a;clip-path:polygon(0 0,100% 0,100% 100%,50% 80%,0 100%)}
+.sfrb .pkic{width:15px;height:15px;stroke-width:2.2}
+.sfnm{display:block;margin-top:4px;color:var(--ink);font-size:.84rem;line-height:1.6;direction:ltr;text-align:start}
+html[dir=rtl] .sfnm{text-align:right}
 </style>
 <link rel="stylesheet" href="motion.css?v=11">
 </head>
@@ -1708,26 +1726,34 @@ var SFB=[
  ['BlenderKit — HDRIs','https://www.blenderkit.com/','نحو 4 آلاف HDRI مجانية.','About 4,000 free HDRIs.','HDRI','free','المجاني بترخيص RF أو CC0.','The free tier is RF or CC0.'],
  ['Unsplash — sky','https://unsplash.com/s/photos/sky','صور سماء لخلفيات اللقطات النهائية.','Sky photos for the backdrop of final views.','JPG','free']]},
 {k:'tpl',n:['قوالب وخطوط','Templates & type'],s:['بوسترات ولوحات وخطوط للعرض','Posters, boards and type for presentation'],i:[
+ ['Arabic Fonts Pack','https://github.com/google/fonts','خمس عائلات عربية:|Tajawal, Cairo, Almarai, IBM Plex Sans Arabic, Noto Kufi Arabic','Five Arabic families:|Tajawal, Cairo, Almarai, IBM Plex Sans Arabic, Noto Kufi Arabic','ZIP · TTF','ofl','نص الترخيص يجي داخل الملف مع كل خط.','The licence text ships inside, with every font.','library/fonts/xarch-arabic-fonts.zip','1.1 MB'],
+ ['Latin Fonts Pack','https://github.com/google/fonts','خمس عائلات لاتينية للعناوين واللوحات:|Jost, Montserrat, Josefin Sans, Raleway, Inter','Five Latin families for titles and boards:|Jost, Montserrat, Josefin Sans, Raleway, Inter','ZIP · TTF','ofl','نص الترخيص يجي داخل الملف مع كل خط.','The licence text ships inside, with every font.','library/fonts/xarch-latin-fonts.zip','1.0 MB'],
+ ['Google Fonts','https://fonts.google.com/','خطوط مفتوحة للوحات والبوسترات.','Open fonts for boards and posters.','Font','ofl'],
+ ['Fontshare','https://www.fontshare.com/','خطوط جميلة مجانية للعمل الشخصي والتجاري.','Beautiful fonts, free for personal and business work.','Font','free'],
  ['Adobe Express — architecture posters','https://www.adobe.com/express/templates/poster/architecture','قوالب بوسترات معمارية تعدّلها مباشرة.','Architecture poster templates you edit online.','Poster','free','الخطة المجانية متاحة، وبعض القوالب Premium.','A free plan exists; some templates are Premium.'],
  ['Adobe Express — exhibition flyers','https://www.adobe.com/express/create/flyer/exhibition','قوالب فلاير لمعارض ومناسبات المشاريع.','Flyer templates for exhibitions and project events.','Flyer','free','الخطة المجانية متاحة، وبعض القوالب Premium.','A free plan exists; some templates are Premium.'],
- ['Adobe Stock — Free','https://stock.adobe.com/free','قوالب وصور وتصاميم مجانية للتحميل.','Free templates, photos and graphics to download.','Templates','acct','تحتاج حساب Adobe مجاني، وللتحميل حدّ.','Needs a free Adobe ID; downloads are limited.'],
- ['Google Fonts','https://fonts.google.com/','خطوط مفتوحة للوحات والبوسترات.','Open fonts for boards and posters.','Font','ofl'],
- ['Fontshare','https://www.fontshare.com/','خطوط جميلة مجانية للعمل الشخصي والتجاري.','Beautiful fonts, free for personal and business work.','Font','free']]},
+ ['Adobe Stock — Free','https://stock.adobe.com/free','قوالب وصور وتصاميم مجانية للتحميل.','Free templates, photos and graphics to download.','Templates','acct','تحتاج حساب Adobe مجاني، وللتحميل حدّ.','Needs a free Adobe ID; downloads are limited.']]},
 {k:'ref',n:['مراجع بصرية','Visual references'],s:['رسومات وصور للدراسة والإلهام','Drawings and photos for study and inspiration'],i:[
  ['Library of Congress — HABS/HAER/HALS','https://www.loc.gov/collections/historic-american-buildings-landscapes-and-engineering-records/','رسومات قياس دقيقة لمبانٍ تاريخية.','Measured drawings of historic buildings.','PDF · TIFF','chk','راجع بيان الحقوق في كل عنصر.','Read the rights statement on each item.'],
  ['Wikimedia Commons — architectural drawings','https://commons.wikimedia.org/wiki/Category:Architectural_drawings','رسومات ومخططات معمارية بترخيص حرّ.','Architectural drawings and plans under free licences.','Images','chk','الترخيص مكتوب على صفحة كل ملف.','The licence is on each file’s page.'],
  ['Unsplash — architecture','https://unsplash.com/s/photos/architecture','صور معمارية عالية الجودة للمراجع.','High-quality architecture photos for reference.','JPG','free']]}];
-var SFS={b:-1,p:0,q:'',f:null},SFR=null;
+var SFS={b:-1,p:0,q:'',dl:false,f:null},SFR=null;
 function sfic(k){return '<svg class="sfic" viewBox="0 0 120 120" aria-hidden="true">'+SFI[k]+'</svg>'}
 function sfno(i){return (i<9?'0':'')+(i+1)}
-function sfcover(i,h){var b=SFB[i];return '<button type="button" class="sfb" '+(h?'data-sfh':'data-b')+'="'+i+'" aria-label="'+esc(T(b.n[0],b.n[1]))+'"><span class="sfbk"><span class="sfsp"></span><span class="sfcc"><span class="sfct"><svg viewBox="0 0 547 703" aria-hidden="true"><use href="#mark"/></svg><em>X ARCHITECTURE</em></span>'+sfic(b.k)+'<span class="sftt"><b>'+esc(T(b.n[0],b.n[1]))+'</b><i>'+esc(b.n[1].toUpperCase())+'</i></span><span class="sfft"><u>'+sfno(i)+'</u><u>'+b.i.length+' SOURCES</u></span></span></span></button>'}
-function sfent(it,n,bk){var l=it[5],note=it[6]?T(it[6],it[7]):'';
-  return '<article class="sfe"><span class="sfn">'+(n<10?'0':'')+n+'</span><div class="sfeb"><h4 class="en">'+esc(it[0])+'</h4>'+(bk?'<em class="sfbn">'+esc(T(bk.n[0],bk.n[1]))+'</em>':'')+'<p>'+esc(T(it[2],it[3]))+'</p>'+(note?'<small class="sfnt">'+esc(note)+'</small>':'')+'<div class="sfm"><span class="sft">'+esc(it[4])+'</span><span class="sfl '+l+'">'+esc(T(SFL[l][0],SFL[l][1]))+'</span><a class="sfo" href="'+esc(it[1])+'" target="_blank" rel="noopener">'+esc(T('افتح المصدر','Open the source'))+' '+pkic('out')+'</a></div></div></article>'}
-function sfpages(bi){var b=SFB[bi],n=b.i.length,per=Math.min(3,Math.ceil(n/2)),pg=[],used={},k;
+function sfcover(i,h){var b=SFB[i];return '<button type="button" class="sfb" '+(h?'data-sfh':'data-b')+'="'+i+'" aria-label="'+esc(T(b.n[0],b.n[1]))+(sfnd(b)?' — '+esc(T('فيه ملفات للتنزيل','has downloads')):'')+'"><span class="sfbk"><span class="sfsp"></span>'+(sfnd(b)?'<span class="sfrb" aria-hidden="true">'+sfdi()+'</span>':'')+'<span class="sfcc"><span class="sfct"><svg viewBox="0 0 547 703" aria-hidden="true"><use href="#mark"/></svg><em>X ARCHITECTURE</em></span>'+sfic(b.k)+'<span class="sftt"><b>'+esc(T(b.n[0],b.n[1]))+'</b><i>'+esc(b.n[1].toUpperCase())+'</i></span><span class="sfft"><u>'+sfno(i)+'</u><u>'+b.i.length+' SOURCES</u></span></span></span></button>'}
+function sfdi(){return '<svg class="pkic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10 M7.5 10l4.5 4.5 4.5-4.5 M5 19h14"/></svg>'}
+function sfent(it,n,bk){var l=it[5],note=it[6]?T(it[6],it[7]):'',src='<a class="sfo" href="'+esc(it[1])+'" target="_blank" rel="noopener">'+esc(T(it[8]?'المصدر الأصلي':'افتح المصدر',it[8]?'Original source':'Open the source'))+' '+pkic('out')+'</a>';
+  return '<article class="sfe"><span class="sfn">'+(n<10?'0':'')+n+'</span><div class="sfeb"><h4 class="en">'+esc(it[0])+'</h4>'+(bk?'<em class="sfbn">'+esc(T(bk.n[0],bk.n[1]))+'</em>':'')+'<p>'+sfd(T(it[2],it[3]))+'</p>'+(note?'<small class="sfnt">'+esc(note)+'</small>':'')+'<div class="sfm"><span class="sft">'+esc(it[4])+'</span><span class="sfl '+l+'">'+esc(T(SFL[l][0],SFL[l][1]))+'</span>'+(it[8]?'':src)+'</div>'+(it[8]?'<div class="sfa"><a class="sfdl" href="'+esc(it[8])+'" download>'+sfdi()+'<span>'+esc(T('تنزيل','Download'))+'</span><b class="sfsz">'+esc(it[9])+'</b></a>'+src+'</div>':'')+'</div></article>'}
+function sfd(t){var a=String(t).split('|');return esc(a[0])+(a[1]?'<span class="sfnm" dir="ltr">'+esc(a[1].trim())+'</span>':'')}
+function sfnd(b){var c=0;b.i.forEach(function(it){if(it[8])c++});return c}
+function sfchunks(b){var n=b.i.length,o=[],k;
+  if(!sfnd(b)){var per=Math.min(3,Math.ceil(n/2));for(k=0;k<n;k+=per)o.push(b.i.slice(k,k+per));return o}
+  var cur=[],w=0;b.i.forEach(function(it){var x=it[8]?1.5:1;if(cur.length&&w+x>3.05){o.push(cur);cur=[];w=0}cur.push(it);w+=x});if(cur.length)o.push(cur);return o}
+function sfpages(bi){var b=SFB[bi],n=b.i.length,pg=[],used={},ch=sfchunks(b),at=0;
   b.i.forEach(function(it){used[it[5]]=1});
   pg.push('<section class="sfpg"><div class="sfk">X ARCHITECTURE · VOL. '+sfno(bi)+'</div>'+sfic(b.k)+'<h3>'+esc(T(b.n[0],b.n[1]))+'</h3><p class="sfsb">'+esc(T(b.s[0],b.s[1]))+'</p><div class="sfgl">'+Object.keys(SFL).filter(function(x){return used[x]}).map(function(x){return '<div><span class="sfl '+x+'">'+esc(T(SFL[x][0],SFL[x][1]))+'</span><small>'+esc(T(SFLD[x][0],SFLD[x][1]))+'</small></div>'}).join('')+'</div><div class="sff"><span>'+n+' '+esc(T('مصادر','sources'))+'</span><span>1</span></div></section>');
-  for(k=0;k<n;k+=per){pg.push('<section class="sfpg"><div class="sfk">'+esc(b.n[1].toUpperCase())+'</div>'+b.i.slice(k,k+per).map(function(it,j){return sfent(it,k+j+1)}).join('')+'<div class="sff"><span>X ARCHITECTURE</span><span>'+(pg.length+1)+'</span></div></section>')}
-  pg.push('<section class="sfpg sfend"><svg class="sfmk" viewBox="0 0 547 703" aria-hidden="true"><use href="#mark"/></svg><div class="sfk">X ARCHITECTURE</div><p>'+esc(T('الملفات تبقى عند أصحابها. نضع لك الرابط الأصلي ونوع الترخيص كما وجدناه، وقد يتغيّر مع الوقت. اقرأ الشروط قبل أي استخدام تجاري.','The files stay with their owners. We give you the original link and the licence as we found it, and it may change. Read the terms before any commercial use.'))+'</p><a class="sfo" href="#contact">'+esc(T('اقترح مصدراً ←','Suggest a source →'))+'</a><div class="sff"><span>X ARCHITECTURE</span><span>'+(pg.length+1)+'</span></div></section>');
+  ch.forEach(function(g){pg.push('<section class="sfpg"><div class="sfk">'+esc(b.n[1].toUpperCase())+'</div>'+g.map(function(it,j){return sfent(it,at+j+1)}).join('')+'<div class="sff"><span>X ARCHITECTURE</span><span>'+(pg.length+1)+'</span></div></section>');at+=g.length});
+  pg.push('<section class="sfpg sfend"><svg class="sfmk" viewBox="0 0 547 703" aria-hidden="true"><use href="#mark"/></svg><div class="sfk">X ARCHITECTURE</div><p>'+esc(T('اللي عليه زر تنزيل موجود عندنا لأن ترخيصه يسمح بذلك. الباقي نوديك لمصدره الأصلي مع الترخيص كما وجدناه، وقد يتغيّر مع الوقت. اقرأ الشروط قبل أي استخدام تجاري.','Items with a Download button are hosted here because their licence allows it. For the rest we send you to the original source, with the licence as we found it; it may change. Read the terms before any commercial use.'))+'</p><a class="sfo" href="#contact">'+esc(T('اقترح مصدراً ←','Suggest a source →'))+'</a><div class="sff"><span>X ARCHITECTURE</span><span>'+(pg.length+1)+'</span></div></section>');
   return pg}
 function sfdesk(){return !!(window.matchMedia&&matchMedia('(min-width:861px)').matches)}
 function sfrender(dir){
@@ -1743,18 +1769,18 @@ function sfopen(i){
   var x=SFR.querySelector('.sfx');if(x)x.focus()}
 function sfclose(){if(!SFR||SFR.hidden)return;SFR.hidden=true;document.body.style.overflow='';SFS.b=-1;if(SFS.f&&SFS.f.focus)SFS.f.focus()}
 function sfgo(d){var two=sfdesk(),np=SFS.p+d*(two?2:1);if(np<0)return;var N=sfpages(SFS.b).length;if(np>=N)return;SFS.p=np;sfrender(d)}
-function sfsearch(q){var t=q.toLowerCase().split(/\s+/).filter(Boolean),out=[];
-  SFB.forEach(function(b){b.i.forEach(function(it){var s=(it[0]+' '+it[2]+' '+it[3]+' '+it[4]+' '+b.n[0]+' '+b.n[1]+' '+b.s[0]+' '+b.s[1]).toLowerCase();if(t.every(function(w){return s.indexOf(w)>=0}))out.push([it,b])})});
+function sfsearch(q,dl){var t=q.toLowerCase().split(/\s+/).filter(Boolean),out=[];
+  SFB.forEach(function(b){b.i.forEach(function(it){if(dl&&!it[8])return;var s=(it[0]+' '+it[2]+' '+it[3]+' '+it[4]+' '+b.n[0]+' '+b.n[1]+' '+b.s[0]+' '+b.s[1]).toLowerCase();if(t.every(function(w){return s.indexOf(w)>=0}))out.push([it,b])})});
   return out}
 function sfres(){var q=SFS.q.trim(),el=document.getElementById('sfv');if(!el)return;
-  if(!q){el.innerHTML='<div class="sfsh">'+SFB.map(function(b,i){return sfcover(i)}).join('')+'<a class="sfb sfadd" href="#contact"><span class="sfbk"><span class="sfcc"><span class="sfct"><em>X ARCHITECTURE</em></span><svg class="sfic" viewBox="0 0 120 120" aria-hidden="true"><path d="M60 34v52M34 60h52"/></svg><span class="sftt"><b>'+esc(T('اقترح مصدراً','Suggest a source'))+'</b><i>NEW BOOK</i></span><span class="sfft"><u>+</u><u>OPEN</u></span></span></span></a></div>';return}
-  var r=sfsearch(q);
+  if(!q&&!SFS.dl){el.innerHTML='<div class="sfsh">'+SFB.map(function(b,i){return sfcover(i)}).join('')+'<a class="sfb sfadd" href="#contact"><span class="sfbk"><span class="sfcc"><span class="sfct"><em>X ARCHITECTURE</em></span><svg class="sfic" viewBox="0 0 120 120" aria-hidden="true"><path d="M60 34v52M34 60h52"/></svg><span class="sftt"><b>'+esc(T('اقترح مصدراً','Suggest a source'))+'</b><i>NEW BOOK</i></span><span class="sfft"><u>+</u><u>OPEN</u></span></span></span></a></div>';return}
+  var r=sfsearch(q,SFS.dl);
   el.innerHTML='<p class="sfcnt">'+r.length+' '+esc(T('نتيجة','results'))+'</p>'+(r.length?'<div class="sfrs">'+r.map(function(x,i){return sfent(x[0],i+1,x[1])}).join('')+'</div>':'<p class="sfnone">'+esc(T('لا نتائج. جرّب كلمة أخرى مثل: خامات، أشجار، خط.','No results. Try another word, such as: materials, trees, font.'))+'</p>')}
 function rl(){
   var el=document.getElementById('sf');if(!el)return;
   var tot=0;SFB.forEach(function(b){tot+=b.i.length});
-  el.innerHTML='<div class="hd"><small>LIBRARY</small><h2>'+esc(T('المكتبة','Library'))+'</h2></div><p class="note">'+esc(T('ملفات وقوالب مجانية من مصادرها الأصلية، مرتّبة في كتب. كل رابط يفتح صفحة المصدر، مع نوع الترخيص كما وجدناه.','Free files and templates from their original sources, arranged in books. Every link opens the source page, with the licence as we found it.'))+'</p>'
-   +'<div class="sfq"><svg viewBox="0 0 24 24" aria-hidden="true" class="pkic"><path d="M10.5 4a6.5 6.5 0 100 13 6.5 6.5 0 000-13z M16 16l5 5"/></svg><input id="sfi" type="search" autocomplete="off" placeholder="'+esc(T('ابحث: أشجار، خامات، خط، بوستر...','Search: trees, materials, font, poster...'))+'" aria-label="'+esc(T('ابحث في المكتبة','Search the library'))+'" value="'+esc(SFS.q)+'"></div>'
+  el.innerHTML='<div class="hd"><small>LIBRARY</small><h2>'+esc(T('المكتبة','Library'))+'</h2></div><p class="note">'+esc(T('ملفات وقوالب مجانية مرتّبة في كتب. اللي عليه زر "تنزيل" ينزل من موقعنا مباشرة، والباقي نوديك لمصدره الأصلي مع نوع الترخيص.','Free files and templates, arranged in books. Items with a "Download" button download straight from this site; the rest send you to the original source, with the licence.'))+'</p>'
+   +'<div class="sfbar"><div class="sfq"><svg viewBox="0 0 24 24" aria-hidden="true" class="pkic"><path d="M10.5 4a6.5 6.5 0 100 13 6.5 6.5 0 000-13z M16 16l5 5"/></svg><input id="sfi" type="search" autocomplete="off" placeholder="'+esc(T('ابحث: أشجار، خامات، خط، بوستر...','Search: trees, materials, font, poster...'))+'" aria-label="'+esc(T('ابحث في المكتبة','Search the library'))+'" value="'+esc(SFS.q)+'"></div><button type="button" class="sfch'+(SFS.dl?' on':'')+'" aria-pressed="'+(SFS.dl?'true':'false')+'">'+sfdi()+esc(T('تنزيل مباشر فقط','Direct download only'))+'</button></div>'
    +'<div id="sfv"></div><p class="sfcnt sftot">'+SFB.length+' '+esc(T('كتب','books'))+' · '+tot+' '+esc(T('مصدراً','sources'))+'</p>';
   sfres();
   if(SFR&&!SFR.hidden)sfrender(0)}
@@ -1780,7 +1806,7 @@ function rl(){
   document.addEventListener('click',function(e){var h=e.target.closest&&e.target.closest('[data-sfh]');if(h){var i=+h.dataset.sfh;location.hash='library';setTimeout(function(){sfopen(i)},80)}});
   var host=document.getElementById('sf');
   if(host){
-    host.addEventListener('click',function(e){var b=e.target.closest('.sfb');if(b)sfopen(+b.dataset.b)});
+    host.addEventListener('click',function(e){var c=e.target.closest('.sfch');if(c){SFS.dl=!SFS.dl;c.classList.toggle('on',SFS.dl);c.setAttribute('aria-pressed',SFS.dl?'true':'false');sfres();return}var b=e.target.closest('.sfb[data-b]');if(b)sfopen(+b.dataset.b)});
     host.addEventListener('input',function(e){if(e.target.id==='sfi'){SFS.q=e.target.value;sfres()}})}
   if(window.matchMedia){var mq=matchMedia('(min-width:861px)'),f=function(){if(SFR&&!SFR.hidden)sfrender(0)};if(mq.addEventListener)mq.addEventListener('change',f);else if(mq.addListener)mq.addListener(f)}
 })();
