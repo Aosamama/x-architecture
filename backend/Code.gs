@@ -465,6 +465,50 @@ function authorizeCommunity() {
 }
 
 var IDRE = /^[A-Za-z0-9_-]{8,64}$/;
+// pictures and links that cards may point to outside Drive: only these free, public sources
+var EXTRE = /^https:\/\/(upload\.wikimedia\.org\/|commons\.wikimedia\.org\/|[a-z]{2,3}\.wikipedia\.org\/|www\.artic\.edu\/(iiif|artworks)\/|images\.metmuseum\.org\/)[^\s"'<>]{1,400}$/;
+function num_(v, a, b, d) { v = +v; if (!isFinite(v)) return d; return Math.max(a, Math.min(b, Math.round(v))); }
+// a board arrives from the browser: keep only known card kinds and known fields, clamp the numbers, check every address
+function cleanBoard_(b) {
+  var cards = [], ids = {};
+  (b && Array.isArray(b.cards) ? b.cards : []).slice(0, 80).forEach(function (c) {
+    if (!c || typeof c !== 'object') return;
+    var t = (c.t === 'i' || c.t === 'n' || c.t === 'p' || c.t === 'a') ? c.t : '';
+    var id = String(c.id || '').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 16);
+    if (!t || !id || ids[id]) return;
+    var o = { id: id, t: t, x: num_(c.x, -20000, 20000, 0), y: num_(c.y, -20000, 20000, 0), w: num_(c.w, 40, 1200, 200), h: num_(c.h, 40, 1200, 150), z: num_(c.z, 0, 9999, 1) };
+    if (t === 'i') {
+      var src = String(c.src || '');
+      if (!IDRE.test(src) && !EXTRE.test(src)) return;
+      o.src = src;
+      if (c.cp) o.cp = clean_(c.cp, 80);
+      if (c.cr) o.cr = clean_(c.cr, 160);
+      if (c.lk && EXTRE.test(String(c.lk))) o.lk = String(c.lk);
+    } else if (t === 'n') {
+      o.tx = text_(c.tx, 600); o.c = num_(c.c, 0, 3, 0);
+    } else if (t === 'p') {
+      var pid = String(c.pid || '');
+      if (!IDRE.test(pid)) return;
+      o.pid = pid; o.ti = clean_(c.ti, 90); o.n = clean_(c.n, 60);
+      if (c.im && IDRE.test(String(c.im))) o.im = String(c.im);
+    } else {
+      o.ti = clean_(c.ti, 120); o.tx = clean_(c.tx, 260);
+      if (c.im && EXTRE.test(String(c.im))) o.im = String(c.im);
+      if (c.lk && EXTRE.test(String(c.lk))) o.lk = String(c.lk);
+    }
+    ids[id] = 1; cards.push(o);
+  });
+  var links = [], seen = {};
+  (b && Array.isArray(b.links) ? b.links : []).slice(0, 120).forEach(function (l) {
+    if (!l || typeof l !== 'object') return;
+    var a = String(l.a || '').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 16), z = String(l.b || '').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 16);
+    var id = String(l.id || '').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 16);
+    if (!id || !ids[a] || !ids[z] || a === z || seen[a + '|' + z] || seen[z + '|' + a]) return;
+    seen[a + '|' + z] = 1;
+    links.push({ id: id, a: a, b: z, tx: clean_(l.tx, 40) });
+  });
+  return { cards: cards, links: links };
+}
 
 // a picture sent by a member (a JPEG already shrunk by the browser)
 function cimg_(d) {
@@ -496,7 +540,7 @@ function pub_(p) {
     var b = {}; try { b = JSON.parse(p.board || '{}'); } catch (e) { b = {}; }
     var cs = Array.isArray(b.cards) ? b.cards : [];
     o.nc = cs.length;
-    o.im = cs.filter(function (c) { return c && c.t === 'i' && IDRE.test(String(c.src || '')); }).slice(0, 4).map(function (c) { return c.src; });
+    o.im = cs.filter(function (c) { return c && c.t === 'i' && (IDRE.test(String(c.src || '')) || EXTRE.test(String(c.src || ''))); }).slice(0, 4).map(function (c) { return c.src; });
   }
   return o;
 }
@@ -558,7 +602,9 @@ function cpost_(d) {
   } else {
     var b = d.bd && typeof d.bd === 'object' ? d.bd : null;
     if (!b || !Array.isArray(b.cards) || !b.cards.length) return { ok: false, err: 'empty' };
-    board = JSON.stringify({ cards: b.cards.slice(0, 80) });
+    var cb = cleanBoard_(b);
+    if (!cb.cards.length) return { ok: false, err: 'empty' };
+    board = JSON.stringify({ cards: cb.cards, links: cb.links });
     if (board.length > CBOARD_MAX) return { ok: false, err: 'bigboard' };
     imgs = [];
   }
@@ -646,7 +692,7 @@ function cbsave_(d) {
   var b = d.b;
   if (!b || typeof b !== 'object' || !Array.isArray(b.cards)) return { ok: false, err: 'bad' };
   if (!lim_('bs:' + u.ak, 240, 3600)) return { ok: false, err: 'limit' };
-  var cards = b.cards.slice(0, 80), json = JSON.stringify({ v: 1, cards: cards });
+  var cb = cleanBoard_(b), json = JSON.stringify({ v: 1, cards: cb.cards, links: cb.links });
   if (json.length > CBOARD_MAX) return { ok: false, err: 'bigboard' };
   var sh = sheet_(BOARDS, BCOLS), rows = rows_(sh, BCOLS), at = 0, ts = String(Date.now());
   for (var i = 0; i < rows.length; i++) if (rows[i][0] === u.ak) { at = i + 2; break; }
